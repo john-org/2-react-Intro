@@ -1,12 +1,19 @@
-# VII - React Intro
+# React Intro
+
+- [React Intro](#react-intro)
+  - [Homework](#homework)
+  - [Reading](#reading)
+  - [React Basics](#react-basics)
+    - [Vanilla JS to React](#vanilla-js-to-react)
+    - [Transpiling with Babel](#transpiling-with-babel)
+    - [Using Variables](#using-variables)
+    - [Overriding](#overriding)
+  - [Creating reusable React components](#creating-reusable-react-components)
+  - [Notes](#notes)
 
 ## Homework
 
 Review the notes below, step through them again using them and the finished version as a guide. Create an HTML table for the display of pirates by editing the Pirate component's JSX.
-
-For your final project you will create a version of the recipes list and details pages in React.
-
-Of course, if you wish you can do something entirely original. Just propose it.
 
 ## Reading
 
@@ -15,17 +22,13 @@ It is important to get some hands on with 'primitive' (i.e. outside the Create R
 * Spend some quality time with the exercises on [Built with React](http://buildwithreact.com) (do the simple Tutorial).
 * Another useful tutorial you could try is the official [Intro to React](https://reactjs.org/tutorial/tutorial.html) tutorial.
 
-<!-- * THIS IS GOOD STUFF - SEE THE BEGINNING BOOK TOO `http://exploringjs.com/es6/` (specifically `http://exploringjs.com/es6/ch_core-features.html#sec_from-constr-to-class` and `http://exploringjs.com/es6/ch_classes.html#ch_classes`) -->
-
-<!-- * Book marking the [Create React App](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-stylesheet) notes is also a very good idea. Please skim them. -->
-
 ## React Basics
 
 Refer to `reference > react-overview > Basics > 1-react.html`
 
 ### Vanilla JS to React
 
-Note that the Vanilla element is on object:
+Note that the Vanilla JS HTML element is on object:
 
 `console.log(typeof(element))`
 
@@ -33,48 +36,66 @@ and that is why we can run:
 
 `console.log(element.textContent)`
 
-Switch over to React objects.
+Comment out the vanillajs and uncomment the React.
 
 Note that the properties are stored on a props obect.
 
 `console.log(element.props.children)`
 
-### Transpiling with babel
+### Transpiling with Babel
 
 Use `2-react-jsx.html` and note the error.
+
+`const elem = <div className="container">Hello World</div>` is _not_ a string nor is it HTML. It is [JSX](https://reactjs.org/docs/introducing-jsx.html). Notice the use of `className` instead of `class` in the code.
+
+JSX uses Babel JS to transpile the to JavaScript. Make the following change:  
 
 ```html
 <script type="text/babel">
 ```
 
-The JS:
+Try `const elem = <div className="container">Hello World</div>` at the [Babel Repl](https://babeljs.io/repl).
+
+Note that Babel transpiles to `React.createElement()`. With Babel, the following two blocks of code are identical:
 
 ```js
-const rootElement = document.getElementById('root')
-
 const elem = <div className="container">Hello World</div>
-
-ReactDOM.render(elem, rootElement)
 ```
 
-Try `const elem = <div className="container">Hello World</div>` at the Babel Repl.
+```js
+const elem = React.createElement("div", {
+  className: "container"
+}, "Hello World");
+```
 
-Note that, with react turned on, it transpiles to `React.createElement()` before we call `ReactDOM.render()`.
+The former is much easier to write and understand.
 
-### Externalize to variables:
+### Using Variables
+
+Overwrite the code in `2-react-jsx.html` with:
 
 ```js
 const rootElement = document.getElementById('root')
 
-const content = 'Hello World'
-const myClassName = 'container'
+const foo = 'Hello World'
+const bar = 'container'
 
-const elem = <div className={myClassName}>{content}</div>
+const elem = <div className={bar}>{foo}</div>
 
 ReactDOM.render(elem, rootElement)
 ```
 
-The curly braces are JS and used evaluate to an expression.
+The curly braces are JavaScript and are used to evaluate an expression in JSX.
+
+The penultimate line transpiles to:
+
+```js
+const elem = React.createElement("div", {
+  className: bar
+}, foo);
+```
+
+
 
 So, for example, we could use an IIFE:
 
@@ -104,7 +125,7 @@ const element = <div {...props} />
 ReactDOM.render(element, rootElement)
 ```
 
-And an object spread in JS to spread the props into the element. (See `reference > spread-operator.html`.)
+Note the [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element. (See `reference > spread-operator.html`.)
 
 ### Overriding
 
@@ -673,8 +694,8 @@ npm start
 Review in `src > App.js`:
 
 1. logo: {logo}: JSX
-1. class → className: JSX
-1. xhtml style closing tags: JSX
+2. class → className: JSX
+3. xhtml style closing tags: JSX
 
 Examine CSS in the Elements inspector (`head` region):
 
