@@ -7,9 +7,45 @@
     - [Vanilla JS to React](#vanilla-js-to-react)
     - [Transpiling with Babel](#transpiling-with-babel)
     - [Using Variables](#using-variables)
-    - [Overriding](#overriding)
-  - [Creating reusable React components](#creating-reusable-react-components)
+    - [Creating Reusable React Components](#creating-reusable-react-components)
+  - [Create a React Project](#create-a-react-project)
+    - [Project Structure](#project-structure)
+    - [JSX](#jsx)
+    - [Project Prep](#project-prep)
+    - [Pirate Class Component](#pirate-class-component)
+  - [Header Functional Component](#header-functional-component)
+  - [Additional Components](#additional-components)
+  - [Adding Methods](#adding-methods)
+    - [Using Forms in React](#using-forms-in-react)
+  - [The Pirate Form](#the-pirate-form)
+  - [State](#state)
+    - [Review](#review)
+  - [State continued](#state-continued)
+    - [Passing Props](#passing-props)
+  - [Resetting the Form](#resetting-the-form)
+  - [Displaying Pirates](#displaying-pirates)
+  - [Sample Pirates](#sample-pirates)
+    - [Object.keys()](#objectkeys)
+    - [Load sample data via PirateForm](#load-sample-data-via-pirateform)
+    - [Remove Pirate](#remove-pirate)
+    - [Persisting the Data](#persisting-the-data)
+  - [Rebase](#rebase)
+    - [Add domain, database URL, API key.](#add-domain-database-url-api-key)
+  - [React Component Lifecycle](#react-component-lifecycle)
+  - [summer2018 Stop here](#summer2018-stop-here)
+    - [Routing](#routing)
+    - [Pirate Detail](#pirate-detail)
   - [Notes](#notes)
+  - [Prototypal inheritance](#prototypal-inheritance)
+    - [Example: Array](#example-array)
+    - [Classes](#classes)
+    - [Static Methods](#static-methods)
+    - [Static methods on an Array](#static-methods-on-an-array)
+    - [Getters and Setters](#getters-and-setters)
+    - [Extending Classes](#extending-classes)
+      - [Super](#super)
+    - [Extending Arrays](#extending-arrays)
+  - [Review For... In Loops](#review-for-in-loops)
 
 ## Homework
 
@@ -95,8 +131,6 @@ const elem = React.createElement("div", {
 }, foo);
 ```
 
-
-
 So, for example, we could use an IIFE:
 
 ```js
@@ -127,42 +161,18 @@ ReactDOM.render(element, rootElement)
 
 Note the [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element. (See `reference > spread-operator.html`.)
 
-### Overriding
+### Creating Reusable React Components
 
-Using a default class name:
+Refer to `reference > react-overview > template.html`. 
 
-```js
-const element = <div className="myClass" {...props} />
-```
-
-Overriding a class name:
-
-```js
-const element = <div {...props} className="myClass" />
-```
-
-Overriding children props:
-
-```js
-const element = <div {...props} className="myClass">Hi There</div>
-```
-
-## Creating reusable React components
-
-Refer to `reference > react-overview > index.html`. 
-
-For this you will need to open the page via HTTP. You can install and use `Live Server` in VS Code, the [lite-server](https://www.npmjs.com/package/lite-server) npm package or, if you have Python installed (default on MacOs) cd into `rect-overview` and run:
-
-```sh
-python -m SimpleHTTPServer 9001
-```
+Open the page via HTTP. You can install and use `Live Server` in VS Code.
 
 Again, note that the variable `elem` is compiling to `React.createElement()`.
 
 Extract the component to a variable - add:
 
 ```js
-const helloWorld = <div>Hello World</div>
+const helloAgain = <div>Hello Again!</div>
 ```
 
 And render it:
@@ -170,8 +180,8 @@ And render it:
 ```js
 const elem = (
   <div className="container">
-    { helloWorld }
-    { helloWorld }
+    { helloAgain }
+    { helloAgain }
   </div>
 )
 ```
@@ -182,69 +192,75 @@ Reuse and parameterize code:
 const message = (props) => <div>{props.msg}</div>
 ```
 
-Render them
+Render them by calling the message function and passing and object with msg and its value:
 
 ```js
-const rootElement = document.getElementById('root')
+const rootElement = document.getElementById('root');
 
-const message = (props) => <div>{props.msg}</div>
+const message = props => {
+  return <div>{props.msg}</div>;
+};
 
 const elem = (
   <div className="container">
-    { message ({ msg: 'Hellow World' })}
-    { message ({ msg: 'Goodbye World' })}
+    {message({ msg: 'Hello World' })}
+    {message({ msg: 'Goodbye World' })}
   </div>
-)
+);
 
-ReactDOM.render(elem, rootElement)
+ReactDOM.render(elem, rootElement);
+
 ```
 
 Because JSX compiles down to `React.createElement` calls we can take a function and pass props down to the function.
 
 ```js
+const rootElement = document.getElementById('root');
+
+const message = props => {
+  return <div>{props.msg}</div>;
+};
+
+const elem = (
   <div className="container">
-    { React.createElement(message, { msg: 'Hello World' })}
-    { React.createElement(message, { msg: 'Goodbye World' })}
+    {React.createElement(message, { msg: 'Hello World' })}
+    {React.createElement(message, { msg: 'Goodbye World' })}
   </div>
+);
+
+ReactDOM.render(elem, rootElement);
+
 ```
 
-Note the error when we try to use the standalone component:
-
- ```js
-  <div className="container">
-    <message />
-    { React.createElement(message, { msg: 'Hello World' })}
-    { React.createElement(message, { msg: 'Goodbye World' })}
-  </div>
-```
-
-Try putting `<messsage />` into the Babel Repl.
+`message` is not quite a standalone React component yet. Note the error when we try to use the standalone component:
 
 ```js
-"use strict";
-
-React.createElement("message", null);
+<div className="container">
+  <message />
+  { React.createElement(message, { msg: 'Hello World' })}
+  { React.createElement(message, { msg: 'Goodbye World' })}
+</div>
 ```
 
-We get a string.
-
-In JSX to differentiate between a variable and a DOM element you need to capitalize the component.
-
-Try in Repl:
+Try putting `<messsage />` into the Babel Repl:
 
 ```js
 const message = (props) => <div>{props.msg}</div>;
 <message />
 ```
 
-v.s.
+We get a string `"message"`.
+
+In order to differentiate between a variable and a DOM element in JSX you need to _capitalize_ the component name, otherwise we get a string and it can't do its job.
+
+Try in Repl with capitalization:
 
 ```js
 const Message = (props) => <div>{props.msg}</div>;
 <Message />
 ```
 
-Remove some of the JS in favor of JSX and capitalize the variable name:
+Now that we've capitalized the message variable we have a standalone React component we can use with `<Message />` :
 
 ```js
 const rootElement = document.getElementById('root')
@@ -261,458 +277,68 @@ const elem = (
 ReactDOM.render(elem, rootElement)
 ```
 
-We can use the child prop like this:
-
-```js
-const rootElement = document.getElementById('root')
-
-const Message = (props) => <div>{props.children }</div>
-
-const elem = (
-  <div className="container">
-    <Message children ='Hello World' />
-    <Message children ='Goodbye World' />
-  </div>
-)
-
-ReactDOM.render(elem, rootElement)
-```
-
-Or like this:
-
-```js
-  <div className="container">
-    <Message>Hello World</Message>
-    <Message>Goodbye World</Message>
-  </div>
-```
-
-
-## Prototypal inheritance
-
-Before we get any further let's look at the `class` syntax we will be using in React.
-
-cd into `reference > classes`, run a server and open `1-inheritance.html` in a browser.
-
-Classes in React (ref. `react-overview > forms.js`) are based on JS prototypal inheritance.
-
-We have a constructor function:
-
-```js
-function Car(model, make) {
-  this.model = model;
-  this.make = make;
-}
-```
-
-and a car with properties.
-
-```sh
-> expo
-```
-
-Prototypal inheritance - methods on the original constructor will be inherited.
-
-### Example: Array 
-
-Create an array: 
-
-```sh
-> const names = ['John', 'Henry']
-```
-
-Examine the Array - Array prototypes
-
-```sh
-> names.join(', ')
-> names.pop()
-```
-
-Add a prototype:
-
-```js
-Car.prototype.drive = function() {
-    console.log(`Vroom vroom 🚗 🚗 🚗! I'm a ${this.model} and I'm a ${this.make}`);
-};
-```
-
-Examine the prototype on the car object.
-
-Add a second car:
-
-```js
-const miata = new Car('Miata', 'Mazda');
-```
-
-Execute the drive method:
-
-```sh
-> miata.drive()
-```
-
-Add an additional method:
-
-```js
-Car.prototype.stop = function() {
-    console.log(`Screech! 🚒 🚑 🚓`);
-};
-```
-
-```sh
-> expo.stop()
-```
-
-In classic protoypal inheritance the function `Car` is our 'constructor' and we add methods using `Car.prototype`.
-
-### Classes
-
-See `2-classes.html`
-
-Note syntax - (esp. lack of comma):
-
-```js
-class Car {
-  constructor(model, make) {
-    this.model = model;
-    this.make = make;
-  }
-  drive() {
-    console.log(`Vroom vroom 🚗🚗🚗! I'm a ${this.model} and I'm a ${this.make}`);
-  }
-  stop() {
-    console.log(`Screech! 🚒🚑🚓`);
-  }
-}
-```
-
-```sh
-> expo
-> expo.drive()
-> expo.stop()
-```
-
-### Static Methods
-
-```js
-static info() {
-  console.log('I\'m a static method, cars only need apply' );
-}
-```
-
-```sh
-> expo.info()
-> Car.info()
-> expo
-```
-
-Inspect the expo prototype.
-
-A static method is similar to `Array.of` - in that it is not inherited.
-
-### Static methods on an Array
-
-`Array.of` and the spread operator:
-
-[Emmet](https://docs.emmet.io/abbreviations/syntax/) (ctrl-e):
-
-`ul>li*4>a[href="#"]{link}`
-
-```sh
-> Array.of(1,2,3,4)
-> const links = document.querySelectorAll('li')
-> Array.of(links)
-> Array.of(...links)
-```
-
-But `.of` is not inerited
-
-```sh
-> numbers = [6,7,8,9]
-> numbers.of(1,2,3,4)
-```
-
-A static method applied to Cars only:
-
-```sh
-Car.info()
-```
-
-### Getters and Setters
-
-```js
-get description() {
-  return `${this.model} is a ${this.make} type of car`;
-}
-```
-
-* Not a method (no braces when calling)
-
-```sh
-> expo.description
-```
-
-Setters
-
-```js
-set nicknames(value) {
-  this.nick = value.trim();
-}
-```
-
-```sh
-> expo.nicknames = '   sadsack  '
-```
-
-```js
-get nicknames() {
-  return this.nick.toUpperCase();
-}
-```
-
-```sh
-> expo.nicknames
-```
-
-### Extending Classes
-
-See `3-extending-classes.html`
-
-```js
-class Animal {
-  constructor(name) {
-    this.name = name;
-    this.thirst = 100;
-    this.belly = [];
-  }
-  drink() {
-    this.thirst -= 10;
-    return this.thirst;
-  }
-  eat(food) {
-    this.belly.push(food);
-    return this.belly;
-  }
-}
-
-const rhino = new Animal('Rhiney');
-```
-
-```sh
-> rhino
-> rhino.eat('lilies')
-> rhino.eat('hunters')
-> rhino.drink()
-> rhino
-```
-
-#### Super
-
-Calls the thing that you are extending first.
-
-e.g. we want to extend our Animal class to include a subclass of `dogs`.
-
-This will not work:
-
-```js
-class Dog extends Animal {
-  constructor(name, breed) {
-    this.name = name;
-    this.breed = breed;
-  }
-}
-```
-
-```js
-const yorik = new Dog('Yorik', 'Terrier');
-```
-
-We need to call `super` first and here, super needs a name:
-
-```js
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name);
-    this.breed = breed;
-  }
-}
-```
-
-```sh
-> yorik
-```
-
-Add a bark method:
-
-```js
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name);
-    this.breed = breed;
-  }
-  bark() {
-    console.log(`Bark bark my name is ${this.name} and I\'m a dog`);
-  }
-}
-```
-
-Dogs can bark. Rhinos can't:
-
-```sh
-> yorik.bark()
-> rhino.bark()
-```
-
-### Extending Arrays
-
-See `4-extending-arrays.html`
-
-Make our own classes modeled after Array.
-
-Start off with an array with a property:
-
-```js
-const movies = new MovieCollection('My Favorite Movies',
-  { name: 'Bee Movie', stars: 10 },
-  { name: 'Star Wars Trek', stars: 1 },
-  { name: 'Virgin Suicides', stars: 7 },
-  { name: 'King of the Road', stars: 8 }
-);
-```
-
-We create a class _off_ the Array.
-
-Adding name and using a spread operator to add the items:
-
-```js
-class MovieCollection extends Array {
-  constructor(name, ...items) {
-    super(...items);
-    this.name = name;
-  }
-```
-
-Super calls the Array prototype with a spread operator.
-
-```sh
-> movies[4]
-> movies.name
-```
-
-We have an Array that also has properties (possible because in JS, Arrays are objects):
-
-```sh
-> typeof [1,2]
-```
-
-Methods using the array prototype methods can be used:
-
-```js
-add(movie) {
-  this.push(movie);
-}
-```
-
-## Review For... In Loops
-
-A `for...in` loop is a modified version of a for loop that you can use to loop through objects.
-
-The first part, `key`, is a variable that gets assigned to the object key on each loop. The second part, is the object to loop over.
-
-`for... in`:
-
-```sh
-> for (const movie in movies){ console.log(movie) }
-```
-
-Returns the key _and_ the name property.
-
-Also useful will be `for... of` which returns only the array:
-
-```sh
-> for (const movie of movies){ console.log(movie) }
-```
-
-We get the object (not the key) and the property (`name`) is not shown. 
-
-N.B. for of loops skip over the properties.
-
-```sh
-> movies.topRated()
-```
-
-See `topRated()`:
-
-```js
-topRated() {
-  const ordered = this.sort(function(firstMovie, secondMovie){
-    if(firstMovie.stars > secondMovie.stars){
-      return 1
-    } else {
-      return -1
-    }
-    })
-}
-```
-
-```sh
-> console.table(movies.topRated())
-```
-
-Using the `limit`:
-
-```sh
-> console.table(movies.topRated(2))
-```
-
-If you just want the keys: 
-
-```sh
-> Object.keys(movies)
-```
-
-We will be using this with React.
-
-
-
 ## Create a React Project
+
+Having creating at a standalone React component let's now create a React project. 
 
 To create a new app, run:
 
-```bash
+```sh
 npx create-react-app react-pirates
 ```
+
+### Project Structure
+
+Open `index.html` from the `public` folder.
+
+Everything is inserted into this div:`<div id="root"></div>`
+
+Open `index.js` from `src`.
+
+This is the only place where `ReactDOM.render()` will occur:
+
+```js
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+
+Open `App.js` (note the capitalization) from `src`.
+
+This is the only React component in this starter project. 
+
+Instead of using a script tag (as in our samples above), this component imports React from the node modules folder:
+
+```js
+import React from 'react';
+```
+
+The main body of the component is a function that returns JSX (_not_ HTML).
+
+### JSX
+
+Some JSX examples:
+
+1. `src={logo}` - JSX curly braces allow the use of a variable
+2. `className="App-header"` - as we will see momentarily, 'class' is a reserved word in JavaScript so we use 'className' instead
+3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
+4. Everything is nested in a single tag - add `<p>test</p>` above div to see a common error.
+
+Examine the CSS in Chrome's Elements inspector (`head` region). Note that we have two `<style>` blocks - one for each CSS file in the project.
+
+Commenting code in React looks a little different from native JavaScript and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
+
+`{/* <img src={logo} className="logo" alt="logo" /> */}`
+
+Save and note the hot reloading.
+
+### Project Prep
 
 Move the `data` and `assets` folders from reference to the `src` directory in `react-pirates`.
 
 ```bash
 cd react-pirates
+code .
 npm start
 ```
-
-### JSX
-
-Review in `src > App.js`:
-
-1. logo: {logo}: JSX
-2. class → className: JSX
-3. xhtml style closing tags: JSX
-
-Examine CSS in the Elements inspector (`head` region):
-
-1. injected via Webpack:`<style>`
-1. note prefixing in output
-
-### Nesting
-
-* App.js
-
-Add `<p>test</p>` above div to see a common error.
-
-### Comments
-
-Native in VS Code?
-
-`{/* <img src={logo} className="logo" alt="logo" /> */}`
 
 Import our fonts and clean up the default html template.
 
@@ -741,43 +367,43 @@ Import our fonts and clean up the default html template.
 </html>
 ```
 
-### Components
+### Pirate Class Component
 
 Create `Pirate.js` in a new `components` folder.
 
-* `src/components/Pirate.js`
+In `src/components/Pirate.js`:
 
 ```js
-import React, { Component } from 'react';
+import React from 'react';
 
-import '../assets/css/Pirate.css'
+import '../assets/css/Pirate.css';
 
-class Pirate extends Component {
-  render(){
-    return (
-      <p>Pirate Component</p>
-      )
-  }
+function Pirate(props) {
+  return (
+    <div className="pirate">
+      <p>Ahoy there!</p>
+    </div>
+  );
 }
 
 export default Pirate;
+
 ```
 
-## Properties
-
-* `App.js`:
+We use the component in `App.js` by first importing it and then returning it:
 
 ```js
+import React from 'react';
 import Pirate from './components/Pirate';
+
+function App() {
+  return <Pirate />;
+}
+
+export default App;
 ```
 
-In the render function.
-
-```js
-<Pirate />
-```
-
-Ensure it is visible in the view.
+Ensure that the component is rendered in the browser.
 
 Add a property (`prop`) to the component instance in `App.js`:
 
@@ -785,27 +411,49 @@ Add a property (`prop`) to the component instance in `App.js`:
 <Pirate tagline="Ahoy from the Pirate Component" />
 ```
 
-* Pirate.js
+`Pirate.js`:
 
 ```js
-import React, { Component } from 'react';
+import React from 'react';
 
-import '../assets/css/Pirate.css'
+import '../assets/css/Pirate.css';
 
-class Pirate extends Component {
-  render(){
+function Pirate(props) {
+  return (
+    <div className="pirate">
+      <p>{props.tagline}</p>
+    </div>
+  );
+}
+
+export default Pirate;
+
+```
+
+So far we have only seen React functional components. There is another type, often called a React class component. You should be familiar with both.
+
+```js
+import React from 'react';
+
+import '../assets/css/Pirate.css';
+
+class Pirate extends React.Component {
+  render() {
     return (
-      <div className='pirate'>
+      <div className="pirate">
         <p>{this.props.tagline}</p>
       </div>
-      )
+    );
   }
 }
 
 export default Pirate;
 ```
 
-### React tool
+A React class component uses Object Oriented Syntax to perform similarly to a functional component. They are typically used when advanced features required however, in recent versions of React, functional components have gain the equivalent functionality through a feature known as "Hooks" so their usage will likely be reduced in the next few years. We will look at React hooks in a future class.
+
+
+<!-- ### React tool
 
 Native `this` selector: `$0`
 
@@ -817,9 +465,10 @@ Examine component structure (nesting).
 
 Select `<Pirate />`
 
-Console: `$r.props`
+Console: `$r.props` -->
 
-## Header component
+
+## Header Functional Component
 
 Create a new Header component:
 
@@ -828,7 +477,7 @@ import React, { Component } from 'react';
 import '../assets/css/Header.css'
 import logo from '../assets/img/anchor.svg';
 
-class Header extends React.Component {
+class Header extends Component {
   render(){
     return (
       <div className="header">
@@ -848,28 +497,26 @@ Import `Header.js` into `App.js`:
 * Add it to `App.js`:
 
 ```jsx
-import React, { Component } from 'react';
-
+import React from 'react';
 import Pirate from './components/Pirate';
 import Header from './components/Header';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header />
-        <Pirate tagline="Ahoy from the Pirate Component" />
-      </div>
-    );
-  }
+function App() {
+  return (
+    <div className="App">
+      <Header />
+      <Pirate tagline="Ahoy from the Pirate Component" />
+    </div>
+  );
 }
 
 export default App;
+
 ```
 
-Delete the `App.css` file from the top level of source and the import statement for it in `App.js`.
+Delete the `App.css`, test, and logo files from the top level of src.
 
-Because we are not going to be doing much with the header at this point we don't need to use a class based component. Let's try using a React functional component instead.
+Because we are not going to be doing much with the header at this point we don't need to use a class based component. Let's refactor it to a React functional component in order to see, first hand, what the difference in syntax is. We will store the function in a variable `Header`.
 
 Edit `Header.js`:
 
@@ -879,18 +526,21 @@ import '../assets/css/Header.css'
 import logo from '../assets/img/anchor.svg';
 
 
-const Header = (props) => {
+const Header = () => {
   return (
     <div className="header">
-    <img src={logo} className="logo" alt="logo" />
-    <h1>Pirates!</h1>
-    </div>)
-  }
+      <img src={logo} className="logo" alt="logo" /> 
+      <h1>Pirates!</h1>
+    </div>
+  );
+};
   
 export default Header;
 ```
 
-## Adding Pirates
+Notice that, unlike the Pirate component, we do not need to pass props into this component because we are not using any.
+
+## Additional Components
 
 Create a new component `PirateForm.js`:
 
@@ -1710,9 +1360,9 @@ and note the error message.
 ### Persisting the Data
 
 1. Create an account at [Firebase](https://firebase.com/)
-1. Create a new project called `<firstname>-<lastname>-pirates`
-1. Create Project
-1. Go to the empty database (left hand menu)
+2. Create a new project called `<firstname>-<lastname>-pirates`
+3. Create Project
+4. Go to the empty database (left hand menu)
 
 Click on Rules at the top.
 
@@ -1923,3 +1573,387 @@ class Main extends React.Component {
 We probably want the routing to occur in `App.js` to keep the header and replace `<Pirate />` and `<PirateForm />` -->
 
 ## Notes
+
+## Prototypal inheritance
+
+Before we get any further let's look at the `class` syntax we will be using in React.
+
+cd into `reference > classes`, run a server and open `1-inheritance.html` in a browser.
+
+Classes in React (ref. `react-overview > forms.js`) are based on JS prototypal inheritance.
+
+We have a constructor function:
+
+```js
+function Car(model, make) {
+  this.model = model;
+  this.make = make;
+}
+```
+
+and a car with properties.
+
+```sh
+> expo
+```
+
+Prototypal inheritance - methods on the original constructor will be inherited.
+
+### Example: Array 
+
+Create an array: 
+
+```sh
+> const names = ['John', 'Henry']
+```
+
+Examine the Array - Array prototypes
+
+```sh
+> names.join(', ')
+> names.pop()
+```
+
+Add a prototype:
+
+```js
+Car.prototype.drive = function() {
+    console.log(`Vroom vroom 🚗 🚗 🚗! I'm a ${this.model} and I'm a ${this.make}`);
+};
+```
+
+Examine the prototype on the car object.
+
+Add a second car:
+
+```js
+const miata = new Car('Miata', 'Mazda');
+```
+
+Execute the drive method:
+
+```sh
+> miata.drive()
+```
+
+Add an additional method:
+
+```js
+Car.prototype.stop = function() {
+    console.log(`Screech! 🚒 🚑 🚓`);
+};
+```
+
+```sh
+> expo.stop()
+```
+
+In classic protoypal inheritance the function `Car` is our 'constructor' and we add methods using `Car.prototype`.
+
+### Classes
+
+See `2-classes.html`
+
+Note syntax - (esp. lack of comma):
+
+```js
+class Car {
+  constructor(model, make) {
+    this.model = model;
+    this.make = make;
+  }
+  drive() {
+    console.log(`Vroom vroom 🚗🚗🚗! I'm a ${this.model} and I'm a ${this.make}`);
+  }
+  stop() {
+    console.log(`Screech! 🚒🚑🚓`);
+  }
+}
+```
+
+```sh
+> expo
+> expo.drive()
+> expo.stop()
+```
+
+### Static Methods
+
+```js
+static info() {
+  console.log('I\'m a static method, cars only need apply' );
+}
+```
+
+```sh
+> expo.info()
+> Car.info()
+> expo
+```
+
+Inspect the expo prototype.
+
+A static method is similar to `Array.of` - in that it is not inherited.
+
+### Static methods on an Array
+
+`Array.of` and the spread operator:
+
+[Emmet](https://docs.emmet.io/abbreviations/syntax/) (ctrl-e):
+
+`ul>li*4>a[href="#"]{link}`
+
+```sh
+> Array.of(1,2,3,4)
+> const links = document.querySelectorAll('li')
+> Array.of(links)
+> Array.of(...links)
+```
+
+But `.of` is not inerited
+
+```sh
+> numbers = [6,7,8,9]
+> numbers.of(1,2,3,4)
+```
+
+A static method applied to Cars only:
+
+```sh
+Car.info()
+```
+
+### Getters and Setters
+
+```js
+get description() {
+  return `${this.model} is a ${this.make} type of car`;
+}
+```
+
+* Not a method (no braces when calling)
+
+```sh
+> expo.description
+```
+
+Setters
+
+```js
+set nicknames(value) {
+  this.nick = value.trim();
+}
+```
+
+```sh
+> expo.nicknames = '   sadsack  '
+```
+
+```js
+get nicknames() {
+  return this.nick.toUpperCase();
+}
+```
+
+```sh
+> expo.nicknames
+```
+
+### Extending Classes
+
+See `3-extending-classes.html`
+
+```js
+class Animal {
+  constructor(name) {
+    this.name = name;
+    this.thirst = 100;
+    this.belly = [];
+  }
+  drink() {
+    this.thirst -= 10;
+    return this.thirst;
+  }
+  eat(food) {
+    this.belly.push(food);
+    return this.belly;
+  }
+}
+
+const rhino = new Animal('Rhiney');
+```
+
+```sh
+> rhino
+> rhino.eat('lilies')
+> rhino.eat('hunters')
+> rhino.drink()
+> rhino
+```
+
+#### Super
+
+Calls the thing that you are extending first.
+
+e.g. we want to extend our Animal class to include a subclass of `dogs`.
+
+This will not work:
+
+```js
+class Dog extends Animal {
+  constructor(name, breed) {
+    this.name = name;
+    this.breed = breed;
+  }
+}
+```
+
+```js
+const yorik = new Dog('Yorik', 'Terrier');
+```
+
+We need to call `super` first and here, super needs a name:
+
+```js
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);
+    this.breed = breed;
+  }
+}
+```
+
+```sh
+> yorik
+```
+
+Add a bark method:
+
+```js
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);
+    this.breed = breed;
+  }
+  bark() {
+    console.log(`Bark bark my name is ${this.name} and I\'m a dog`);
+  }
+}
+```
+
+Dogs can bark. Rhinos can't:
+
+```sh
+> yorik.bark()
+> rhino.bark()
+```
+
+### Extending Arrays
+
+See `4-extending-arrays.html`
+
+Make our own classes modeled after Array.
+
+Start off with an array with a property:
+
+```js
+const movies = new MovieCollection('My Favorite Movies',
+  { name: 'Bee Movie', stars: 10 },
+  { name: 'Star Wars Trek', stars: 1 },
+  { name: 'Virgin Suicides', stars: 7 },
+  { name: 'King of the Road', stars: 8 }
+);
+```
+
+We create a class _off_ the Array.
+
+Adding name and using a spread operator to add the items:
+
+```js
+class MovieCollection extends Array {
+  constructor(name, ...items) {
+    super(...items);
+    this.name = name;
+  }
+```
+
+Super calls the Array prototype with a spread operator.
+
+```sh
+> movies[4]
+> movies.name
+```
+
+We have an Array that also has properties (possible because in JS, Arrays are objects):
+
+```sh
+> typeof [1,2]
+```
+
+Methods using the array prototype methods can be used:
+
+```js
+add(movie) {
+  this.push(movie);
+}
+```
+
+## Review For... In Loops
+
+A `for...in` loop is a modified version of a for loop that you can use to loop through objects.
+
+The first part, `key`, is a variable that gets assigned to the object key on each loop. The second part, is the object to loop over.
+
+`for... in`:
+
+```sh
+> for (const movie in movies){ console.log(movie) }
+```
+
+Returns the key _and_ the name property.
+
+Also useful will be `for... of` which returns only the array:
+
+```sh
+> for (const movie of movies){ console.log(movie) }
+```
+
+We get the object (not the key) and the property (`name`) is not shown. 
+
+N.B. for of loops skip over the properties.
+
+```sh
+> movies.topRated()
+```
+
+See `topRated()`:
+
+```js
+topRated() {
+  const ordered = this.sort(function(firstMovie, secondMovie){
+    if(firstMovie.stars > secondMovie.stars){
+      return 1
+    } else {
+      return -1
+    }
+    })
+}
+```
+
+```sh
+> console.table(movies.topRated())
+```
+
+Using the `limit`:
+
+```sh
+> console.table(movies.topRated(2))
+```
+
+If you just want the keys: 
+
+```sh
+> Object.keys(movies)
+```
+
+We will be using this with React.
