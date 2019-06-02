@@ -340,15 +340,26 @@ const elem = (
 
 Having creating at a standalone React component let's now create a React project. 
 
-To create a new app, run:
+To create a new app, ensure that you are in today's project folder and run:
 
 ```sh
+pwd
 npx create-react-app react-pirates
+```
+
+Note: NPM manages packages while NPX executes Node packages
+
+Run the project:
+
+```bash
+cd react-pirates
+code .
+npm start
 ```
 
 ### Project Structure
 
-Open `index.html` from the `public` folder.
+Open `index.html` from the `react-pirates/public` folder.
 
 Everything is inserted into this div:`<div id="root"></div>`
 
@@ -360,26 +371,28 @@ This is the only place where `ReactDOM.render()` will occur:
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-Open `App.js` (note the capitalization) from `src`.
+Open `App.js` (note the capitalization - this is a React component) from `src`.
 
-This is the only React component in this starter project. 
+This is the only component in this starter project. 
 
-Instead of using a script tag (as in our samples above), this component imports React from the node modules folder:
+Instead of using a script tag (as in our previous samples above), this component imports React from the node modules folder:
 
 ```js
 import React from 'react';
 ```
 
+We will examine import and export in depth later.
+
 The main body of the component is a function that returns JSX (_not_ HTML).
 
 ### JSX
 
-Some JSX examples:
+Recall the JSX requirements:
 
-1. `src={logo}` - JSX curly braces allow the use of a variable
-2. `className="App-header"` - as we will see momentarily, 'class' is a reserved word in JavaScript so we use 'className' instead
-3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
-4. Everything is nested in a single tag - add `<p>test</p>` above div to see a common error.
+1. `src={logo}` - JSX curly braces allow the use of a JS expression
+1. `className="App-header"` - `class` is a reserved word in JavaScript
+1. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
+1. everything is nested in a single tag
 
 Examine the CSS in Chrome's Elements inspector (`head` region). Note that we have two `<style>` blocks - one for each CSS file in the project.
 
@@ -391,13 +404,7 @@ Save and note the hot reloading.
 
 ### Project Prep
 
-Move the `data` and `assets` folders from reference to the `src` directory in `react-pirates`.
-
-```bash
-cd react-pirates
-code .
-npm start
-```
+Move the `data` and `assets` folders from `reference` to the `src` directory in `react-pirates/src`.
 
 Import our fonts and clean up the default html template.
 
@@ -428,7 +435,9 @@ Import our fonts and clean up the default html template.
 
 ### Pirate Class Component
 
-Create `Pirate.js` in a new `components` folder.
+Create a `components` folder in `src`.
+
+Create `Pirate.js` in the new `components` folder.
 
 In `src/components/Pirate.js`:
 
@@ -509,23 +518,7 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-A React class component uses Object Oriented Syntax to perform similarly to a functional component. They are typically used when advanced features required however, in recent versions of React, functional components have gain the equivalent functionality through a feature known as "Hooks" so their usage will likely be reduced in the next few years. We will look at React hooks in a future class.
-
-
-<!-- ### React tool
-
-Native `this` selector: `$0`
-
-React selector: `$r`
-
-Inspect using React tool.
-
-Examine component structure (nesting).
-
-Select `<Pirate />`
-
-Console: `$r.props` -->
-
+A React class component uses Object Oriented Syntax and adds features to a functional component however, in recent versions of React, functional components have gained the equivalent functionality through a feature known as "Hooks." Their usage will likely be reduced in the next few years. We will look at React hooks in a future class.
 
 ## Header Functional Component
 
@@ -573,7 +566,7 @@ export default App;
 
 ```
 
-Delete the `App.css`, test, and logo files from the top level of src.
+Delete the `App.css`, test, and logo files from the top level of `src`.
 
 Because we are not going to be doing much with the header at this point we don't need to use a class based component. Let's refactor it to a React functional component in order to see, first hand, what the difference in syntax is. We will store the function in a variable `Header`.
 
@@ -2016,3 +2009,18 @@ If you just want the keys:
 ```
 
 We will be using this with React.
+
+
+<!-- ### React tool
+
+Native `this` selector: `$0`
+
+React selector: `$r`
+
+Inspect using React tool.
+
+Examine component structure (nesting).
+
+Select `<Pirate />`
+
+Console: `$r.props` -->
