@@ -4,9 +4,9 @@
   - [Homework](#homework)
   - [Reading](#reading)
   - [React Basics](#react-basics)
-    - [Vanilla JS to React](#vanilla-js-to-react)
     - [Transpiling with Babel](#transpiling-with-babel)
     - [Using Variables](#using-variables)
+    - [Aside - The Spread Operator](#aside---the-spread-operator)
     - [Creating Reusable React Components](#creating-reusable-react-components)
   - [Create a React Project](#create-a-react-project)
     - [Project Structure](#project-structure)
@@ -53,18 +53,20 @@ Review the notes below, step through them again using them and the finished vers
 
 ## Reading
 
-It is important to get some hands on with 'primitive' (i.e. outside the Create React App setup) React coding.
 
-* Spend some quality time with the exercises on [Built with React](http://buildwithreact.com) (do the simple Tutorial).
-* Another useful tutorial you could try is the official [Intro to React](https://reactjs.org/tutorial/tutorial.html) tutorial.
 
 ## React Basics
 
 Refer to `reference > react-overview > Basics > 1-react.html`
 
-### Vanilla JS to React
+```js
+const element = document.createElement('div');
+element.textContent = 'Hello World';
+element.className = 'container';
+rootElement.appendChild(element);
+```
 
-Note that the Vanilla JS HTML element is on object:
+The JavaScript created HTML element is an object:
 
 `console.log(typeof(element))`
 
@@ -72,17 +74,37 @@ and that is why we can run:
 
 `console.log(element.textContent)`
 
-Comment out the vanillajs and uncomment the React.
+Comment out the vanillaJS and uncomment the React.
 
-Note that the properties are stored on a props obect.
+Note that in React's equivalent of `createElement` the properties (className, children) are passed as an object. 
 
-`console.log(element.props.children)`
+```js
+const rootElement = document.getElementById('root');
+
+const element = React.createElement('div', 
+  {
+    className: 'container',
+    children: 'Hello World',
+  }
+);
+
+ReactDOM.render(element, rootElement);
+```
+
+Notice the use of `className` instead of `class` in the code. `class` is a [reserved word in JS](https://www.w3schools.com/js/js_reserved.asp).
+
+Internally, these are stored in a `props` (properties) object.
+
+```sh
+console.log(element.props)
+console.log(element.props.children)
+```
 
 ### Transpiling with Babel
 
-Use `2-react-jsx.html` and note the error.
+Open `2-react-jsx.html` and note the error.
 
-`const elem = <div className="container">Hello World</div>` is _not_ a string nor is it HTML. It is [JSX](https://reactjs.org/docs/introducing-jsx.html). Notice the use of `className` instead of `class` in the code.
+`const elem = <div className="container">Hello World</div>` is _not_ a string _nor_ is it HTML, it is [JSX](https://reactjs.org/docs/introducing-jsx.html). 
 
 JSX uses Babel JS to transpile the to JavaScript. Make the following change:  
 
@@ -92,23 +114,27 @@ JSX uses Babel JS to transpile the to JavaScript. Make the following change:
 
 Try `const elem = <div className="container">Hello World</div>` at the [Babel Repl](https://babeljs.io/repl).
 
-Note that Babel transpiles to `React.createElement()`. With Babel, the following two blocks of code are identical:
+Babel transpiles the above to `React.createElement()`. 
+
+In Babel, the following two blocks of code are identical:
 
 ```js
-const elem = <div className="container">Hello World</div>
+const element = <div className="container">Hello World</div>
 ```
 
 ```js
-const elem = React.createElement("div", {
+const element = React.createElement("div", {
   className: "container"
 }, "Hello World");
+
+console.log(element.props)
 ```
 
 The former is much easier to write and understand.
 
 ### Using Variables
 
-Overwrite the code in `2-react-jsx.html` with:
+Overwrite the all the JS code in `2-react-jsx.html` with:
 
 ```js
 const rootElement = document.getElementById('root')
@@ -116,12 +142,12 @@ const rootElement = document.getElementById('root')
 const foo = 'Hello World'
 const bar = 'container'
 
-const elem = <div className={bar}>{foo}</div>
+const element = <div className={bar}>{foo}</div>
 
-ReactDOM.render(elem, rootElement)
+ReactDOM.render(element, rootElement)
 ```
 
-The curly braces are JavaScript and are used to evaluate an expression in JSX.
+The curly braces are JavaScript expressions and are used in JSX not unlike `${ ... }` in template strings.
 
 The penultimate line transpiles to:
 
@@ -144,7 +170,7 @@ const elem = <div className={myClassName}>{(() => content)()}</div>
 ReactDOM.render(elem, rootElement)
 ```
 
-In React we typically use use the `props` object for variables:
+In React we use the `props` object for variables:
 
 ```js
 const rootElement = document.getElementById('root')
@@ -159,7 +185,29 @@ const element = <div {...props} />
 ReactDOM.render(element, rootElement)
 ```
 
-Note the [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element. (See `reference > spread-operator.html`.)
+---
+
+### Aside - The Spread Operator
+
+Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element. 
+
+See `reference > spread-operator.html`.
+
+```js
+const heading = document.querySelector('.jump');
+heading.innerHTML = sparanWrap(heading.textContent);
+
+function sparanWrap(word) {
+  var elem = '';
+  var wordArr = [...word];
+  wordArr.forEach(letter => (elem += `<span>${letter}</span>`));
+  return elem;
+}
+```
+
+---
+
+<!-- end aside -->
 
 ### Creating Reusable React Components
 
