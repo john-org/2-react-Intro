@@ -240,14 +240,12 @@ Reuse and parameterize code:
 const message = (props) => <div>{props.msg}</div>
 ```
 
-Render them by calling the message function and passing and object with msg and its value:
+Render them by calling the message function and passing an object with msg and its value:
 
 ```js
 const rootElement = document.getElementById('root');
 
-const message = props => {
-  return <div>{props.msg}</div>;
-};
+const message = props => <div>{props.msg}</div>;
 
 const elem = (
   <div className="container">
@@ -265,9 +263,7 @@ Because JSX compiles down to `React.createElement` calls we can take a function 
 ```js
 const rootElement = document.getElementById('root');
 
-const message = props => {
-  return <div>{props.msg}</div>;
-};
+const message = props => <div>{props.msg}</div>;
 
 const elem = (
   <div className="container">
@@ -280,28 +276,32 @@ ReactDOM.render(elem, rootElement);
 
 ```
 
-`message` is not quite a standalone React component yet. Note the error when we try to use the standalone component:
+We are able to call the same function and pass in different values to output different results.
+
+`message` is not quite a standalone React component yet. Note the error when we try to use `message` as a  standalone component:
 
 ```js
-<div className="container">
-  <message />
-  { React.createElement(message, { msg: 'Hello World' })}
-  { React.createElement(message, { msg: 'Goodbye World' })}
-</div>
+const elem = (
+  <div className="container">
+    <message />
+    {React.createElement(message, { msg: 'Hello World' })}
+    {React.createElement(message, { msg: 'Goodbye World' })}
+  </div>
+);
 ```
 
-Try putting `<messsage />` into the Babel Repl:
+If we put `<messsage />` into the Babeljs Repl:
 
 ```js
 const message = (props) => <div>{props.msg}</div>;
 <message />
 ```
 
-We get a string `"message"`.
+We get a string: `"message"`.
 
-In order to differentiate between a variable and a DOM element in JSX you need to _capitalize_ the component name, otherwise we get a string and it can't do its job.
+In order to create a DOM element in JSX you need to _capitalize_ the component name, otherwise we get a string and React can't do its job.
 
-Try in Repl with capitalization:
+Compare in the Repl with capitalization:
 
 ```js
 const Message = (props) => <div>{props.msg}</div>;
@@ -323,6 +323,17 @@ const elem = (
 )
 
 ReactDOM.render(elem, rootElement)
+```
+
+Notice that in order for React to work the components need to be in a container. 
+
+This produces an error:
+
+```js
+const elem = (
+  <Message msg='Hello World' />
+  <Message msg='Goodbye World' />
+)
 ```
 
 ## Create a React Project
