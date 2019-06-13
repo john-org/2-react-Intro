@@ -15,6 +15,7 @@
     - [Pirate Class Component](#pirate-class-component)
   - [Header Functional Component](#header-functional-component)
   - [Additional Components](#additional-components)
+    - [React tool](#react-tool)
   - [Adding Methods](#adding-methods)
     - [Using Forms in React](#using-forms-in-react)
   - [The Pirate Form](#the-pirate-form)
@@ -49,7 +50,9 @@
 
 ## Homework
 
-Review the notes below, step through them again using them and the finished version as a guide. Create an HTML table for the display of pirates by editing the Pirate component's JSX.
+Review the notes below, step through them again using them and the finished version as a guide. 
+
+Create an HTML table for the display of pirates by editing the Pirate component's JSX.
 
 ## Reading
 
@@ -658,6 +661,17 @@ import PirateForm from './components/PirateForm';
     );
 ```
 
+### React tool
+
+Install the React developer tool in Chrome and inspect the current application.
+
+Examine component structure (nesting).
+
+Select `<Pirate />`
+
+Console: `$r.props`
+
+
 ## Adding Methods
 
 Wire up the form in `AddPirateForm` with `<form onSubmit = { (e) => this.createPirate(e) }>`:
@@ -1235,14 +1249,14 @@ loadSamples(){
 Bind it in the constructor:
 
 ```js
-  constructor() {
-    super();
-    this.addPirate = this.addPirate.bind(this)
-    this.loadSamples = this.loadSamples.bind(this)
-    this.state = {
-      pirates: {}
-    }
+constructor() {
+  super();
+  this.addPirate = this.addPirate.bind(this)
+  this.loadSamples = this.loadSamples.bind(this)
+  this.state = {
+    pirates: {}
   }
+}
 ```
 
 We will use a button in `PirateForm`:
@@ -2011,16 +2025,3 @@ If you just want the keys:
 We will be using this with React.
 
 
-<!-- ### React tool
-
-Native `this` selector: `$0`
-
-React selector: `$r`
-
-Inspect using React tool.
-
-Examine component structure (nesting).
-
-Select `<Pirate />`
-
-Console: `$r.props` -->
