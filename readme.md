@@ -9,7 +9,7 @@
     - [Aside - The Spread Operator](#aside---the-spread-operator)
     - [Creating Reusable React Components](#creating-reusable-react-components)
   - [Create a React Project](#create-a-react-project)
-    - [Project Structure](#project-structure)
+    - [Examining the Project Structure](#examining-the-project-structure)
     - [JSX](#jsx)
     - [Project Prep](#project-prep)
     - [Pirate Class Component](#pirate-class-component)
@@ -160,7 +160,7 @@ const element = <div className={bar}>{foo}</div>;
 ReactDOM.render(element, rootElement);
 ```
 
-The curly braces are JavaScript expressions and are used in JSX not unlike `${ ... }` in template strings.
+The curly braces are JavaScript expressions and are used in JSX - not unlike `${ ... }` in template strings.
 
 The penultimate line transpiles to:
 
@@ -195,7 +195,7 @@ ReactDOM.render(element, rootElement);
 
 Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element.
 
-See `reference > spread-operator.html`.
+See `reference > spread-pizzas.html` and `reference > spread-jumping-letters.html`.
 
 ```js
 const heading = document.querySelector('.jump');
@@ -217,9 +217,9 @@ function sparanWrap(word) {
 
 Refer to `reference > react-overview > 3-react-component.html`.
 
-Open the page via HTTP. You can install/use `Live Server` in VS Code.
+Open the page in via HTTP. (You can install/use `Live Server` in VS Code.)
 
-Again, note that the variable `elem` is compiling to `React.createElement()`.
+Again, note that the variable `elem` is _not_ vanilla JavaScript. We are using Babel for JSX support so it is compiling to `React.createElement()`.
 
 Extract the component to a variable - add:
 
@@ -238,7 +238,15 @@ const elem = (
 );
 ```
 
-Reuse and parameterize code:
+Create a function `message` that passes `props` to a returned bit of JSX:
+
+```js
+const message = function(props) {
+  return <div>{props.msg}</div>;
+};
+```
+
+Here it is using an arrow function:
 
 ```js
 const message = props => <div>{props.msg}</div>;
@@ -261,7 +269,7 @@ const elem = (
 ReactDOM.render(elem, rootElement);
 ```
 
-Because JSX compiles down to `React.createElement` calls we can take a function and pass props down to the function.
+<!-- Because JSX compiles down to `React.createElement` calls we can take a function and pass props down to the function.
 
 ```js
 const rootElement = document.querySelector('#root');
@@ -299,18 +307,18 @@ const message = props => <div>{props.msg}</div>;
 <message />;
 ```
 
-We get a string: `"message"`.
+We get a string: `"message"`. -->
 
 In order to create a DOM element in JSX you need to _capitalize_ the component name, otherwise we get a string and React can't do its job.
 
-Compare in the Repl with capitalization:
+<!-- Compare in the Repl with capitalization:
 
 ```js
 const Message = props => <div>{props.msg}</div>;
 <Message />;
-```
+``` -->
 
-Now that we've capitalized the message variable we have a standalone React component we can use with `<Message />` :
+Now that we've capitalized the message variable we have a standalone React component we can use `<Message />` :
 
 ```js
 const rootElement = document.querySelector('#root');
@@ -327,7 +335,7 @@ const elem = (
 ReactDOM.render(elem, rootElement);
 ```
 
-Notice that in order for React to work the components need to be in a container.
+Notice that in order for React to work the components need to be inside some sort of container.
 
 This produces an error:
 
@@ -338,28 +346,41 @@ const elem = (
 )
 ```
 
+Preventing this error can be as easy as:
+
+```js
+const elem = (
+  <>
+    <Message msg="Hello World" />
+    <Message msg="Goodbye World" />
+  </>
+);
+```
+
 ## Create a React Project
 
 Having creating at a standalone React component let's now create a React project.
 
-To create a new app, ensure that you are in today's project folder and run:
+Creating a React project requires a lot of tooling. Fortunately Facebook has created a bootstrapping system called [Create React App](https://facebook.github.io/create-react-app/)
+
+To create a new project, ensure that you are in today's project folder and run:
 
 ```sh
-pwd
 npx create-react-app react-pirates
 ```
 
-Note: NPM manages packages while NPX executes Node packages
+Note: `npm` _manages_ packages while `npx` _executes_ Node packages. The first argument `create-react-app` is the package you are executing, the second `react-pirates` is the name of the project.
 
 Run the project:
 
 ```bash
 cd react-pirates
 code .
-npm start
 ```
 
-### Project Structure
+Open VS Code's terminal and run `npm start`.
+
+### Examining the Project Structure
 
 Open `index.html` from the `react-pirates/public` folder.
 
@@ -375,7 +396,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 Open `App.js` (note the capitalization - this is a React component) from `src`.
 
-This is the only component in this starter project.
+This is the only React component in this starter project.
 
 Instead of using a script tag (as in our previous samples above), this component imports React from the node modules folder:
 
@@ -383,7 +404,7 @@ Instead of using a script tag (as in our previous samples above), this component
 import React from 'react';
 ```
 
-We will examine import and export in depth later.
+`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller peices. Unfortunately, these are fully supported in browsers so, once again, BabelJS is required and working under the hood so to speak.
 
 The main body of the component is a function that returns JSX (_not_ HTML).
 
@@ -406,7 +427,7 @@ Save and note the hot reloading.
 
 ### Project Prep
 
-Move the `data` and `assets` folders from `reference` to the `src` directory in `react-pirates/src`.
+Move the `data` and `assets` folders from `reference` to the `src` directory in `react-pirates`.
 
 Import our fonts and clean up the default html template.
 
