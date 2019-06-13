@@ -82,7 +82,7 @@ Comment out the vanillaJS and uncomment the React.
 Note that in React's equivalent of `createElement` the properties (className, children) are passed as an object. 
 
 ```js
-const rootElement = document.getElementById('root');
+const rootElement = document.querySelector('#root');
 
 const element = React.createElement('div', 
   {
@@ -117,7 +117,15 @@ JSX uses Babel JS to transpile the to JavaScript. Make the following change:
 
 Try `const elem = <div className="container">Hello World</div>` at the [Babel Repl](https://babeljs.io/repl).
 
-Babel transpiles the above to `React.createElement()`. 
+```js
+"use strict";
+
+var elem = React.createElement("div", {
+  className: "container"
+}, "Hello World");
+```
+
+Babel transpiles the above to [`React.createElement()`](https://reactjs.org/docs/react-api.html#createelement). 
 
 In Babel, the following two blocks of code are identical:
 
@@ -129,8 +137,6 @@ const element = <div className="container">Hello World</div>
 const element = React.createElement("div", {
   className: "container"
 }, "Hello World");
-
-console.log(element.props)
 ```
 
 The former is much easier to write and understand.
@@ -140,7 +146,7 @@ The former is much easier to write and understand.
 Overwrite the all the JS code in `2-react-jsx.html` with:
 
 ```js
-const rootElement = document.getElementById('root')
+const rootElement = document.querySelector('#root')
 
 const foo = 'Hello World'
 const bar = 'container'
@@ -160,23 +166,10 @@ const elem = React.createElement("div", {
 }, foo);
 ```
 
-So, for example, we could use an IIFE:
-
-```js
-const rootElement = document.getElementById('root')
-
-const content = 'Hello World'
-const myClassName = 'container'
-
-const elem = <div className={myClassName}>{(() => content)()}</div>
-
-ReactDOM.render(elem, rootElement)
-```
-
 In React we use the `props` object for variables:
 
 ```js
-const rootElement = document.getElementById('root')
+const rootElement = document.querySelector('#root')
 
 const props = {
   className: 'container',
@@ -246,7 +239,7 @@ const message = (props) => <div>{props.msg}</div>
 Render them by calling the message function and passing an object with msg and its value:
 
 ```js
-const rootElement = document.getElementById('root');
+const rootElement = document.querySelector('#root');
 
 const message = props => <div>{props.msg}</div>;
 
@@ -264,7 +257,7 @@ ReactDOM.render(elem, rootElement);
 Because JSX compiles down to `React.createElement` calls we can take a function and pass props down to the function.
 
 ```js
-const rootElement = document.getElementById('root');
+const rootElement = document.querySelector('#root');
 
 const message = props => <div>{props.msg}</div>;
 
@@ -314,7 +307,7 @@ const Message = (props) => <div>{props.msg}</div>;
 Now that we've capitalized the message variable we have a standalone React component we can use with `<Message />` :
 
 ```js
-const rootElement = document.getElementById('root')
+const rootElement = document.querySelector('#root')
 
 const Message = (props) => <div>{props.msg}</div>
 
@@ -393,8 +386,8 @@ The main body of the component is a function that returns JSX (_not_ HTML).
 Recall the JSX requirements:
 
 1. `src={logo}` - JSX curly braces allow the use of a JS expression
-1. `className="App-header"` - `class` is a reserved word in JavaScript
-1. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
+2. `className="App-header"` - `class` is a reserved word in JavaScript
+3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
 1. everything is nested in a single tag
 
 Examine the CSS in Chrome's Elements inspector (`head` region). Note that we have two `<style>` blocks - one for each CSS file in the project.
