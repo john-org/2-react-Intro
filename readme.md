@@ -50,11 +50,11 @@
 
 ## Homework
 
-Review the notes below, step through them again using them and the finished version as a guide.
-
-Create an HTML table for the display of pirates by editing the Pirate component's JSX.
+Review the notes below, step through them again to recreate the Pirates project on your own.
 
 ## Reading
+
+Please read and follow along with [Tania Rascia's](https://www.taniarascia.com/getting-started-with-react/) React overview and walkthrough tutorial.
 
 ## React Basics
 
