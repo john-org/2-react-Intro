@@ -50,17 +50,15 @@
 
 ## Homework
 
-Review the notes below, step through them again using them and the finished version as a guide. 
+Review the notes below, step through them again using them and the finished version as a guide.
 
 Create an HTML table for the display of pirates by editing the Pirate component's JSX.
 
 ## Reading
 
-
-
 ## React Basics
 
-Refer to `reference > react-overview > Basics > 1-react.html`
+Refer to `reference > react-overview > 1-react.html`
 
 ```js
 const element = document.createElement('div');
@@ -79,17 +77,15 @@ and that is why we can run:
 
 Comment out the vanillaJS and uncomment the React.
 
-Note that in React's equivalent of `createElement` the properties (className, children) are passed as an object. 
+Note that in React's equivalent of `createElement` the properties (className, children) are passed as an object.
 
 ```js
 const rootElement = document.querySelector('#root');
 
-const element = React.createElement('div', 
-  {
-    className: 'container',
-    children: 'Hello World',
-  }
-);
+const element = React.createElement('div', {
+  className: 'container',
+  children: 'Hello World',
+});
 
 ReactDOM.render(element, rootElement);
 ```
@@ -105,11 +101,11 @@ console.log(element.props.children)
 
 ### Transpiling with Babel
 
-Open `2-react-jsx.html` and note the error.
+Open `reference > react-overview > 2-react-jsx.html` and note the error.
 
-`const elem = <div className="container">Hello World</div>` is _not_ a string _nor_ is it HTML, it is [JSX](https://reactjs.org/docs/introducing-jsx.html). 
+`const elem = <div className="container">Hello World</div>` is _not_ a string _nor_ is it HTML, it is [JSX](https://reactjs.org/docs/introducing-jsx.html).
 
-JSX uses Babel JS to transpile the to JavaScript. Make the following change:  
+JSX uses Babel JS to transpile the to JavaScript. Make the following change:
 
 ```html
 <script type="text/babel">
@@ -118,25 +114,33 @@ JSX uses Babel JS to transpile the to JavaScript. Make the following change:
 Try `const elem = <div className="container">Hello World</div>` at the [Babel Repl](https://babeljs.io/repl).
 
 ```js
-"use strict";
+'use strict';
 
-var elem = React.createElement("div", {
-  className: "container"
-}, "Hello World");
+var elem = React.createElement(
+  'div',
+  {
+    className: 'container',
+  },
+  'Hello World',
+);
 ```
 
-Babel transpiles the above to [`React.createElement()`](https://reactjs.org/docs/react-api.html#createelement). 
+Babel transpiles the above to [`React.createElement()`](https://reactjs.org/docs/react-api.html#createelement).
 
 In Babel, the following two blocks of code are identical:
 
 ```js
-const element = <div className="container">Hello World</div>
+const element = <div className="container">Hello World</div>;
 ```
 
 ```js
-const element = React.createElement("div", {
-  className: "container"
-}, "Hello World");
+const element = React.createElement(
+  'div',
+  {
+    className: 'container',
+  },
+  'Hello World',
+);
 ```
 
 The former is much easier to write and understand.
@@ -146,14 +150,14 @@ The former is much easier to write and understand.
 Overwrite the all the JS code in `2-react-jsx.html` with:
 
 ```js
-const rootElement = document.querySelector('#root')
+const rootElement = document.querySelector('#root');
 
-const foo = 'Hello World'
-const bar = 'container'
+const foo = 'Hello World';
+const bar = 'container';
 
-const element = <div className={bar}>{foo}</div>
+const element = <div className={bar}>{foo}</div>;
 
-ReactDOM.render(element, rootElement)
+ReactDOM.render(element, rootElement);
 ```
 
 The curly braces are JavaScript expressions and are used in JSX not unlike `${ ... }` in template strings.
@@ -161,31 +165,35 @@ The curly braces are JavaScript expressions and are used in JSX not unlike `${ .
 The penultimate line transpiles to:
 
 ```js
-const elem = React.createElement("div", {
-  className: bar
-}, foo);
+const elem = React.createElement(
+  'div',
+  {
+    className: bar,
+  },
+  foo,
+);
 ```
 
 In React we use the `props` object for variables:
 
 ```js
-const rootElement = document.querySelector('#root')
+const rootElement = document.querySelector('#root');
 
 const props = {
   className: 'container',
   children: 'Hello World',
-}
+};
 
-const element = <div {...props} />
+const element = <div {...props} />;
 
-ReactDOM.render(element, rootElement)
+ReactDOM.render(element, rootElement);
 ```
 
 ---
 
 ### Aside - The Spread Operator
 
-Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element. 
+Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element.
 
 See `reference > spread-operator.html`.
 
@@ -207,16 +215,16 @@ function sparanWrap(word) {
 
 ### Creating Reusable React Components
 
-Refer to `reference > react-overview > template.html`. 
+Refer to `reference > react-overview > 3-react-component.html`.
 
-Open the page via HTTP. You can install and use `Live Server` in VS Code.
+Open the page via HTTP. You can install/use `Live Server` in VS Code.
 
 Again, note that the variable `elem` is compiling to `React.createElement()`.
 
 Extract the component to a variable - add:
 
 ```js
-const helloAgain = <div>Hello Again!</div>
+const helloAgain = <div>Hello Again!</div>;
 ```
 
 And render it:
@@ -224,16 +232,16 @@ And render it:
 ```js
 const elem = (
   <div className="container">
-    { helloAgain }
-    { helloAgain }
+    {helloAgain}
+    {helloAgain}
   </div>
-)
+);
 ```
 
 Reuse and parameterize code:
 
 ```js
-const message = (props) => <div>{props.msg}</div>
+const message = props => <div>{props.msg}</div>;
 ```
 
 Render them by calling the message function and passing an object with msg and its value:
@@ -251,7 +259,6 @@ const elem = (
 );
 
 ReactDOM.render(elem, rootElement);
-
 ```
 
 Because JSX compiles down to `React.createElement` calls we can take a function and pass props down to the function.
@@ -269,12 +276,11 @@ const elem = (
 );
 
 ReactDOM.render(elem, rootElement);
-
 ```
 
 We are able to call the same function and pass in different values to output different results.
 
-`message` is not quite a standalone React component yet. Note the error when we try to use `message` as a  standalone component:
+`message` is not quite a standalone React component yet. Note the error when we try to use `message` as a standalone component:
 
 ```js
 const elem = (
@@ -289,8 +295,8 @@ const elem = (
 If we put `<messsage />` into the Babeljs Repl:
 
 ```js
-const message = (props) => <div>{props.msg}</div>;
-<message />
+const message = props => <div>{props.msg}</div>;
+<message />;
 ```
 
 We get a string: `"message"`.
@@ -300,28 +306,28 @@ In order to create a DOM element in JSX you need to _capitalize_ the component n
 Compare in the Repl with capitalization:
 
 ```js
-const Message = (props) => <div>{props.msg}</div>;
-<Message />
+const Message = props => <div>{props.msg}</div>;
+<Message />;
 ```
 
 Now that we've capitalized the message variable we have a standalone React component we can use with `<Message />` :
 
 ```js
-const rootElement = document.querySelector('#root')
+const rootElement = document.querySelector('#root');
 
-const Message = (props) => <div>{props.msg}</div>
+const Message = props => <div>{props.msg}</div>;
 
 const elem = (
   <div className="container">
-    <Message msg='Hello World' />
-    <Message msg='Goodbye World' />
+    <Message msg="Hello World" />
+    <Message msg="Goodbye World" />
   </div>
-)
+);
 
-ReactDOM.render(elem, rootElement)
+ReactDOM.render(elem, rootElement);
 ```
 
-Notice that in order for React to work the components need to be in a container. 
+Notice that in order for React to work the components need to be in a container.
 
 This produces an error:
 
@@ -334,7 +340,7 @@ const elem = (
 
 ## Create a React Project
 
-Having creating at a standalone React component let's now create a React project. 
+Having creating at a standalone React component let's now create a React project.
 
 To create a new app, ensure that you are in today's project folder and run:
 
@@ -369,7 +375,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 Open `App.js` (note the capitalization - this is a React component) from `src`.
 
-This is the only component in this starter project. 
+This is the only component in this starter project.
 
 Instead of using a script tag (as in our previous samples above), this component imports React from the node modules folder:
 
@@ -388,7 +394,7 @@ Recall the JSX requirements:
 1. `src={logo}` - JSX curly braces allow the use of a JS expression
 2. `className="App-header"` - `class` is a reserved word in JavaScript
 3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
-1. everything is nested in a single tag
+4. everything is nested in a single tag
 
 Examine the CSS in Chrome's Elements inspector (`head` region). Note that we have two `<style>` blocks - one for each CSS file in the project.
 
@@ -404,28 +410,36 @@ Move the `data` and `assets` folders from `reference` to the `src` directory in 
 
 Import our fonts and clean up the default html template.
 
-* `public/index.html`:
+- `public/index.html`:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/css?family=Pirata+One" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Trade+Winds" rel="stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Pirata+One"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Trade+Winds"
+      rel="stylesheet"
+    />
 
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
 
-  <title>React App</title>
-</head>
-<body>
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <div id="root"></div>
-
-</body>
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+  </body>
 </html>
 ```
 
@@ -451,7 +465,6 @@ function Pirate(props) {
 }
 
 export default Pirate;
-
 ```
 
 We use the component in `App.js` by first importing it and then returning it:
@@ -491,7 +504,6 @@ function Pirate(props) {
 }
 
 export default Pirate;
-
 ```
 
 So far we have only seen React functional components. There is another type, often called a React class component. You should be familiar with both.
@@ -522,18 +534,19 @@ Create a new Header component:
 
 ```js
 import React, { Component } from 'react';
-import '../assets/css/Header.css'
+import '../assets/css/Header.css';
 import logo from '../assets/img/anchor.svg';
 
 class Header extends Component {
-  render(){
+  render() {
     return (
       <div className="header">
         <img src={logo} className="logo" alt="logo" />
         <h1>Pirates!</h1>
-      </div>)
-    }
+      </div>
+    );
   }
+}
 
 export default Header;
 ```
@@ -542,7 +555,7 @@ Import `Header.js` into `App.js`:
 
 `import Header from './components/Header';`
 
-* Add it to `App.js`:
+- Add it to `App.js`:
 
 ```jsx
 import React from 'react';
@@ -559,7 +572,6 @@ function App() {
 }
 
 export default App;
-
 ```
 
 Delete the `App.css`, test, and logo files from the top level of `src`.
@@ -570,19 +582,18 @@ Edit `Header.js`:
 
 ```js
 import React from 'react';
-import '../assets/css/Header.css'
+import '../assets/css/Header.css';
 import logo from '../assets/img/anchor.svg';
-
 
 const Header = () => {
   return (
     <div className="header">
-      <img src={logo} className="logo" alt="logo" /> 
+      <img src={logo} className="logo" alt="logo" />
       <h1>Pirates!</h1>
     </div>
   );
 };
-  
+
 export default Header;
 ```
 
@@ -597,13 +608,13 @@ import React, { Component } from 'react';
 import AddPirateForm from './AddPirateForm';
 
 class PirateForm extends Component {
-  render(){
+  render() {
     return (
       <div>
-      <h3>Pirate Form Component</h3>
-      <AddPirateForm />
+        <h3>Pirate Form Component</h3>
+        <AddPirateForm />
       </div>
-      )
+    );
   }
 }
 
@@ -620,18 +631,18 @@ import React, { Component } from 'react';
 import '../assets/css/AddPirateForm.css';
 
 class AddPirateForm extends Component {
-  render(){
+  render() {
     return (
       <div>
         <h3>Add Pirate Form Component</h3>
-      <form>
-        <input type="text" placeholder="Pirate name" />
-        <input type="text" placeholder="Pirate vessel" />
-        <input type="text" placeholder="Pirate weapon" />
-        <button type="submit">Add Pirate</button>
-      </form>
+        <form>
+          <input type="text" placeholder="Pirate name" />
+          <input type="text" placeholder="Pirate vessel" />
+          <input type="text" placeholder="Pirate weapon" />
+          <button type="submit">Add Pirate</button>
+        </form>
       </div>
-      )
+    );
   }
 }
 
@@ -664,20 +675,19 @@ Select `<Pirate />`
 
 Console: `$r.props`
 
-
 ## Adding Methods
 
 Wire up the form in `AddPirateForm` with `<form onSubmit = { (e) => this.createPirate(e) }>`:
 
 ```js
 return (
-  <form onSubmit = { (e) => this.createPirate(e) }>
+  <form onSubmit={e => this.createPirate(e)}>
     <input type="text" placeholder="Pirate name" />
     <input type="text" placeholder="Pirate vessel" />
     <input type="text" placeholder="Pirate weapon" />
     <button type="submit">Add Pirate</button>
   </form>
-  )
+);
 ```
 
 ### Using Forms in React
@@ -690,19 +700,19 @@ By default, clicking on the submit button causes a page refresh. Disable page re
 
 ```js
 handleSubmit = event => {
-  event.preventDefault()
-}
+  event.preventDefault();
+};
 ```
 
 Log the target
 
 ```js
 handleSubmit = event => {
-  event.preventDefault()
-  console.log(event.target)
-  console.log(typeof(event.target)) // object
-  console.log({target: event.target})
-}
+  event.preventDefault();
+  console.log(event.target);
+  console.log(typeof event.target); // object
+  console.log({ target: event.target });
+};
 ```
 
 The first property is `input` and it has a value property.
@@ -722,8 +732,7 @@ The value is a property of the username:
 In React we use refs to assign and access the inputMode:
 
 ```js
-<input type="text" name="username"
-ref={node => (this.inputNode = node)}  />
+<input type="text" name="username" ref={node => (this.inputNode = node)} />
 ```
 
 `console.log(this.inputNode.value)`
@@ -744,21 +753,20 @@ import React, { Component } from 'react';
 import '../assets/css/AddPirateForm.css';
 
 class AddPirateForm extends Component {
-
   createPirate(e) {
     e.preventDefault();
-    console.log('making a pirate')
+    console.log('making a pirate');
   }
 
-  render(){
+  render() {
     return (
-      <form onSubmit = { (e) => this.createPirate(e) }>
+      <form onSubmit={e => this.createPirate(e)}>
         <input type="text" placeholder="Pirate name" />
         <input type="text" placeholder="Pirate vessel" />
         <input type="text" placeholder="Pirate weapon" />
         <button type="submit">Add Pirate</button>
       </form>
-      )
+    );
   }
 }
 
@@ -770,14 +778,26 @@ And test using the form interface.
 Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input:
 
 ```js
-    return (
-      <form onSubmit={ (e) => this.createPirate(e) }>
-        <input ref={ (input) => this.name = input } type="text" placeholder="Pirate name" />
-        <input ref={ (input) => this.vessel = input } type="text" placeholder="Pirate vessel" />
-        <input ref={ (input) => this.weapon = input } type="text" placeholder="Pirate weapon" />
-        <button type="submit">Add Pirate</button>
-      </form>
-    )
+return (
+  <form onSubmit={e => this.createPirate(e)}>
+    <input
+      ref={input => (this.name = input)}
+      type="text"
+      placeholder="Pirate name"
+    />
+    <input
+      ref={input => (this.vessel = input)}
+      type="text"
+      placeholder="Pirate vessel"
+    />
+    <input
+      ref={input => (this.weapon = input)}
+      type="text"
+      placeholder="Pirate weapon"
+    />
+    <button type="submit">Add Pirate</button>
+  </form>
+);
 ```
 
 Go to the React dev tools, find the `AddPirateForm` component, `$r` in the console to see the inputs.
@@ -803,7 +823,7 @@ Test by entering a pirate in the form and examining the browser console.
 
 ## State
 
-State is data at a particular moment in time. It’s the present “state” of your data. 
+State is data at a particular moment in time. It’s the present “state” of your data.
 
 Today’s more popular JavaScript frameworks, including React and Vue, use state and components to make managing the UI easier.
 
@@ -811,10 +831,10 @@ With this approach, instead of targeting specific elements in the DOM and adjust
 
 Update your state, render a fresh copy of the UI based on the new data, and move on. You never have to think about which element in the DOM to target or how it needs to change.
 
-The key difference between props and [state](https://facebook.github.io/react-native/docs/state.html): 
+The key difference between props and [state](https://facebook.github.io/react-native/docs/state.html):
 
-* state is internal and controlled by the component itself
-* props are external and controlled by whatever component renders the component. - [ref](http://buildwithreact.com/tutorial/state).
+- state is internal and controlled by the component itself
+- props are external and controlled by whatever component renders the component. - [ref](http://buildwithreact.com/tutorial/state).
 
 Get the pirate object into state.
 
@@ -872,11 +892,11 @@ React does not implicitly bind the methods to the component itself - you need to
 
 Super extends the app component.
 
-Review `super` in classes: `reference / extending-classes.html`
+Review `super` in classes: `reference > classes > extending-classes.html`
 
 Note - `bind()` - creates a new function that, when called, has its `this` keyword set to the provided value.
 
-See: `reference / bind / index.html` and `reference / bind / button.html`
+See: `reference > bind > index.html` and `reference > bind > button.html`
 
 ## State continued
 
@@ -907,7 +927,7 @@ We need to make the `addPirate` function available to the `AddPirateForm` by pas
 
 `App.js > PirateForm > AddPirateForm`
 
-* To `PirateForm` from `App.js` we will use `<PirateForm addPirate={this.addPirate} />`:
+- To `PirateForm` from `App.js` we will use `<PirateForm addPirate={this.addPirate} />`:
 
 ```js
   render() {
@@ -927,16 +947,16 @@ Only one level more. Pass the prop to `AddPirateForm` from `PirateForm` with `<A
 
 ```js
 import React, { Component } from 'react';
-import AddPirateForm from './AddPirateForm'
+import AddPirateForm from './AddPirateForm';
 
 class PirateForm extends Component {
   render() {
     return (
       <div className="pirate-form">
-      <h3>Pirate Forms</h3>
-      <AddPirateForm addPirate={this.props.addPirate} />
+        <h3>Pirate Forms</h3>
+        <AddPirateForm addPirate={this.props.addPirate} />
       </div>
-      )
+    );
   }
 }
 
@@ -973,19 +993,34 @@ We have refs on the input fields. When we click "Add Pirate" the form still hold
 
 Empty the form by assigning a [ref](https://facebook.github.io/react/docs/refs-and-the-dom.html#adding-a-ref-to-a-class-component) to the input fields.
 
-* `AddPirateFrom`
+- `AddPirateFrom`
 
 `<form ref={ (input)=>this.pirateForm = input } onSubmit={(e) => this.createPirate(e)}>`:
 
 ```js
-    return (
-      <form ref={ (input)=>this.pirateForm = input } onSubmit={ (e) => this.createPirate(e) }>
-        <input ref={ (input) => this.name = input } type="text" placeholder="Pirate name" />
-        <input ref={ (input) => this.vessel = input } type="text" placeholder="Pirate vessel" />
-        <input ref={ (input) => this.weapon = input } type="text" placeholder="Pirate weapon" />
-        <button type="submit">Add Pirate</button>
-      </form>
-      )
+return (
+  <form
+    ref={input => (this.pirateForm = input)}
+    onSubmit={e => this.createPirate(e)}
+  >
+    <input
+      ref={input => (this.name = input)}
+      type="text"
+      placeholder="Pirate name"
+    />
+    <input
+      ref={input => (this.vessel = input)}
+      type="text"
+      placeholder="Pirate vessel"
+    />
+    <input
+      ref={input => (this.weapon = input)}
+      type="text"
+      placeholder="Pirate weapon"
+    />
+    <button type="submit">Add Pirate</button>
+  </form>
+);
 ```
 
 and `this.pirateForm.reset();`:
@@ -1011,16 +1046,16 @@ The form should now empty and the `addPirate` function is called to store our pi
 
 We can add pirates to state but cannot see them in the UI. Let's create an unordered list in `Pirate.js`.
 
-* `Pirate.js`:
+- `Pirate.js`:
 
 ```js
-    return (
-      <div className='pirate'>
-        <ul>
-          <li></li>
-        </ul>
-      </div>
-      )
+return (
+  <div className="pirate">
+    <ul>
+      <li />
+    </ul>
+  </div>
+);
 ```
 
 ## Sample Pirates
@@ -1033,7 +1068,7 @@ We will use [JSON stringify](https://developer.mozilla.org/en-US/docs/Web/JavaSc
 
 `JSON.stringify(<data-that-you-want-to-stringify>,<replacer-function-null>,<indentation>)`
 
-* `Pirate.js`:
+- `Pirate.js`:
 
 `import piratesFile from '../data/sample-pirates-array';`:
 
@@ -1041,18 +1076,22 @@ We will use [JSON stringify](https://developer.mozilla.org/en-US/docs/Web/JavaSc
 
 ```jsx
 import React, { Component } from 'react';
-import piratesFile from '../data/sample-pirates-array'
-import '../assets/css/Pirate.css'
+import piratesFile from '../data/sample-pirates-array';
+import '../assets/css/Pirate.css';
 
 class Pirate extends React.Component {
-  render(){
+  render() {
     return (
-      <div className='pirate'>
+      <div className="pirate">
         <ul>
-          <li><pre><code>{ JSON.stringify(piratesFile, null, 4)}</code></pre></li>
+          <li>
+            <pre>
+              <code>{JSON.stringify(piratesFile, null, 4)}</code>
+            </pre>
+          </li>
         </ul>
       </div>
-      )
+    );
   }
 }
 
@@ -1074,35 +1113,35 @@ Review Example - Doubling numbers:
 > numbers.map(double)
 ```
 
-* `Pirate.js`:
+- `Pirate.js`:
 
 ```js
-      <ul>
-      {piratesFile.pirates.map(function(pirate){
-        return (
-          <li>
-          <h4>{pirate.name}</h4>
-          </li>
-        )
-      })}
-      </ul>
+<ul>
+  {piratesFile.pirates.map(function(pirate) {
+    return (
+      <li>
+        <h4>{pirate.name}</h4>
+      </li>
+    );
+  })}
+</ul>
 ```
 
 Rollback the Pirate component to its original state.
 
-* `Pirate`:
+- `Pirate`:
 
 ```js
 import React, { Component } from 'react';
-import '../assets/css/Pirate.css'
+import '../assets/css/Pirate.css';
 
 class Pirate extends React.Component {
-  render(){
+  render() {
     return (
-      <div className='pirate'>
-      <p>{this.props.tagline}</p>
+      <div className="pirate">
+        <p>{this.props.tagline}</p>
       </div>
-      )
+    );
   }
 }
 
@@ -1177,17 +1216,15 @@ And edit to use the key to pass a details prop to the Pirate component using:
   }
 ```
 
-* `Pirate.js`:
+- `Pirate.js`:
 
 ```js
 import React, { Component } from 'react';
-import '../assets/css/Pirate.css'
+import '../assets/css/Pirate.css';
 
 class Pirate extends React.Component {
-  render(){
-    return (
-        <li>{this.props.details.name}</li>
-    )
+  render() {
+    return <li>{this.props.details.name}</li>;
   }
 }
 
@@ -1198,24 +1235,24 @@ Create a new pirate using the form.
 
 Add an object with the details to the Pirate properties and a few more display entries shortening them with a variable: `const { details } = this.props;`.
 
-* `Pirate.js`:
+- `Pirate.js`:
 
 ```js
 import React, { Component } from 'react';
-import '../assets/css/Pirate.css'
+import '../assets/css/Pirate.css';
 
 class Pirate extends Component {
-  render(){
+  render() {
     const { details } = this.props;
     return (
-      <div className='pirate'>
-      <ul>
-      <li>{details.name}</li>
-      <li>{details.weapon}</li>
-      <li>{details.vessel}</li>
-      </ul>
+      <div className="pirate">
+        <ul>
+          <li>{details.name}</li>
+          <li>{details.weapon}</li>
+          <li>{details.vessel}</li>
+        </ul>
       </div>
-      )
+    );
   }
 }
 export default Pirate;
@@ -1272,7 +1309,7 @@ The `PirateFrom` will need access to this method.
 
 Add `loadSamples={this.loadSamples}` to props.
 
-* `App.js`:
+- `App.js`:
 
 `<PirateForm addPirate={this.addPirate} loadSamples={this.loadSamples} />`:
 
@@ -1319,22 +1356,24 @@ this.removePirate = this.removePirate.bind(this);
 `$r` App to see the results:
 
 ```js
-$r.removePirate('pirate1')
+$r.removePirate('pirate1');
 ```
 
 We will locate the control to remove pirates in the `Pirate.js` component.
 
 Pass the prop to `Pirate` from App using `removePirate = {this.removePirate}`:
 
-* `App.js`:
+- `App.js`:
 
 ```js
 {
-  Object
-  .keys(this.state.pirates)
-  .map( key => <Pirate key = { key }
-    details = {this.state.pirates[key]}
-    removePirate = {this.removePirate} /> )
+  Object.keys(this.state.pirates).map(key => (
+    <Pirate
+      key={key}
+      details={this.state.pirates[key]}
+      removePirate={this.removePirate}
+    />
+  ));
 }
 ```
 
@@ -1357,19 +1396,21 @@ Test. This only removes pirate1. -->
 
 Since we want the controls to be associated with each Pirate entry we'll add them to the `Pirate` component by including a new list item: `<li><button onClick={() => this.props.removePirate('pirate1')}>X</button></li>`.
 
-* `Pirate.js`:
+- `Pirate.js`:
 
 ```js
 return (
   <div className="pirate">
-  <ul>
-    <li>{details.name}</li>
-    <li>{details.weapon}</li>
-    <li>{details.vessel}</li>
-    <li><button onClick={() => this.props.removePirate('pirate1')}>X</button></li>
-  </ul>
+    <ul>
+      <li>{details.name}</li>
+      <li>{details.weapon}</li>
+      <li>{details.vessel}</li>
+      <li>
+        <button onClick={() => this.props.removePirate('pirate1')}>X</button>
+      </li>
+    </ul>
   </div>
-  )
+);
 ```
 
 We have temorarily hard coded the button to remove just one pirate from the list.
@@ -1378,22 +1419,24 @@ Load pirates and examine the state in App.
 
 Pass it along as part of the Pirate component `index={key}` in App.
 
-* `App.js`:
+- `App.js`:
 
 ```js
 {
-  Object
-  .keys(this.state.pirates)
-  .map( key => <Pirate key={key}
-    index={key}
-    details={this.state.pirates[key]}
-    removePirate={this.removePirate} /> )
+  Object.keys(this.state.pirates).map(key => (
+    <Pirate
+      key={key}
+      index={key}
+      details={this.state.pirates[key]}
+      removePirate={this.removePirate}
+    />
+  ));
 }
 ```
 
 Pass the index value of the pirate in question to the method:
 
-* `Pirate`:
+- `Pirate`:
 
 ```html
   <ul>
@@ -1411,11 +1454,14 @@ But aren't we already passing along a key? Why do we need an index?
 Try this is `Pirate.js`:
 
 ```js
-<li><button onClick={() => this.props.removePirate(this.props.key)}>X</button></li>
+<li>
+  <button onClick={() => this.props.removePirate(this.props.key)}>X</button>
+</li>
 ```
 
 and note the error message.
-<!-- 
+
+<!--
 ### Persisting the Data
 
 1. Create an account at [Firebase](https://firebase.com/)
@@ -1658,9 +1704,9 @@ and a car with properties.
 
 Prototypal inheritance - methods on the original constructor will be inherited.
 
-### Example: Array 
+### Example: Array
 
-Create an array: 
+Create an array:
 
 ```sh
 > const names = ['John', 'Henry']
@@ -1677,7 +1723,9 @@ Add a prototype:
 
 ```js
 Car.prototype.drive = function() {
-    console.log(`Vroom vroom 🚗 🚗 🚗! I'm a ${this.model} and I'm a ${this.make}`);
+  console.log(
+    `Vroom vroom 🚗 🚗 🚗! I'm a ${this.model} and I'm a ${this.make}`,
+  );
 };
 ```
 
@@ -1699,7 +1747,7 @@ Add an additional method:
 
 ```js
 Car.prototype.stop = function() {
-    console.log(`Screech! 🚒 🚑 🚓`);
+  console.log(`Screech! 🚒 🚑 🚓`);
 };
 ```
 
@@ -1722,7 +1770,9 @@ class Car {
     this.make = make;
   }
   drive() {
-    console.log(`Vroom vroom 🚗🚗🚗! I'm a ${this.model} and I'm a ${this.make}`);
+    console.log(
+      `Vroom vroom 🚗🚗🚗! I'm a ${this.model} and I'm a ${this.make}`,
+    );
   }
   stop() {
     console.log(`Screech! 🚒🚑🚓`);
@@ -1790,7 +1840,7 @@ get description() {
 }
 ```
 
-* Not a method (no braces when calling)
+- Not a method (no braces when calling)
 
 ```sh
 > expo.description
@@ -1916,11 +1966,12 @@ Make our own classes modeled after Array.
 Start off with an array with a property:
 
 ```js
-const movies = new MovieCollection('My Favorite Movies',
+const movies = new MovieCollection(
+  'My Favorite Movies',
   { name: 'Bee Movie', stars: 10 },
   { name: 'Star Wars Trek', stars: 1 },
   { name: 'Virgin Suicides', stars: 7 },
-  { name: 'King of the Road', stars: 8 }
+  { name: 'King of the Road', stars: 8 },
 );
 ```
 
@@ -1977,7 +2028,7 @@ Also useful will be `for... of` which returns only the array:
 > for (const movie of movies){ console.log(movie) }
 ```
 
-We get the object (not the key) and the property (`name`) is not shown. 
+We get the object (not the key) and the property (`name`) is not shown.
 
 N.B. for of loops skip over the properties.
 
@@ -2009,12 +2060,10 @@ Using the `limit`:
 > console.table(movies.topRated(2))
 ```
 
-If you just want the keys: 
+If you just want the keys:
 
 ```sh
 > Object.keys(movies)
 ```
 
 We will be using this with React.
-
-
