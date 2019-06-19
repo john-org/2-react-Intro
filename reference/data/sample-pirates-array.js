@@ -1,67 +1,41 @@
-// an object consisting of a pirate array
-module.exports = {
-  "pirates": [{
-    "name": "John Rackham",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam fuga minus molestiae placeat ad iure asperiores nam, recusandae dolor quasi debitis, eveniet reiciendis veritatis et! Sit provident, praesentium laborum tempore.",
-    "year": 1724,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Donald Trump",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia consectetur, praesentium eaque ad odit. Nihil molestiae ut temporibus commodi natus delectus cumque architecto, eligendi ad repellat, quasi porro eos dignissimos.",
-    "year": 1800,
-    "weapon": "Twitter",
-    "vessel": "Bounty"
-  }, {
-    "name": "Sea Dog",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem autem rerum, nam minima dolorum blanditiis, velit aliquid assumenda illum totam magni sint laudantium laboriosam odit minus distinctio repellendus. Cumque, quod.",
-    "year": 1684,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Jean Lafitte",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus pariatur ratione dicta, neque sed, odio maxime, saepe autem libero dolore nobis. Dicta deleniti, illo natus nemo suscipit impedit quod amet!",
-    "year": 1629,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Crab McPirate",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam magnam ullam eveniet eius provident, omnis quos ex quam maiores id fugit accusantium ea ipsa tenetur excepturi vero quis nulla aliquid!",
-    "year": 1734,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Atlantic Terror",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio unde reiciendis, similique recusandae velit corrupti fugit quasi eos labore dicta eligendi possimus fugiat. Doloribus fugit consequuntur harum perspiciatis, dicta enim?",
-    "year": 1753,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Oyster Boy",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, corporis nemo animi, qui, vero delectus odit, quaerat aspernatur ullam magni unde aliquid amet consequuntur magnam. Molestiae architecto deleniti temporibus inventore.",
-    "year": 1543,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Mussel Man",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque labore pariatur similique necessitatibus ut deserunt, esse quod ipsum in quam, provident aspernatur culpa hic quisquam dolores odit nemo obcaecati commodi.",
-    "year": 1825,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }, {
-    "name": "Jumbo the Prawn",
-    "image": "avatar.svg",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia odio, tempora eum vel et, nobis optio adipisci quibusdam, asperiores a quia non pariatur. Neque, sequi est voluptatem labore hic eum!",
-    "year": 1850,
-    "weapon": "Sword",
-    "vessel": "Bounty"
-  }]
-}
+// pirate array
+const pirates = [
+  {
+    name: 'John Rackham',
+    image: 'avatar.png',
+    desc:
+      'Rackham deposed Charles Vane from his position as captain of the sloop Ranger, then cruised the Leeward Islands, Jamaica Channel and Windward Passage. He accepted a pardon in 1719 and moved to New Providence, where he met Anne Bonny. He returned to piracy in 1720 by stealing a British sloop and Anne joined him.',
+    year: 1720,
+    weapon: 'Sword',
+    vessel: 'Bounty',
+  },
+  {
+    name: 'Donald Trump',
+    image: 'avatar.png',
+    desc:
+      "Trump was born and raised in the New York City borough of Queens and received an economics degree from the Wharton School. He took charge of his family's real estate business in 1971, renamed it The Trump Organization, and expanded it from Queens and Brooklyn into Manhattan. ",
+    year: 1800,
+    weapon: 'Twitter',
+    vessel: 'Trump Airlines',
+  },
+  {
+    name: 'Blackbeard',
+    image: 'avatar.png',
+    desc:
+      "Edward Teach, better known as Blackbeard, was an English pirate who operated around the West Indies and the eastern coast of Britain's North American colonies. Little is known about his early life, but he may have been a sailor on privateer ships during Queen Anne's War before settling in the Bahamas",
+    year: 1684,
+    weapon: 'Sword',
+    vessel: 'Revenge',
+  },
+  {
+    name: 'Jean Lafitte',
+    image: 'avatar.png',
+    desc:
+      'A rich Barbadian land owner, turned pirate solely in search of adventure. Bonnet captained a 10-gun sloop, named the Revenge, raiding ships off the Virginia coast in 1717. He was caught and hanged in 1718',
+    year: 1718,
+    weapon: 'Sword',
+    vessel: 'Stealth',
+  },
+];
+
+export default pirates;
