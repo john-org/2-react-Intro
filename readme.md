@@ -8,8 +8,10 @@
     - [Examining the Project Structure](#Examining-the-Project-Structure)
     - [JSX](#JSX)
     - [Project Prep](#Project-Prep)
-    - [Pirate Class Component](#Pirate-Class-Component)
+    - [Components](#Components)
+  - [Importing and Exporting Components](#Importing-and-Exporting-Components)
   - [Header Functional Component](#Header-Functional-Component)
+  - [Rendering Multiple Components](#Rendering-Multiple-Components)
   - [Additional Components](#Additional-Components)
     - [React tool](#React-tool)
   - [Adding Methods](#Adding-Methods)
@@ -145,7 +147,7 @@ Open `App.js` (note the capitalization - this is a React component) from `src`.
 
 This is the only React component in this starter project.
 
-Instead of using a script tag (as in our previous samples above), this component imports React from the node modules folder:
+Instead of using a script tag, this component imports React from the node modules folder:
 
 ```js
 import React from 'react';
@@ -178,7 +180,7 @@ Move the `data` and `assets` folders from `reference` to the `src` directory in 
 
 Import our fonts and clean up the default html template.
 
-- `public/index.html`:
+Copy the material below and overwrite `public/index.html`:
 
 ```html
 <!DOCTYPE html>
@@ -208,11 +210,85 @@ Import our fonts and clean up the default html template.
 </html>
 ```
 
-### Pirate Class Component
+### Components
 
-Create a `components` folder in `src`.
+All modern front end systems employ a component architecture. Let's create a few.
 
-Create `Pirate.js` in the new `components` folder.
+In `App.js`:
+
+```js
+function Pirate() {
+  return <p>Ahoy there!</p>;
+}
+```
+
+And then use it:
+
+```js
+function App() {
+  return <Pirate />;
+}
+```
+
+Ensure that the component is rendered in the browser.
+
+Add a property (`prop`) to the Pirate component instance in `App.js`:
+
+```js
+function App() {
+  return <Pirate tagline="Ahoy from the Pirate Component" />;
+}
+```
+
+And render it:
+
+```js
+function Pirate(props) {
+  return <p>{props.tagline}</p>;
+}
+```
+
+Create a second component for the header:
+
+```js
+function Header() {
+  return (
+    <div className="header">
+      <img src={logo} className="logo" alt="logo" />
+      <h1>{props.title}</h1>
+    </div>
+  );
+}
+```
+
+Import the logo and some css for it:
+
+```js
+import './assets/css/Header.css';
+import logo from './assets/img/anchor.svg';
+```
+
+And render it to the DOM:
+
+```js
+function App() {
+  return (
+    <div>
+      <Header title="Pirates!" />
+      <Pirate tagline="Ahoy from the Pirate Component" />
+    </div>
+  );
+}
+```
+
+## Importing and Exporting Components
+
+Convert the Header and Pirate component to standalone components.
+
+- Delete the Header and Pirate components from `App.js`.
+- Delete the imported css and logo
+- Create a `components` folder in `src`.
+- Create `Pirate.js` in the new `components` folder.
 
 In `src/components/Pirate.js`:
 
@@ -224,7 +300,7 @@ import '../assets/css/Pirate.css';
 function Pirate() {
   return (
     <div className="pirate">
-      <p>Ahoy there!</p>
+      <p>{props.tagline}</p>
     </div>
   );
 }
@@ -239,45 +315,16 @@ import React from 'react';
 import Pirate from './components/Pirate';
 
 function App() {
-  return <Pirate />;
+  return <Pirate tagline="Ahoy from the Pirate Component" />;
 }
 
 export default App;
-```
-
-Ensure that the component is rendered in the browser.
-
-Add a property (`prop`) to the component instance in `App.js`:
-
-```js
-function App() {
-  return <Pirate tagline="Ahoy from the Pirate Component" />;
-}
-```
-
-`Pirate.js`:
-
-```js
-import React from 'react';
-
-import '../assets/css/Pirate.css';
-
-function Pirate(props) {
-  return (
-    <div className="pirate">
-      <p>{props.tagline}</p>
-    </div>
-  );
-}
-
-export default Pirate;
 ```
 
 So far we have only seen React functional components. There is another type, often called a React class component. You should be familiar with both.
 
 ```js
 import React from 'react';
-
 import '../assets/css/Pirate.css';
 
 class Pirate extends React.Component {
@@ -293,26 +340,24 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-A React class component uses Object Oriented Syntax and adds features to a functional component however, in recent versions of React, functional components have gained the equivalent functionality through a feature known as "Hooks." The use of class components will likely be reduced in the next few years. We will look at React hooks in a future class.
+A functional component is just a plain JavaScript function which accepts props as an argument and returns a React element. A class component requires you to extend from React.Component and create a render function which returns a React element.
 
 ## Header Functional Component
 
 Create a new `Header.js` component in the `components` folder:
 
 ```js
-import React, { Component } from 'react';
+import React from 'react';
 import '../assets/css/Header.css';
 import logo from '../assets/img/anchor.svg';
 
-class Header extends Component {
-  render() {
-    return (
-      <div className="header">
-        <img src={logo} className="logo" alt="logo" />
-        <h1>Pirates!</h1>
-      </div>
-    );
-  }
+function Header(props) {
+  return (
+    <div className="header">
+      <img src={logo} className="logo" alt="logo" />
+      <h1>Pirates!</h1>
+    </div>
+  );
 }
 
 export default Header;
@@ -327,57 +372,105 @@ import Header from './components/Header';
 
 function App() {
   return (
-    <div className="App">
       <Header />
       <Pirate tagline="Ahoy from the Pirate Component" />
-    </div>
   );
 }
 
 export default App;
 ```
 
-Delete the `App.css`, test, and logo files from the top level of `src`.
+Note the error `Adjacent JSX elements must be wrapped in an enclosing tag.`
 
-Because we are not going to be doing much with the header at this point we don't need to use a class based component. Let's refactor it to a React functional component in order to see, first hand, what the difference in syntax is. We will store the function in a variable `Header`.
-
-Edit `Header.js`:
+Add div tags:
 
 ```js
-import React from 'react';
-import '../assets/css/Header.css';
-import logo from '../assets/img/anchor.svg';
-
-function Header() {
+function App() {
   return (
-    <div className="header">
-      <img src={logo} className="logo" alt="logo" />
-      <h1>Pirates!</h1>
+    <div>
+      <Header />
+      <Pirate tagline="Ahoy from the Pirate Component" />
     </div>
   );
 }
-
-export default Header;
 ```
 
-Convert the function to use an arrow:
+Note that when we have multiple lines we use `return( ... )` instead of just `return ...`.
+
+## Rendering Multiple Components
 
 ```js
-const Header = () => {
-  return (
-    <div className="header">
-      <img src={logo} className="logo" alt="logo" />
-      <h1>Pirates!</h1>
-    </div>
-  );
-};
+import piratesFile from './data/sample-pirates-array';
+
+{
+  piratesFile.map(pirate => <Pirate name={pirate.name} />);
+}
 ```
 
-Notice that, unlike the Pirate component, we do not need to pass props into this component because we are not using any.
+Pirate.js:
+
+```js
+  render() {
+    return (
+      <div className="pirate">
+        <p>{this.props.name}</p>
+      </div>
+    );
+  }
+```
+
+Note the index error:
+
+```js
+{
+  piratesFile.map((pirate, index) => <Pirate key={index} name={pirate.name} />);
+}
+```
+
+Build out the list.
+
+In App.js:
+
+```js
+{
+  piratesFile.map((pirate, index) => <Pirate key={index} pirate={pirate} />);
+}
+```
+
+In Pirate.js
+
+```js
+import React from 'react';
+import '../assets/css/Pirate.css';
+import avatar from '../assets/img/avatar.png';
+
+class Pirate extends React.Component {
+  render() {
+    return (
+      <div className="pirate">
+        <ul>
+          <li>
+            <img src={avatar} alt="pirate" />
+            <h3>{this.props.pirate.name}</h3>
+            <p>Died: {this.props.pirate.year}</p>
+            <p>Favorite weapon: {this.props.pirate.weapon}</p>
+            <p>Sailed on: {this.props.pirate.vessel}</p>
+          </li>
+          <li>
+            <p>{this.props.pirate.desc}</p>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+
+export default Pirate;
+```
 
 ## Additional Components
 
-Create a new component `PirateForm.js`:
+Create a new component `components/PirateForm.js`:
 
 ```js
 import React, { Component } from 'react';
@@ -386,8 +479,8 @@ import AddPirateForm from './AddPirateForm';
 class PirateForm extends Component {
   render() {
     return (
-      <div>
-        <h3>Pirate Form Component</h3>
+      <div className="pirate">
+        <h3>Ahoy from the PirateForm Component</h3>
         <AddPirateForm />
       </div>
     );
@@ -403,14 +496,13 @@ Create another component - `AddPirateForm.js` in components:
 
 ```js
 import React, { Component } from 'react';
-
 import '../assets/css/AddPirateForm.css';
 
 class AddPirateForm extends Component {
   render() {
     return (
       <div>
-        <h3>Add Pirate Form Component</h3>
+        <h3>Ahoy from the AddPirateForm Component</h3>
         <form>
           <input type="text" placeholder="Pirate name" />
           <input type="text" placeholder="Pirate vessel" />
@@ -425,15 +517,13 @@ class AddPirateForm extends Component {
 export default AddPirateForm;
 ```
 
-Import and add it to the JSX in `App.js`:
+Import and add it to `App.js`:
 
 ```js
 import PirateForm from './components/PirateForm';
-
 ...
-
     return (
-      <div className="App">
+      <div>
         <Header />
         <Pirate tagline="Ahoy from the Pirate component" />
         <PirateForm />
@@ -443,17 +533,25 @@ import PirateForm from './components/PirateForm';
 
 ### React tool
 
-Install the React developer tool in Chrome and inspect the current application.
+Install the [React Developer Tools](https://chrome.google.com/webstore/search/react) in Chrome and inspect:
 
-Examine component structure (nesting).
+- https://www.netflix.com/
+- https://www.codecademy.com/
+- https://www.nytimes.com/
 
-Select `<Pirate />`
+Examine the current application's component structure (nesting).
 
-Console: `$r.props`
+- Select `<Pirate />`
+- Search for Pirate
+- Clean up unnecessary divs by using React fragments: `<> ... </>`
 
 ## Adding Methods
 
-Wire up the form in `AddPirateForm` with `<form onSubmit = { (e) => this.createPirate(e) }>`:
+Add an event:
+
+`<form onSubmit = { (e) => this.createPirate(e) }>`
+
+to `AddPirateForm`:
 
 ```js
 return (
@@ -524,6 +622,8 @@ createPirate(e) {
 }
 ```
 
+E.g.:
+
 ```js
 import React, { Component } from 'react';
 import '../assets/css/AddPirateForm.css';
@@ -549,7 +649,7 @@ class AddPirateForm extends Component {
 export default AddPirateForm;
 ```
 
-And test using the form interface.
+And test using the form button.
 
 Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input:
 
