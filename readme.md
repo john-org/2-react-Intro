@@ -17,7 +17,6 @@
   - [Additional Components](#Additional-Components)
     - [React tool](#React-tool)
   - [Adding Methods](#Adding-Methods)
-    - [Using Forms in React](#Using-Forms-in-React)
   - [The Pirate Form](#The-Pirate-Form)
   - [State](#State)
     - [Review](#Review)
@@ -357,6 +356,37 @@ const elem = (
 );
 ```
 
+Here is another example of a standalone React component:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Hello React!</title>
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      class App extends React.Component {
+        render() {
+          return <h1>Hello world!</h1>;
+        }
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
+```
+
 ## Create a React Project
 
 Having creating at a standalone React component let's now create a React project.
@@ -456,9 +486,6 @@ Import our fonts and clean up the default html template.
     <title>React App</title>
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
     <div id="root"></div>
   </body>
 </html>
@@ -477,7 +504,7 @@ import React from 'react';
 
 import '../assets/css/Pirate.css';
 
-function Pirate(props) {
+function Pirate() {
   return (
     <div className="pirate">
       <p>Ahoy there!</p>
@@ -506,7 +533,9 @@ Ensure that the component is rendered in the browser.
 Add a property (`prop`) to the component instance in `App.js`:
 
 ```js
-<Pirate tagline="Ahoy from the Pirate Component" />
+function App() {
+  return <Pirate tagline="Ahoy from the Pirate Component" />;
+}
 ```
 
 `Pirate.js`:
@@ -547,11 +576,11 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-A React class component uses Object Oriented Syntax and adds features to a functional component however, in recent versions of React, functional components have gained the equivalent functionality through a feature known as "Hooks." Their usage will likely be reduced in the next few years. We will look at React hooks in a future class.
+A React class component uses Object Oriented Syntax and adds features to a functional component however, in recent versions of React, functional components have gained the equivalent functionality through a feature known as "Hooks." The use of class components will likely be reduced in the next few years. We will look at React hooks in a future class.
 
 ## Header Functional Component
 
-Create a new Header component:
+Create a new `Header.js` component in the `components` folder:
 
 ```js
 import React, { Component } from 'react';
@@ -572,11 +601,7 @@ class Header extends Component {
 export default Header;
 ```
 
-Import `Header.js` into `App.js`:
-
-`import Header from './components/Header';`
-
-- Add it to `App.js`:
+Import `Header.js` into `App.js` and add it to `App.js`:
 
 ```jsx
 import React from 'react';
@@ -606,6 +631,21 @@ import React from 'react';
 import '../assets/css/Header.css';
 import logo from '../assets/img/anchor.svg';
 
+function Header() {
+  return (
+    <div className="header">
+      <img src={logo} className="logo" alt="logo" />
+      <h1>Pirates!</h1>
+    </div>
+  );
+}
+
+export default Header;
+```
+
+Convert the function to use an arrow:
+
+```js
 const Header = () => {
   return (
     <div className="header">
@@ -614,8 +654,6 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;
 ```
 
 Notice that, unlike the Pirate component, we do not need to pass props into this component because we are not using any.
@@ -711,7 +749,7 @@ return (
 );
 ```
 
-### Using Forms in React
+<!--  ### Using Forms in React
 
 Open `reference > react-overview > index.html` in a browser running http.
 
@@ -756,7 +794,7 @@ In React we use refs to assign and access the inputMode:
 <input type="text" name="username" ref={node => (this.inputNode = node)} />
 ```
 
-`console.log(this.inputNode.value)`
+`console.log(this.inputNode.value)` -->
 
 ## The Pirate Form
 
@@ -850,7 +888,7 @@ Today’s more popular JavaScript frameworks, including React and Vue, use state
 
 With this approach, instead of targeting specific elements in the DOM and adjusting a class here or a style there, you treat your data, or state, as the single source of truth.
 
-Update your state, render a fresh copy of the UI based on the new data, and move on. You never have to think about which element in the DOM to target or how it needs to change.
+When you update your state, you render a fresh copy of the UI based on the new data, and move on. You never have to think about which element in the DOM to target or how it needs to change.
 
 The key difference between props and [state](https://facebook.github.io/react-native/docs/state.html):
 
@@ -861,10 +899,28 @@ Get the pirate object into state.
 
 We initialize the state in `App.js` to an empty object.
 
+Since `App.js` is a functional component and functional components are not used for state we need to cpnvert it to a class component.
+
 `App.js`:
 
 ```js
-class App extends Component {
+class App extends React.Component {
+  render() {
+    return (
+      <>
+        <Header />
+        <Pirate tagline="Ahoy from the Pirate Component" />
+        <PirateForm />
+      </>
+    );
+  }
+}
+```
+
+Now we can add a constructor:
+
+```js
+class App extends React.Component {
 ...
   constructor() {
     super();
