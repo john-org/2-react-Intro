@@ -3,8 +3,8 @@
 - [React Intro](#React-Intro)
   - [Homework](#Homework)
   - [The Spread Operator](#The-Spread-Operator)
-  - [Objects](#Objects)
-  - [React Compnent](#React-Compnent)
+  - [Objects and Destructuring](#Objects-and-Destructuring)
+  - [React Component](#React-Component)
   - [Creating a React Project](#Creating-a-React-Project)
     - [Examining the Project Structure](#Examining-the-Project-Structure)
     - [JSX](#JSX)
@@ -17,7 +17,6 @@
   - [Additional Components](#Additional-Components)
   - [The React Developer Tool](#The-React-Developer-Tool)
   - [Adding Events](#Adding-Events)
-  - [Activate the Pirate Form](#Activate-the-Pirate-Form)
   - [State](#State)
     - [Passing a Function as a Prop](#Passing-a-Function-as-a-Prop)
   - [Resetting the Form](#Resetting-the-Form)
@@ -30,7 +29,7 @@
     - [Static methods on an Array](#Static-methods-on-an-Array)
     - [Getters and Setters](#Getters-and-Setters)
     - [Extending Classes](#Extending-Classes)
-      - [Super](#Super)
+      - [Super and Extending Classes](#Super-and-Extending-Classes)
     - [Extending Arrays](#Extending-Arrays)
   - [Review For... In Loops](#Review-For-In-Loops)
 
@@ -44,7 +43,7 @@ Review the notes below, step through them again to recreate the Pirates project 
 
 Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element.
 
-See `reference > spread-pizzas.html` and `reference > spread-jumping-letters.html`.
+See `spread-pizzas.html` and `spread-jumping-letters.html` in `reference/speards`.
 
 ```js
 const heading = document.querySelector('.jump');
@@ -64,9 +63,9 @@ function sparanWrap(word) {
 
 ---
 
-## Objects
+## Objects and Destructuring
 
-Open `other > javascript > Objects > objects.html` in a browser tab.
+Open `objects.html` from `reference/objects` in a browser tab.
 
 Examine the sample object in the browser console:
 
@@ -84,10 +83,10 @@ const { twitter, facebook } = me.links.social;
 ```
 
 ```js
-const { twitter: twit } = me.links.social;
+const { twitter: twit, facebook: fb } = me.links.social;
 ```
 
-This is an example of [destructing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) - a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables. We will be using it extensively in this class.
+This is an example of [destructing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) - a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
 
 Create a multi-line template string and display it on the page:
 
@@ -98,8 +97,8 @@ const content = `
     ${me.first} ${me.last}
   </h2>
     <span>${me.job}</span>
-    <p>Twitter: ${twitter}</p>
-    <p>Facebook: ${facebook}</p>
+    <p>Twitter: ${twit}</p>
+    <p>Facebook: ${fb}</p>
 </div>
 `;
 document.body.innerHTML = content;
@@ -109,9 +108,37 @@ document.body.innerHTML = content;
 
 <!-- end aside  -->
 
-## React Compnent
+## React Component
 
-Here is another example of a standalone React component:
+Here are two examples of a standalone React component:
+
+```html
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Hello React!</title>
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function App() {
+        return <h1>Hello world!</h1>;
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
+```
+
+And:
 
 ```html
 <!DOCTYPE html>
@@ -142,6 +169,8 @@ Here is another example of a standalone React component:
 </html>
 ```
 
+The first is a functional component and the second a class component. We will be working with both.
+
 ## Creating a React Project
 
 Creating a React project requires a lot of tooling and setup. Fortunately Facebook has created a bootstrapping system called [Create React App](https://facebook.github.io/create-react-app/)
@@ -149,15 +178,15 @@ Creating a React project requires a lot of tooling and setup. Fortunately Facebo
 To create a new project, ensure that you are in today's project folder and run:
 
 ```sh
-npx create-react-app react-pirates
+npx create-react-app pirates
 ```
 
-Note: `npm` _manages_ packages while `npx` _executes_ Node packages. The first argument `create-react-app` is the package you are executing, the second `react-pirates` is the name of the project.
+Note: `npm` _manages_ packages while `npx` _executes_ Node packages. The first argument `create-react-app` is the package you are executing, the second `pirates` is the name of the project.
 
 Run the project:
 
 ```sh
-cd react-pirates
+cd pirates
 code .
 ```
 
@@ -165,19 +194,19 @@ Open VS Code's terminal and run `npm start`.
 
 ### Examining the Project Structure
 
-Open `index.html` from the `react-pirates/public` folder.
+Open `index.html` from the `pirates/public` folder.
 
-Everything is inserted into this div:`<div id="root"></div>`
+- Everything is inserted into this div:`<div id="root"></div>`
 
 Open `index.js` from `src`.
 
-This is the only place where `ReactDOM.render()` will occur:
+- This is the only place where `ReactDOM.render()` will occur:
 
 ```js
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-Open `App.js` (note the capitalization - this is a React component) from `src`.
+Open `App.js` (note the capital "A" - this is the default React component) from `src`.
 
 This is the only React component in this starter project.
 
@@ -187,7 +216,7 @@ Instead of using a script tag, this component imports React from the node module
 import React from 'react';
 ```
 
-`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller peices. Unfortunately, these are fully supported in browsers so, once again, BabelJS is required and working under the hood so to speak.
+`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller pieces. Unfortunately, this is not supported in browsers so BabelJS is required and is working under the hood in our project.
 
 The main body of the component is a function that returns JSX (_not_ HTML).
 
@@ -195,12 +224,10 @@ The main body of the component is a function that returns JSX (_not_ HTML).
 
 Recall the JSX requirements:
 
-1. `src={logo}` - JSX curly braces allow the use of a JS expression
+1. `src={logo}` - JSX curly braces allow the use of JS expressions
 2. `className="App-header"` - `class` is a reserved word in JavaScript
 3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
 4. everything is nested in a single tag
-
-Examine the CSS in Chrome's Elements inspector (`head` region). Note that we have two `<style>` blocks - one for each CSS file in the project.
 
 Commenting code in React looks a little different from native JavaScript and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
 
@@ -210,7 +237,7 @@ Save and note the hot reloading.
 
 ### Project Prep
 
-Move the `data` and `assets` folders from `reference` to the `src` directory in `react-pirates`.
+Move the `data` and `assets` folders from `reference` to the `src` directory in `pirates`.
 
 Import our fonts and clean up the default html template.
 
@@ -248,7 +275,7 @@ Copy the material below and overwrite `public/index.html`:
 
 All modern front end systems employ a component architecture. Let's create a few.
 
-In `App.js`:
+Create and use a Pirate component in `App.js`. Copy and overwrite App.js with the following:
 
 ```js
 import React from 'react';
@@ -282,51 +309,26 @@ function Pirate(props) {
 
 Note that we have to pass props to the Pirate function.
 
-## Calling a Function
-
-Create an array of pirate quotes and a randomize function that selects a random pirateCall: `pirateCalls[x]`
+We _cannot_ do something like this:
 
 ```js
-const pirateCalls = [
-  'Aaarg, belay that!',
-  'Avast me hearties!',
-  'Shiver me timbers!',
-];
-
-const randomize = () =>
-  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
-```
-
-And then call the function:
-
-```js
-function App() {
-  return <Pirate tagline={randomize()} />;
+function Pirate() {
+  return <p>{tagline}</p>;
 }
 ```
 
-E.g.:
+The fact that you can pass props to a component makes them very powerful.
 
 ```js
-import React from 'react';
-
-const pirateCalls = [
-  'Aaarg, belay that!',
-  'Avast me hearties!',
-  'Shiver me timbers!',
-];
-const randomize = () =>
-  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
-
 function App() {
-  return <Pirate tagline={randomize()} />;
+  return (
+    <div>
+      <Pirate tagline="Ahoy from the Pirate Component" />
+      <Pirate tagline="Pirate Component" />
+      <Pirate tagline="Ahoy" />
+    </div>
+  );
 }
-
-function Pirate(props) {
-  return <p>{props.tagline}</p>;
-}
-
-export default App;
 ```
 
 Create a second component for the header:
@@ -366,6 +368,34 @@ function App() {
 }
 ```
 
+## Calling a Function
+
+Create an array of pirate quotes and a randomize function that selects a random pirateCall: `pirateCalls[x]`
+
+```js
+const pirateCalls = [
+  'Aaarg, belay that!',
+  'Avast me hearties!',
+  'Shiver me timbers!',
+];
+
+const randomize = () =>
+  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+```
+
+And then call the function:
+
+```js
+function App() {
+  return (
+    <div>
+      <Header title={randomize()} />
+      <Pirate tagline="Ahoy from the Pirate Component" />
+    </div>
+  );
+}
+```
+
 ## Importing and Exporting Components
 
 Convert the Header and Pirate component to standalone components.
@@ -382,7 +412,7 @@ import React from 'react';
 
 import '../assets/css/Pirate.css';
 
-function Pirate() {
+function Pirate(props) {
   return (
     <div className="pirate">
       <p>{props.tagline}</p>
@@ -399,14 +429,29 @@ We use the component in `App.js` by first importing it and then returning it:
 import React from 'react';
 import Pirate from './components/Pirate';
 
+const pirateCalls = [
+  'Aaarg, belay that!',
+  'Avast me hearties!',
+  'Shiver me timbers!',
+];
+
+const randomize = () =>
+  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+
 function App() {
-  return <Pirate tagline="Ahoy from the Pirate Component" />;
+  return (
+    <div>
+      <Pirate tagline="Ahoy from the Pirate Component" />;
+    </div>
+  );
 }
 
 export default App;
 ```
 
-So far we have only seen React functional components. There is another type, often called a React class component. You should be familiar with both.
+So far we have only used React functional components. There is another type called a React class component. You should be familiar with both.
+
+Convert the Pirate component into a class component:
 
 ```js
 import React from 'react';
@@ -425,6 +470,8 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
+Note the render method and `this` in the paragraph. The JavaScript `this` keyword refers to the object it belongs to.
+
 A functional component is just a plain JavaScript function which accepts props as an argument and returns a React element. A class component requires you to extend from React.Component and create a render function which returns a React element.
 
 ## Header Functional Component
@@ -440,7 +487,7 @@ function Header(props) {
   return (
     <div className="header">
       <img src={logo} className="logo" alt="logo" />
-      <h1>Pirates!</h1>
+      <h1>{props.title}</h1>
     </div>
   );
 }
@@ -450,37 +497,24 @@ export default Header;
 
 Import `Header.js` into `App.js` and add it to `App.js`:
 
-```jsx
+```js
 import React from 'react';
 import Pirate from './components/Pirate';
 import Header from './components/Header';
-
-function App() {
-  return (
-      <Header />
-      <Pirate tagline="Ahoy from the Pirate Component" />
-  );
-}
-
-export default App;
 ```
-
-Again, note the error `Adjacent JSX elements must be wrapped in an enclosing tag.`
-
-Add div tags:
 
 ```js
 function App() {
   return (
     <div>
-      <Header />
-      <Pirate tagline="Ahoy from the Pirate Component" />
+      <Header title={randomize()} />
+      <Pirate tagline="Ahoy from the Pirate Component" />;
     </div>
   );
 }
 ```
 
-Note that when we have multiple lines we use `return( ... )` instead of just `return ...`.
+Note that when we have multiple lines we use `return( ... )` instead of just `return ...` and we _must_ have all items inside an enclosing element.
 
 ## Rendering Multiple Components
 
@@ -488,11 +522,30 @@ Import an array of sample pirates into App.js:
 
 ```js
 import piratesFile from './data/sample-pirates-array';
-...
+```
+
+Examine the contents of the file. We will create multiple pirates using `.map()`:
+
+```js
 function App() {
   return (
     <div>
-      <Header />
+      <Header title={randomize()} />
+      {piratesFile.map(function(pirate) {
+        return <Pirate tagline={randomize()} />;
+      })}
+    </div>
+  );
+}
+```
+
+Let's use some data from thepiratesFile instead:
+
+```js
+function App() {
+  return (
+    <div>
+      <Header title={randomize()} />
       {piratesFile.map(pirate => (
         <Pirate name={pirate.name} />
       ))}
@@ -519,7 +572,7 @@ Note the index error: "Each child in a list should have a unique "key" prop."
 function App() {
   return (
     <div>
-      <Header />
+      <Header title={randomize()} />
       {piratesFile.map((pirate, index) => (
         <Pirate key={index} name={pirate.name} />
       ))}
@@ -536,7 +589,7 @@ In App.js, instead of passing just the name (`name={pirate.name}`) we will pass 
 function App() {
   return (
     <div>
-      <Header />
+      <Header title={randomize()} />
       {piratesFile.map((pirate, index) => (
         <Pirate key={index} pirate={pirate} />
       ))}
@@ -575,6 +628,8 @@ class Pirate extends React.Component {
 
 export default Pirate;
 ```
+
+Make any desired css adjustments to the imported pirates.css file.
 
 ## Additional Components
 
@@ -632,7 +687,7 @@ import PirateForm from './components/PirateForm';
 function App() {
   return (
     <div>
-      <Header title="Pirate Database" />
+      <Header title={randomize()} />
       <PirateForm />
       {piratesFile.map((pirate, index) => (
         <Pirate key={index} pirate={pirate} />
@@ -661,11 +716,12 @@ Examine the current application's component structure (nesting).
 Temporary in App.js:
 
 ```js
+const handleClick = () => alert('whoa');
+
 function App() {
-  const handleClick = () => alert('whoa');
   return (
     <div>
-      <Header title="Pirate Database" />
+      <Header title={randomize()} />
       <button onClick={handleClick}>Click Me!</button>
       <PirateForm />
       {piratesFile.map((pirate, index) => (
@@ -676,7 +732,7 @@ function App() {
 }
 ```
 
-In vanilla JS we used an event listener.
+In vanilla JS we use an event listener to listen for events. In React you use a camel case event on the element.
 
 Add an event to the AddPirateForm:
 
@@ -686,7 +742,7 @@ to `AddPirateForm`:
 
 ```js
 return (
-  <form onSubmit={e => this.createPirate(e)}>
+  <form onSubmit={this.createPirate}>
     <input type="text" placeholder="Pirate name" />
     <input type="text" placeholder="Pirate vessel" />
     <input type="text" placeholder="Pirate weapon" />
@@ -695,12 +751,10 @@ return (
 );
 ```
 
-## Activate the Pirate Form
-
-In `AddPirateForm` create a method on the class:
+And create a method on the class:
 
 ```js
-createPirate(e) {
+createPirate(event) {
   console.log('making a pirate')
 }
 ```
@@ -708,8 +762,8 @@ createPirate(e) {
 Clicking on a submit button reloads the page so add:
 
 ```js
-createPirate(e) {
-  e.preventDefault();
+createPirate(event) {
+  event.preventDefault();
   console.log('making a pirate')
 }
 ```
@@ -721,14 +775,14 @@ import React, { Component } from 'react';
 import '../assets/css/AddPirateForm.css';
 
 class AddPirateForm extends Component {
-  createPirate(e) {
-    e.preventDefault();
+  createPirate(event) {
+    event.preventDefault();
     console.log('making a pirate');
   }
 
   render() {
     return (
-      <form onSubmit={event => this.createPirate(event)}>
+      <form onSubmit={this.createPirate}>
         <input name="name" type="text" placeholder="Pirate name" />
         <input name="vessel" type="text" placeholder="Pirate vessel" />
         <input name="weapon" type="text" placeholder="Pirate weapon" />
@@ -743,20 +797,25 @@ export default AddPirateForm;
 
 Test using the form button.
 
+In order to capture that values we will enter into the form fields we need to create [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html). Refs in React are roughly equivalent to `document.querySelector()`
+
 Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input:
 
 ```js
+import React, { Component } from 'react';
+import '../assets/css/AddPirateForm.css';
+
 class AddPirateForm extends React.Component {
   nameRef = React.createRef();
   vesselRef = React.createRef();
   weaponRef = React.createRef();
 
-  createPirate(e) {
-    e.preventDefault();
+  createPirate(event) {
+    event.preventDefault();
     console.log('making a pirate');
   }
 
-render() {
+  render() {
     return (
       <form onSubmit={this.createPirate}>
         <input
@@ -779,11 +838,14 @@ render() {
         />
         <button type="submit">Add Pirate</button>
       </form>
-    )
+    );
+  }
 }
+
+export default AddPirateForm;
 ```
 
-Create a `pirate` object in `AddPirateForm`'s `createPirate` function.
+Create a pirate object in `AddPirateForm`'s `createPirate` function.
 
 `AddPirateForm.js`:
 
@@ -834,9 +896,17 @@ import piratesFile from './data/sample-pirates-array';
 
 class App extends React.Component {
   render() {
+    const pirateCalls = [
+      'Aaarg, belay that!',
+      'Avast me hearties!',
+      'Shiver me timbers!',
+    ];
+
+    const randomize = () =>
+      pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
     return (
       <>
-        <Header title="Pirate Database" />
+        <Header title={randomize()} />
         <PirateForm />
         {piratesFile.map((pirate, index) => (
           <Pirate key={index} pirate={pirate} />
@@ -856,10 +926,26 @@ class App extends React.Component {
 
   state = {
     pirates: piratesFile,
-  };
+  }
 ```
 
 In React tools, find `App` note the `state` entry.
+
+Now that we have the pirates in state we can use it as the basis for our map:
+
+```js
+render() {
+  return (
+    <>
+      <Header title={randomize()} />
+      <PirateForm addPirate={this.addPirate} />
+      {this.state.pirates.map((pirate, index) => (
+        <Pirate key={index} pirate={pirate} />
+      ))}
+    </>
+  );
+}
+```
 
 And add a method to `App.js` that will accept the new pirate created by the form:
 
@@ -902,7 +988,7 @@ We need to make the `addPirate` function available to the `AddPirateForm` by pas
   render() {
     return (
       <>
-        <Header title="Pirate Database" />
+        <Header title={randomize()} />
         <PirateForm addPirate={this.addPirate} />
         {this.state.pirates.map((pirate, index) => (
           <Pirate key={index} pirate={pirate} />
@@ -958,6 +1044,34 @@ createPirate = event => {
 };
 ```
 
+In App.js, expand on the function.
+
+Spread a copy of the current stat into a new local pisrates variable:
+
+```js
+addPirate = pirate => {
+  console.log(pirate);
+  //take a copy of the current state and put it into pirates var
+  const pirates = [...this.state.pirates];
+  console.log(pirates);
+};
+```
+
+Add the pirate passed from the form to the new pirates array:
+
+```js
+addPirate = pirate => {
+  console.log(pirate);
+  //take a copy of the current state and put it into pirates var
+  const pirates = [...this.state.pirates];
+  console.log(pirates);
+  pirates.unshift(pirate);
+  console.log(pirates);
+};
+```
+
+And then use React's `setSate()` function to update the state:
+
 ```js
 addPirate = pirate => {
   console.log(pirate);
@@ -971,13 +1085,15 @@ addPirate = pirate => {
 };
 ```
 
-and
+Note: whenever you use `setState()` it triggers a re-rendering of the content without refreshing the page.
+
+Remember, in order for us to see this we need to map the pirates to state and not to the imported pirates:
 
 ```js
 render() {
   return (
     <>
-      <Header title="Pirate Database" />
+      <Header title={randomize()} />
       <PirateForm addPirate={this.addPirate} />
       {this.state.pirates.map((pirate, index) => (
         <Pirate key={index} pirate={pirate} />
@@ -995,9 +1111,7 @@ Try: `pirates.push(pirate);`
 
 We have refs on the input fields. When we click "Add Pirate" the form still holds the data so we need to reset it.
 
-Empty the form by assigning a [ref](https://facebook.github.io/react/docs/refs-and-the-dom.html#adding-a-ref-to-a-class-component) to the input fields.
-
-- `AddPirateFrom`: `event.currentTarget.reset();`
+- Use `event.currentTarget.reset();` in `AddPirateFrom`:
 
 ```js
 createPirate = event => {
@@ -1072,7 +1186,7 @@ class Pirate extends React.Component {
 
 We have temporarily hard coded the button to remove just one pirate from the list.
 
-Pass it along as part of the Pirate component `index={key}` in App.
+Pass it along as part of the Pirate component `index={index}` in App.
 
 - `App.js`:
 
@@ -1080,7 +1194,7 @@ Pass it along as part of the Pirate component `index={key}` in App.
   render() {
     return (
       <>
-        <Header title="Pirate Database" />
+        <Header title={randomize()} />
         <PirateForm addPirate={this.addPirate} />
         {this.state.pirates.map((pirate, index) => (
           <Pirate
@@ -1097,7 +1211,7 @@ Pass it along as part of the Pirate component `index={key}` in App.
 
 Pass the index value of the pirate in question to the method:
 
-- `Pirate`:
+In `Pirate.js`:
 
 ```html
 <button onClick={() => this.props.removePirate(this.props.index)}>
@@ -1109,9 +1223,9 @@ Pass the index value of the pirate in question to the method:
 
 ### Prototypal inheritance
 
-Before we get any further let's look at the `class` syntax we will be using in React.
+Let's look at the `class` syntax we will be using in React.
 
-cd into `reference > classes`, run a server and open `1-inheritance.html` in a browser.
+Open `1-inheritance.html` from `reference > classes` in a browser.
 
 Classes in React (ref. `react-overview > forms.js`) are based on JS prototypal inheritance.
 
@@ -1140,7 +1254,7 @@ Create an array:
 > const names = ['John', 'Henry']
 ```
 
-Examine the Array - Array prototypes
+Examine the Array methods
 
 ```sh
 > names.join(', ')
@@ -1189,7 +1303,7 @@ In classic protoypal inheritance the function `Car` is our 'constructor' and we 
 
 See `2-classes.html`
 
-Note syntax - (esp. lack of comma):
+Functionally, this is the equivalent of the first file. Note the new syntax:
 
 ```js
 class Car {
@@ -1254,7 +1368,7 @@ But `.of` is not inerited
 > numbers.of(1,2,3,4)
 ```
 
-A static method applied to Cars only:
+A static method is applied to Cars only:
 
 ```sh
 Car.info()
@@ -1328,13 +1442,11 @@ const rhino = new Animal('Rhiney');
 > rhino
 ```
 
-#### Super
+#### Super and Extending Classes
 
-Calls the thing that you are extending first.
+To extend a class you must call the thing that you are extending first.
 
-e.g. we want to extend our Animal class to include a subclass of `dogs`.
-
-This will not work:
+E.g. we want to extend our Animal class to include a subclass of `dogs`.
 
 ```js
 class Dog extends Animal {
@@ -1344,6 +1456,8 @@ class Dog extends Animal {
   }
 }
 ```
+
+This will not work:
 
 ```js
 const yorik = new Dog('Yorik', 'Terrier');
