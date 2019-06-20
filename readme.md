@@ -1,5 +1,7 @@
 # React Intro
 
+Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld/intermediate/pirates-build/)
+
 - [React Intro](#React-Intro)
   - [Homework](#Homework)
   - [The Spread Operator](#The-Spread-Operator)
@@ -36,7 +38,9 @@
 
 ## Homework
 
-Review the notes below, step through them again to recreate the Pirates project on your own.
+Review the notes below, step through them again to recreate the Pirates project on your own. If you need a completed version for reference see the branch `summer2019-done`.
+
+Add date and description fields to the form.
 
 ---
 
@@ -540,7 +544,7 @@ function App() {
 }
 ```
 
-Let's use some data from thepiratesFile instead:
+Let's use some data from the piratesFile instead:
 
 ```js
 function App() {
@@ -555,9 +559,10 @@ function App() {
 }
 ```
 
-Pirate.js:
+In `Pirate.js`:
 
 ```js
+class Pirate extends React.Component {
   render() {
     return (
       <div className="pirate">
@@ -565,6 +570,7 @@ Pirate.js:
       </div>
     );
   }
+}
 ```
 
 Note the index error: "Each child in a list should have a unique "key" prop."
@@ -678,7 +684,7 @@ class AddPirateForm extends React.Component {
 export default AddPirateForm;
 ```
 
-Import and add it to `App.js`:
+Import PirateForm and add it to `App.js`:
 
 ```js
 import PirateForm from './components/PirateForm';
@@ -742,14 +748,18 @@ Add an event to the AddPirateForm:
 to `AddPirateForm`:
 
 ```js
-return (
-  <form onSubmit={this.createPirate}>
-    <input type="text" placeholder="Pirate name" />
-    <input type="text" placeholder="Pirate vessel" />
-    <input type="text" placeholder="Pirate weapon" />
-    <button type="submit">Add Pirate</button>
-  </form>
-);
+class PirateForm extends React.Component {
+  render() {
+    return (
+      <form onSubmit={this.createPirate}>
+        <input type="text" placeholder="Pirate name" />
+        <input type="text" placeholder="Pirate vessel" />
+        <input type="text" placeholder="Pirate weapon" />
+        <button type="submit">Add Pirate</button>
+      </form>
+    );
+  }
+}
 ```
 
 And create a method on the class:
@@ -803,7 +813,7 @@ In order to capture that values we will enter into the form fields we need to cr
 Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input:
 
 ```js
-import React, { Component } from 'react';
+import React from 'react';
 import '../assets/css/AddPirateForm.css';
 
 class AddPirateForm extends React.Component {
@@ -850,7 +860,7 @@ Create a pirate object in `AddPirateForm`'s `createPirate` function.
 
 `AddPirateForm.js`:
 
-```jsx
+```js
 createPirate = event => {
   event.preventDefault();
   const pirate = {
@@ -905,6 +915,7 @@ class App extends React.Component {
 
     const randomize = () =>
       pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+
     return (
       <>
         <Header title={randomize()} />
@@ -957,25 +968,6 @@ addPirate = pirate => {
 ```
 
 Our `createPirate` function in `AddPirateForm` is called and works but it does not save the new pirate.
-
-<!-- We have an `addPirate` function in App.js:
-
-```js
-addPirate = pirate => {
-  console.log(pirate);
-  //take a copy of the current state and put it into pirates var
-  const pirates = [...this.state.pirates];
-  console.log(pirates);
-  pirates.push(pirate);
-  console.log(pirates);
-  //set state pirates with var pirates
-  this.setState({ pirates: pirates });
-};
-```
-
-Unlike the `createPirate` function, it stores the new pirate in `state`. Test with `App` in React tool:
-
-`$r.addPirate({name: 'joe'})` -->
 
 ### Passing a Function as a Prop
 
