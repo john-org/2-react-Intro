@@ -2,7 +2,6 @@
 
 - [React Intro](#React-Intro)
   - [Homework](#Homework)
-  - [Reading](#Reading)
   - [The Spread Operator](#The-Spread-Operator)
   - [Objects](#Objects)
   - [React Compnent](#React-Compnent)
@@ -16,7 +15,7 @@
   - [Header Functional Component](#Header-Functional-Component)
   - [Rendering Multiple Components](#Rendering-Multiple-Components)
   - [Additional Components](#Additional-Components)
-    - [The React Developer Tool](#The-React-Developer-Tool)
+  - [The React Developer Tool](#The-React-Developer-Tool)
   - [Adding Events](#Adding-Events)
   - [Activate the Pirate Form](#Activate-the-Pirate-Form)
   - [State](#State)
@@ -24,7 +23,7 @@
   - [Resetting the Form](#Resetting-the-Form)
   - [Removing a Pirate](#Removing-a-Pirate)
   - [Notes](#Notes)
-  - [Prototypal inheritance](#Prototypal-inheritance)
+    - [Prototypal inheritance](#Prototypal-inheritance)
     - [Example: Array](#Example-Array)
     - [Classes](#Classes)
     - [Static Methods](#Static-Methods)
@@ -38,10 +37,6 @@
 ## Homework
 
 Review the notes below, step through them again to recreate the Pirates project on your own.
-
-## Reading
-
-<!-- Please read and follow along with [Tania Rascia's](https://www.taniarascia.com/getting-started-with-react/) React overview and walkthrough tutorial. -->
 
 ---
 
@@ -647,7 +642,7 @@ function App() {
 }
 ```
 
-### The React Developer Tool
+## The React Developer Tool
 
 Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) in Chrome and inspect:
 
@@ -1112,7 +1107,7 @@ Pass the index value of the pirate in question to the method:
 
 ## Notes
 
-## Prototypal inheritance
+### Prototypal inheritance
 
 Before we get any further let's look at the `class` syntax we will be using in React.
 
