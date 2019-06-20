@@ -4,8 +4,6 @@ import avatar from '../assets/img/avatar.png';
 
 class Pirate extends React.Component {
   render() {
-    const { details } = this.props.pirate;
-    console.log(details);
     return (
       <div className="pirate">
         <ul>
@@ -15,6 +13,9 @@ class Pirate extends React.Component {
             <p>Died: {this.props.pirate.year}</p>
             <p>Favorite weapon: {this.props.pirate.weapon}</p>
             <p>Sailed on: {this.props.pirate.vessel}</p>
+            <button onClick={() => this.props.removePirate(this.props.index)}>
+              X
+            </button>
           </li>
           <li>
             <p>{this.props.pirate.desc}</p>
