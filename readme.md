@@ -3,16 +3,19 @@
 - [React Intro](#React-Intro)
   - [Homework](#Homework)
   - [Reading](#Reading)
-    - [Aside - The Spread Operator](#Aside---The-Spread-Operator)
+  - [The Spread Operator](#The-Spread-Operator)
+  - [Objects](#Objects)
+  - [React Compnent](#React-Compnent)
   - [Creating a React Project](#Creating-a-React-Project)
     - [Examining the Project Structure](#Examining-the-Project-Structure)
     - [JSX](#JSX)
     - [Project Prep](#Project-Prep)
     - [Components](#Components)
+  - [Calling a Function](#Calling-a-Function)
   - [Importing and Exporting Components](#Importing-and-Exporting-Components)
   - [Header Functional Component](#Header-Functional-Component)
   - [Rendering Multiple Components](#Rendering-Multiple-Components)
-    - [WTF](#WTF)
+    - [Destructuring](#Destructuring)
   - [Additional Components](#Additional-Components)
     - [React tool](#React-tool)
   - [Adding Events](#Adding-Events)
@@ -48,11 +51,11 @@ Review the notes below, step through them again to recreate the Pirates project 
 
 ## Reading
 
-Please read and follow along with [Tania Rascia's](https://www.taniarascia.com/getting-started-with-react/) React overview and walkthrough tutorial.
+<!-- Please read and follow along with [Tania Rascia's](https://www.taniarascia.com/getting-started-with-react/) React overview and walkthrough tutorial. -->
 
 ---
 
-### Aside - The Spread Operator
+## The Spread Operator
 
 Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element.
 
@@ -73,6 +76,55 @@ function sparanWrap(word) {
 ---
 
 <!-- end aside -->
+
+---
+
+## Objects
+
+Open `other > javascript > Objects > objects.html` in a browser tab.
+
+Examine the sample object in the browser console:
+
+```sh
+last
+me
+me.links
+var twitter = me.links.social.twitter
+```
+
+Add to script block:
+
+```js
+const { twitter, facebook } = me.links.social;
+```
+
+```js
+const { twitter: twit } = me.links.social;
+```
+
+This is an example of [destructing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) - a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables. We will be using it extensively in this class.
+
+Create a multi-line template string and display it on the page:
+
+```js
+const content = `
+<div>
+  <h2>
+    ${me.first} ${me.last}
+  </h2>
+    <span>${me.job}</span>
+    <p>Twitter: ${twitter}</p>
+    <p>Facebook: ${facebook}</p>
+</div>
+`;
+document.body.innerHTML = content;
+```
+
+---
+
+<!-- end aside  -->
+
+## React Compnent
 
 Here is another example of a standalone React component:
 
@@ -214,20 +266,18 @@ All modern front end systems employ a component architecture. Let's create a few
 In `App.js`:
 
 ```js
-function Pirate() {
-  return <p>Ahoy there!</p>;
-}
-```
+import React from 'react';
 
-And then use it:
-
-```js
 function App() {
   return <Pirate />;
 }
-```
 
-Ensure that the component is rendered in the browser.
+function Pirate() {
+  return <p>Ahoy there!</p>;
+}
+
+export default App;
+```
 
 Add a property (`prop`) to the Pirate component instance in `App.js`:
 
@@ -245,6 +295,12 @@ function Pirate(props) {
 }
 ```
 
+Note that we have to pass props to the Pirate function.
+
+## Calling a Function
+
+Create an array of pirate quotes and a randomize function that selects a random pirateCall: `pirateCalls[x]`
+
 ```js
 const pirateCalls = [
   'Aaarg, belay that!',
@@ -256,8 +312,36 @@ const randomize = () =>
   pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 ```
 
+And then call the function:
+
 ```js
- <Pirate tagline={randomize()} />
+function App() {
+  return <Pirate tagline={randomize()} />;
+}
+```
+
+E.g.:
+
+```js
+import React from 'react';
+
+const pirateCalls = [
+  'Aaarg, belay that!',
+  'Avast me hearties!',
+  'Shiver me timbers!',
+];
+const randomize = () =>
+  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+
+function App() {
+  return <Pirate tagline={randomize()} />;
+}
+
+function Pirate(props) {
+  return <p>{props.tagline}</p>;
+}
+
+export default App;
 ```
 
 Create a second component for the header:
@@ -273,6 +357,8 @@ function Header() {
 }
 ```
 
+Note the errors.
+
 Import the logo and some css for it:
 
 ```js
@@ -280,13 +366,15 @@ import './assets/css/Header.css';
 import logo from './assets/img/anchor.svg';
 ```
 
-And render it to the DOM:
+Note the errors.
+
+Render it to the DOM:
 
 ```js
 function App() {
   return (
     <div>
-      <Header title="Pirates!" />
+      <Header title="Pirate Database!" />
       <Pirate tagline="Ahoy from the Pirate Component" />
     </div>
   );
@@ -297,8 +385,8 @@ function App() {
 
 Convert the Header and Pirate component to standalone components.
 
-- Delete the Header and Pirate components from `App.js`.
-- Delete the imported css and logo
+- Comment out the Header and Pirate components from `App.js`.
+- Comment out the imported css and logo
 - Create a `components` folder in `src`.
 - Create `Pirate.js` in the new `components` folder.
 
@@ -392,7 +480,7 @@ function App() {
 export default App;
 ```
 
-Note the error `Adjacent JSX elements must be wrapped in an enclosing tag.`
+Again, note the error `Adjacent JSX elements must be wrapped in an enclosing tag.`
 
 Add div tags:
 
@@ -411,11 +499,20 @@ Note that when we have multiple lines we use `return( ... )` instead of just `re
 
 ## Rendering Multiple Components
 
+Import an array of sample pirates into App.js:
+
 ```js
 import piratesFile from './data/sample-pirates-array';
-
-{
-  piratesFile.map(pirate => <Pirate name={pirate.name} />);
+...
+function App() {
+  return (
+    <div>
+      <Header />
+      {piratesFile.map(pirate => (
+        <Pirate name={pirate.name} />
+      ))}
+    </div>
+  );
 }
 ```
 
@@ -431,21 +528,35 @@ Pirate.js:
   }
 ```
 
-Note the index error:
+Note the index error: "Each child in a list should have a unique "key" prop."
 
 ```js
-{
-  piratesFile.map((pirate, index) => <Pirate key={index} name={pirate.name} />);
+function App() {
+  return (
+    <div>
+      <Header />
+      {piratesFile.map((pirate, index) => (
+        <Pirate key={index} name={pirate.name} />
+      ))}
+    </div>
+  );
 }
 ```
 
 Build out the list.
 
-In App.js:
+In App.js, instead of passing just the name (`name={pirate.name}`) we will pass the entire pirate object (`pirate={pirate}`):
 
 ```js
-{
-  piratesFile.map((pirate, index) => <Pirate key={index} pirate={pirate} />);
+function App() {
+  return (
+    <div>
+      <Header />
+      {piratesFile.map((pirate, index) => (
+        <Pirate key={index} pirate={pirate} />
+      ))}
+    </div>
+  );
 }
 ```
 
@@ -480,7 +591,9 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-### WTF
+### Destructuring
+
+Tidy up our code a bit by destructuring the props to a new details variable.
 
 `const { details } = this.props;`
 
@@ -575,7 +688,7 @@ Examine the current application's component structure (nesting).
 
 ```js
 const handleClick = () => alert('whoa');
-<button onClick={handleClick}>Click Me!</button>
+<button onClick={handleClick}>Click Me!</button>;
 ```
 
 Add an event:
@@ -650,14 +763,14 @@ In `AddPirateForm` create a method on the class:
 createPirate(e) {
   console.log('making a pirate')
 }
-``` 
+```
 
 ```js
 createPirate(e) {
   e.preventDefault();
   console.log('making a pirate')
 }
-``` 
+```
 
 E.g.:
 
@@ -734,15 +847,15 @@ Create a `pirate` object in `AddPirateForm`'s `createPirate` function.
 `AddPirateForm.js`:
 
 ```jsx
-  createPirate = event => {
-    event.preventDefault();
-    const pirate = {
-      name: this.nameRef.current.value,
-      vessel: this.vesselRef.current.value,
-      weapon: this.weaponRef.current.value,
-    };
-    console.log(pirate);
+createPirate = event => {
+  event.preventDefault();
+  const pirate = {
+    name: this.nameRef.current.value,
+    vessel: this.vesselRef.current.value,
+    weapon: this.weaponRef.current.value,
   };
+  console.log(pirate);
+};
 ```
 
 Test by entering a pirate in the form and examining the browser console.
@@ -812,16 +925,16 @@ In React tools, find `App` note the `state` entry.
 And add a method to `App.js` using the date method to create a unique identifier:
 
 ```js
-  addPirate = pirate => {
-    console.log(pirate);
-    //take a copy of the current state and put it into pirates var
-    const pirates = [...this.state.pirates];
-    console.log(pirates);
-    pirates.unshift(pirate);
-    console.log(pirates);
-    //set state pirates with var pirates
-    this.setState({ pirates: pirates });
-  };
+addPirate = pirate => {
+  console.log(pirate);
+  //take a copy of the current state and put it into pirates var
+  const pirates = [...this.state.pirates];
+  console.log(pirates);
+  pirates.unshift(pirate);
+  console.log(pirates);
+  //set state pirates with var pirates
+  this.setState({ pirates: pirates });
+};
 ```
 
 (For spread operator see: `reference / spread-operator.html`.)
@@ -857,16 +970,16 @@ Our `createPirate` function in `AddPirateForm` is called and works but it does n
 We have an `addPirate` function in App.js:
 
 ```js
-  addPirate = pirate => {
-    console.log(pirate);
-    //take a copy of the current state and put it into pirates var
-    const pirates = [...this.state.pirates];
-    console.log(pirates);
-    pirates.push(pirate);
-    console.log(pirates);
-    //set state pirates with var pirates
-    this.setState({ pirates: pirates });
-  };
+addPirate = pirate => {
+  console.log(pirate);
+  //take a copy of the current state and put it into pirates var
+  const pirates = [...this.state.pirates];
+  console.log(pirates);
+  pirates.push(pirate);
+  console.log(pirates);
+  //set state pirates with var pirates
+  this.setState({ pirates: pirates });
+};
 ```
 
 Unlike the `createPirate` function, it stores the new pirate in `state`. Test with `App` in React tool:
@@ -928,15 +1041,15 @@ In `AddPirateForm`:
 `this.props.addPirate(pirate);`
 
 ```js
-  createPirate = event => {
-    event.preventDefault();
-    const pirate = {
-      name: this.nameRef.current.value,
-      vessel: this.vesselRef.current.value,
-      weapon: this.weaponRef.current.value,
-    };
-    this.props.addPirate(pirate);
+createPirate = event => {
+  event.preventDefault();
+  const pirate = {
+    name: this.nameRef.current.value,
+    vessel: this.vesselRef.current.value,
+    weapon: this.weaponRef.current.value,
   };
+  this.props.addPirate(pirate);
+};
 ```
 
 We should now be able to create a pirate using the form and see it in the browser.
@@ -952,16 +1065,16 @@ Empty the form by assigning a [ref](https://facebook.github.io/react/docs/refs-a
 - `AddPirateFrom`: `event.currentTarget.reset();`
 
 ```js
-  createPirate = event => {
-    event.preventDefault();
-    const pirate = {
-      name: this.nameRef.current.value,
-      vessel: this.vesselRef.current.value,
-      weapon: this.weaponRef.current.value,
-    };
-    this.props.addPirate(pirate);
-    event.currentTarget.reset();
+createPirate = event => {
+  event.preventDefault();
+  const pirate = {
+    name: this.nameRef.current.value,
+    vessel: this.vesselRef.current.value,
+    weapon: this.weaponRef.current.value,
   };
+  this.props.addPirate(pirate);
+  event.currentTarget.reset();
+};
 ```
 
 and `this.pirateForm.reset();`:
@@ -1281,13 +1394,13 @@ Test the form. -->
 Add a new method to `App.js`:
 
 ```js
-  removePirate = key => {
-    console.log(key);
-    const pirates = [...this.state.pirates];
-    pirates.splice(key, 1);
-    console.log(pirates);
-    this.setState({ pirates: pirates });
-  };
+removePirate = key => {
+  console.log(key);
+  const pirates = [...this.state.pirates];
+  pirates.splice(key, 1);
+  console.log(pirates);
+  this.setState({ pirates: pirates });
+};
 ```
 
 <!-- Bind it to the constructor in App:
@@ -1309,13 +1422,11 @@ Pass the prop to `Pirate` from App using `removePirate = {this.removePirate}`:
 - `App.js`:
 
 ```js
-{this.state.pirates.map((pirate, index) => (
-  <Pirate
-    key={index}
-    pirate={pirate}
-    removePirate={this.removePirate}
-  />
-))}
+{
+  this.state.pirates.map((pirate, index) => (
+    <Pirate key={index} pirate={pirate} removePirate={this.removePirate} />
+  ));
+}
 ```
 
 <!-- We could also pass the prop to `PirateForm` from `App`:
@@ -1347,9 +1458,7 @@ class Pirate extends React.Component {
         <ul>
           <li>
             <img src={avatar} alt="pirate" />
-            <button onClick={() => this.props.removePirate(0)}>
-              X
-            </button>
+            <button onClick={() => this.props.removePirate(0)}>X</button>
           </li>
           <li>
             <h3>{this.props.pirate.name}</h3>
