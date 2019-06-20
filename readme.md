@@ -25,6 +25,7 @@ Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld
   - [Removing a Pirate](#Removing-a-Pirate)
   - [Build a Site](#Build-a-Site)
   - [Notes](#Notes)
+    - [Destructuring](#Destructuring)
     - [Prototypal inheritance](#Prototypal-inheritance)
     - [Example: Array](#Example-Array)
     - [Classes](#Classes)
@@ -1227,6 +1228,46 @@ npm run build
 ```
 
 ## Notes
+
+### Destructuring
+
+```js
+import React from 'react';
+import '../assets/css/Pirate.css';
+import avatar from '../assets/img/avatar.png';
+
+class Pirate extends React.Component {
+  render() {
+    // const details = this.props;
+    const { name, year, weapon, vessel, desc } = this.props.pirate;
+    return (
+      <div className="pirate">
+        <ul>
+          <li>
+            <img src={avatar} alt="pirate" />
+            <h3> {name}</h3>
+            <p>Died: {year}</p>
+            <p>Favorite weapon: {weapon}</p>
+            <p>Sailed on: {vessel}</p>
+          </li>
+          <li>
+            <p className="desc">{desc}</p>
+
+            <button
+              className="btn-remove"
+              onClick={() => this.props.removePirate(this.props.index)}
+            >
+              Remove ☠️
+            </button>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+
+export default Pirate;
+```
 
 ### Prototypal inheritance
 
