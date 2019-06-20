@@ -1222,9 +1222,13 @@ In `Pirate.js`:
 
 ## Build a Site
 
+Add an entry to `package.json`:
+
 ```js
-homepage: '.';
+"homepage": ".",
 ```
+
+Then in the terminal run:
 
 ```sh
 npm run build
