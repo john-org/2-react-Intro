@@ -649,7 +649,7 @@ function App() {
 
 ### The React Developer Tool
 
-Install the [React Developer Tools](https://chrome.google.com/webstore/search/react) in Chrome and inspect:
+Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) in Chrome and inspect:
 
 - https://www.netflix.com/
 - https://www.codecademy.com/
