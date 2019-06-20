@@ -1216,7 +1216,7 @@ In `Pirate.js`:
 
 ```html
 <button onClick={() => this.props.removePirate(this.props.index)}>
-  X
+  Remove
 </button>
 ```
 
