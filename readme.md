@@ -21,6 +21,7 @@
     - [Passing a Function as a Prop](#Passing-a-Function-as-a-Prop)
   - [Resetting the Form](#Resetting-the-Form)
   - [Removing a Pirate](#Removing-a-Pirate)
+  - [Build a Site](#Build-a-Site)
   - [Notes](#Notes)
     - [Prototypal inheritance](#Prototypal-inheritance)
     - [Example: Array](#Example-Array)
@@ -1217,6 +1218,16 @@ In `Pirate.js`:
 <button onClick={() => this.props.removePirate(this.props.index)}>
   X
 </button>
+```
+
+## Build a Site
+
+```js
+homepage: '.';
+```
+
+```sh
+npm run build
 ```
 
 ## Notes
