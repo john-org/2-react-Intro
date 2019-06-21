@@ -24,8 +24,10 @@ Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld
   - [Resetting the Form](#Resetting-the-Form)
   - [Removing a Pirate](#Removing-a-Pirate)
   - [Build a Site](#Build-a-Site)
+  - [Adding Form Fields](#Adding-Form-Fields)
+  - [Destructuring](#Destructuring)
+  - [Persisting the data](#Persisting-the-data)
   - [Notes](#Notes)
-    - [Destructuring](#Destructuring)
     - [Prototypal inheritance](#Prototypal-inheritance)
     - [Example: Array](#Example-Array)
     - [Classes](#Classes)
@@ -822,10 +824,10 @@ class AddPirateForm extends React.Component {
   vesselRef = React.createRef();
   weaponRef = React.createRef();
 
-  createPirate(event) {
+  createPirate = event => {
     event.preventDefault();
     console.log('making a pirate');
-  }
+  };
 
   render() {
     return (
@@ -1227,9 +1229,77 @@ Then in the terminal run:
 npm run build
 ```
 
-## Notes
+## Adding Form Fields
 
-### Destructuring
+```js
+import React from 'react';
+import '../assets/css/AddPirateForm.css';
+
+class AddPirateForm extends React.Component {
+  nameRef = React.createRef();
+  vesselRef = React.createRef();
+  weaponRef = React.createRef();
+  yearRef = React.createRef();
+  descRef = React.createRef();
+
+  createPirate = event => {
+    event.preventDefault();
+    const pirate = {
+      name: this.nameRef.current.value,
+      vessel: this.vesselRef.current.value,
+      weapon: this.weaponRef.current.value,
+      year: this.yearRef.current.value,
+      desc: this.descRef.current.value,
+    };
+    this.props.addPirate(pirate);
+    event.currentTarget.reset();
+  };
+
+  render() {
+    return (
+      <>
+        <h3>Add a Pirate</h3>
+        <form onSubmit={this.createPirate}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Pirate name"
+            ref={this.nameRef}
+          />
+          <input
+            type="text"
+            name="vessel"
+            placeholder="Pirate vessel"
+            ref={this.vesselRef}
+          />
+          <input
+            type="text"
+            name="weapon"
+            placeholder="Pirate weapon"
+            ref={this.weaponRef}
+          />
+          <input
+            type="number"
+            name="year"
+            placeholder="Pirate year"
+            ref={this.yearRef}
+          />
+          <textarea
+            name="desc"
+            placeholder="Pirate description"
+            ref={this.descRef}
+          />
+          <button type="submit">Add Pirate</button>
+        </form>
+      </>
+    );
+  }
+}
+
+export default AddPirateForm;
+```
+
+## Destructuring
 
 ```js
 import React from 'react';
@@ -1238,7 +1308,6 @@ import avatar from '../assets/img/avatar.png';
 
 class Pirate extends React.Component {
   render() {
-    // const details = this.props;
     const { name, year, weapon, vessel, desc } = this.props.pirate;
     return (
       <div className="pirate">
@@ -1268,6 +1337,71 @@ class Pirate extends React.Component {
 
 export default Pirate;
 ```
+
+## Persisting the data
+
+```js
+componentDidMount() {
+  console.log('mounted');
+}
+```
+
+Base.js
+
+```js
+import Rebase from 're-base'; // mirrors state to FB
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+const config = {
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  authDomain: 'daniel-deverell-pirates.firebaseapp.com',
+  databaseURL: 'https://daniel-deverell-pirates.firebaseio.com',
+};
+
+const app = firebase.initializeApp(config);
+const base = Rebase.createClass(app.database());
+
+export { base };
+```
+
+App.js
+
+```js
+import base from './base';
+
+...
+
+  state = {
+    pirates: [],
+  };
+```
+
+```js
+
+  componentWillMount() {
+    this.ref = base.syncState(`pirates`, {
+      context: this,
+      state: 'pirates',
+      asArray: true,
+    });
+  }
+
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
+  }
+
+```
+
+Create a pirate.
+
+```js
+loadSamples = () => {
+  this.setState({ pirates: piratesFile });
+};
+```
+
+## Notes
 
 ### Prototypal inheritance
 
