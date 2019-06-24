@@ -1231,6 +1231,8 @@ npm run build
 
 ## Adding Form Fields
 
+In AddPirateForm.js:
+
 ```js
 import React from 'react';
 import '../assets/css/AddPirateForm.css';
@@ -1297,6 +1299,17 @@ class AddPirateForm extends React.Component {
 }
 
 export default AddPirateForm;
+```
+
+Edit CSS:
+
+```css
+textarea,
+input {
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
 ```
 
 ## Destructuring
@@ -1382,10 +1395,12 @@ export { base };
 Import it into App.js:
 
 ```js
-import base from './base';
+import {base} from './base';
+```
 
-...
+And reset the pirates state to an empty array:
 
+```js
   state = {
     pirates: [],
   };
@@ -1410,6 +1425,8 @@ Use the lifecycle methods to sync to the database in App.js:
 ```
 
 Create a pirate to test.
+
+Create a method in App.js:
 
 ```js
 loadSamples = () => {
