@@ -1301,6 +1301,10 @@ export default AddPirateForm;
 
 ## Destructuring
 
+`const { name, year, weapon, vessel, desc } = this.props.pirate;`
+
+Pirate.js:
+
 ```js
 import React from 'react';
 import '../assets/css/Pirate.css';
@@ -1340,13 +1344,23 @@ export default Pirate;
 
 ## Persisting the data
 
+Components have life cycles - they are created, updated and removed.
+
+React offers a number of so-called special [lifecycle methods](https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class) that can be used.
+
+Add this to App.js:
+
 ```js
 componentDidMount() {
   console.log('mounted');
 }
 ```
 
-Base.js
+We will use this to connect to a backend service called [Firebase](https://firebase.google.com)
+
+`npm install re-base firebase`
+
+Create base.js in `src`:
 
 ```js
 import Rebase from 're-base'; // mirrors state to FB
@@ -1365,7 +1379,7 @@ const base = Rebase.createClass(app.database());
 export { base };
 ```
 
-App.js
+Import it into App.js:
 
 ```js
 import base from './base';
@@ -1376,6 +1390,8 @@ import base from './base';
     pirates: [],
   };
 ```
+
+Use the lifecycle methods to sync to the database in App.js:
 
 ```js
 
@@ -1393,13 +1409,21 @@ import base from './base';
 
 ```
 
-Create a pirate.
+Create a pirate to test.
 
 ```js
 loadSamples = () => {
   this.setState({ pirates: piratesFile });
 };
 ```
+
+Create a button below the header in App.js:
+
+```html
+<button onClick={this.loadSamples}>Load Samples</button>
+```
+
+And test.
 
 ## Notes
 
