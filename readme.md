@@ -1371,7 +1371,7 @@ componentDidMount() {
 
 We will use this to connect to a backend service called [Firebase](https://firebase.google.com)
 
-`npm install re-base firebase`
+`npm install --save re-base firebase`
 
 Create base.js in `src`:
 
@@ -1381,7 +1381,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 const config = {
-  apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  apiKey: 'AIzaSyAHnKw63CUBAqSuCREgils_waYJ0qwpGiU',
   authDomain: 'daniel-deverell-pirates.firebaseapp.com',
   databaseURL: 'https://daniel-deverell-pirates.firebaseio.com',
 };
@@ -1395,15 +1395,15 @@ export { base };
 Import it into App.js:
 
 ```js
-import {base} from './base';
+import { base } from './base';
 ```
 
 And reset the pirates state to an empty array:
 
 ```js
-  state = {
-    pirates: [],
-  };
+state = {
+  pirates: [],
+};
 ```
 
 Use the lifecycle methods to sync to the database in App.js:
@@ -1436,7 +1436,7 @@ loadSamples = () => {
 
 Create a button below the header in App.js:
 
-```html
+```js
 <button onClick={this.loadSamples}>Load Samples</button>
 ```
 
