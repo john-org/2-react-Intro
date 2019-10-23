@@ -663,8 +663,8 @@ The Pirate functional component:
 function Pirate(props) {
   const { name, year, weapon, vessel, desc } = props.pirate;
   return (
-    <div className='pirate'>
-      <div className='pirate-data'>
+    <main>
+      <aside className='pirate-data'>
         <ul>
           <li>
             <img src={avatar} alt='pirate' />
@@ -676,9 +676,9 @@ function Pirate(props) {
           <li>Favorite weapon: {weapon}</li>
           <li>Sailed on: {vessel}</li>
         </ul>
-      </div>
-      <p>{desc}</p>
-    </div>
+      </aside>
+      <article>{desc}</article>
+    </main>
   );
 }
 ```
