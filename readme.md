@@ -2,184 +2,49 @@
 
 Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld/intermediate/pirates-build/)
 
-- [React Intro](#React-Intro)
-  - [Homework](#Homework)
-  - [The Spread Operator](#The-Spread-Operator)
-  - [Objects and Destructuring](#Objects-and-Destructuring)
-  - [React Component](#React-Component)
-  - [Creating a React Project](#Creating-a-React-Project)
-    - [Examining the Project Structure](#Examining-the-Project-Structure)
-    - [JSX](#JSX)
-    - [Project Prep](#Project-Prep)
-    - [Components](#Components)
-  - [Calling a Function](#Calling-a-Function)
-  - [Importing and Exporting Components](#Importing-and-Exporting-Components)
-  - [Header Functional Component](#Header-Functional-Component)
-  - [Rendering Multiple Components](#Rendering-Multiple-Components)
-  - [Additional Components](#Additional-Components)
-  - [The React Developer Tool](#The-React-Developer-Tool)
-  - [Adding Events](#Adding-Events)
-  - [State](#State)
-    - [Passing a Function as a Prop](#Passing-a-Function-as-a-Prop)
-  - [Resetting the Form](#Resetting-the-Form)
-  - [Removing a Pirate](#Removing-a-Pirate)
-  - [Build a Site](#Build-a-Site)
-  - [Adding Form Fields](#Adding-Form-Fields)
-  - [Destructuring](#Destructuring)
-  - [Persisting the data](#Persisting-the-data)
-  - [Notes](#Notes)
-    - [Prototypal inheritance](#Prototypal-inheritance)
-    - [Example: Array](#Example-Array)
-    - [Classes](#Classes)
-    - [Static Methods](#Static-Methods)
-    - [Static methods on an Array](#Static-methods-on-an-Array)
-    - [Getters and Setters](#Getters-and-Setters)
-    - [Extending Classes](#Extending-Classes)
-      - [Super and Extending Classes](#Super-and-Extending-Classes)
-    - [Extending Arrays](#Extending-Arrays)
-  - [Review For... In Loops](#Review-For-In-Loops)
+- [React Intro](#react-intro)
+  - [Homework](#homework)
+  - [Create React App](#create-react-app)
+    - [Examining the Project Structure](#examining-the-project-structure)
+    - [JSX](#jsx)
+    - [Project Prep](#project-prep)
+    - [Components](#components)
+  - [Calling a Function](#calling-a-function)
+  - [Importing and Exporting Components](#importing-and-exporting-components)
+  - [Header Functional Component](#header-functional-component)
+  - [Rendering Multiple Components](#rendering-multiple-components)
+  - [Additional Components](#additional-components)
+  - [The React Developer Tool](#the-react-developer-tool)
+  - [Adding Events](#adding-events)
+  - [State](#state)
+    - [Passing a Function as a Prop](#passing-a-function-as-a-prop)
+  - [Resetting the Form](#resetting-the-form)
+  - [Removing a Pirate](#removing-a-pirate)
+  - [Build a Site](#build-a-site)
+  - [Adding Form Fields](#adding-form-fields)
+  - [Destructuring](#destructuring)
+  - [Persisting the data](#persisting-the-data)
+  - [Notes](#notes)
+    - [Prototypal inheritance](#prototypal-inheritance)
+    - [Example: Array](#example-array)
+    - [Classes](#classes)
+    - [Static Methods](#static-methods)
+    - [Static methods on an Array](#static-methods-on-an-array)
+    - [Getters and Setters](#getters-and-setters)
+    - [Extending Classes](#extending-classes)
+      - [Super and Extending Classes](#super-and-extending-classes)
+    - [Extending Arrays](#extending-arrays)
+  - [Review For... In Loops](#review-for-in-loops)
 
 ## Homework
+
+Continue working through the Free Code Camp exercises. 
 
 Review the notes below, step through them again to recreate the Pirates project on your own. If you need a completed version for reference see the branch `summer2019-done`.
 
 Add date and description fields to the form.
 
----
-
-## The Spread Operator
-
-Note the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `{...props}` to "spread" the props into the element.
-
-See `spread-pizzas.html` and `spread-jumping-letters.html` in `reference/speards`.
-
-```js
-const heading = document.querySelector('.jump');
-heading.innerHTML = sparanWrap(heading.textContent);
-
-function sparanWrap(word) {
-  var elem = '';
-  var wordArr = [...word];
-  wordArr.forEach(letter => (elem += `<span>${letter}</span>`));
-  return elem;
-}
-```
-
----
-
-<!-- end aside -->
-
----
-
-## Objects and Destructuring
-
-Open `objects.html` from `reference/objects` in a browser tab.
-
-Examine the sample object in the browser console:
-
-```sh
-last
-me
-me.links
-var twitter = me.links.social.twitter
-```
-
-Add to script block:
-
-```js
-const { twitter, facebook } = me.links.social;
-```
-
-```js
-const { twitter: twit, facebook: fb } = me.links.social;
-```
-
-This is an example of [destructing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) - a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
-
-Create a multi-line template string and display it on the page:
-
-```js
-const content = `
-<div>
-  <h2>
-    ${me.first} ${me.last}
-  </h2>
-    <span>${me.job}</span>
-    <p>Twitter: ${twit}</p>
-    <p>Facebook: ${fb}</p>
-</div>
-`;
-document.body.innerHTML = content;
-```
-
----
-
-<!-- end aside  -->
-
-## React Component
-
-Here are two examples of a standalone React component:
-
-```html
-<html>
-  <head>
-    <meta charset="utf-8" />
-
-    <title>Hello React!</title>
-
-    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
-  </head>
-
-  <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-      function App() {
-        return <h1>Hello world!</h1>;
-      }
-
-      ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-  </body>
-</html>
-```
-
-And:
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-
-    <title>Hello React!</title>
-
-    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
-  </head>
-
-  <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-      class App extends React.Component {
-        render() {
-          return <h1>Hello world!</h1>;
-        }
-      }
-
-      ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-  </body>
-</html>
-```
-
-The first is a functional component and the second a class component. We will be working with both.
-
-## Creating a React Project
+## Create React App
 
 Creating a React project requires a lot of tooling and setup. Fortunately Facebook has created a bootstrapping system called [Create React App](https://facebook.github.io/create-react-app/)
 
@@ -214,7 +79,7 @@ Open `index.js` from `src`.
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-Open `App.js` (note the capital "A" - this is the default React component) from `src`.
+Open `App.js` (note the capital "A") from `src`.
 
 This is the only React component in this starter project.
 
@@ -224,20 +89,20 @@ Instead of using a script tag, this component imports React from the node module
 import React from 'react';
 ```
 
-`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller pieces. Unfortunately, this is not supported in browsers so BabelJS is required and is working under the hood in our project.
+`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller pieces. ES6 modules are not natively supported in browsers so a "bundler" is required. [Webpack](https://webpack.js.org/) has been installed by Create React App and is working under the hood in our project.
 
 The main body of the component is a function that returns JSX (_not_ HTML).
 
 ### JSX
 
-Recall the JSX requirements:
+JSX requirements and features:
 
 1. `src={logo}` - JSX curly braces allow the use of JS expressions
 2. `className="App-header"` - `class` is a reserved word in JavaScript
 3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
 4. everything is nested in a single tag
 
-Commenting code in React looks a little different from native JavaScript and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
+Commenting code in JSX looks a little different from regular JavaScript comments and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
 
 `{/* <img src={logo} className="logo" alt="logo" /> */}`
 
@@ -245,7 +110,7 @@ Save and note the hot reloading.
 
 ### Project Prep
 
-Move the `data` and `assets` folders from `reference` to the `src` directory in `pirates`.
+IMPORTANT - Move the `data` and `assets` folders from `reference` to the `src` directory in `pirates`.
 
 Import our fonts and clean up the default html template.
 
@@ -271,7 +136,7 @@ Copy the material below and overwrite `public/index.html`:
 
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
 
-    <title>React App</title>
+    <title>Pirates!</title>
   </head>
   <body>
     <div id="root"></div>
@@ -281,9 +146,20 @@ Copy the material below and overwrite `public/index.html`:
 
 ### Components
 
-All modern front end systems employ a component architecture. Let's create a few.
+All modern front end systems employ a component architecture. 
 
-Create and use a Pirate component in `App.js`. Copy and overwrite App.js with the following:
+Add the following to `index.js`:
+
+```js
+function Pirates() {
+  return <p>Ahoy there!</p>;
+}
+
+```
+
+Delete and reset index.js to its original state.
+
+Create and use the Pirate component in `App.js`. Copy and overwrite App.js with the following:
 
 ```js
 import React from 'react';
@@ -298,6 +174,8 @@ function Pirate() {
 
 export default App;
 ```
+
+Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) for Chrome or Firefox and inspect the components. 
 
 Add a property (`prop`) to the Pirate component instance in `App.js`:
 
@@ -325,6 +203,14 @@ function Pirate() {
 }
 ```
 
+However we can [destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) the tagline variable from props:
+
+```js
+function Pirate({ tagline }) {
+  return <p>{tagline}</p>;
+}
+```
+
 The fact that you can pass props to a component makes them very powerful.
 
 ```js
@@ -346,7 +232,7 @@ function Header() {
   return (
     <div className="header">
       <img src={logo} className="logo" alt="logo" />
-      <h1>{props.title}</h1>
+      <h1>FooBar</h1>
     </div>
   );
 }
@@ -361,9 +247,7 @@ import './assets/css/Header.css';
 import logo from './assets/img/anchor.svg';
 ```
 
-Note the errors.
-
-Render it to the DOM:
+Render it to the DOM via App while passing it a prop:
 
 ```js
 function App() {
@@ -376,9 +260,37 @@ function App() {
 }
 ```
 
+Use the title prop:
+
+```js
+function Header(props) {
+  return (
+    <div className='header'>
+      <img src={logo} className='logo' alt='logo' />
+      <h1>{props.title}</h1>
+    </div>
+  );
+}
+```
+
+Destructure it:
+
+```js
+function Header({ title }) {
+  return (
+    <div className='header'>
+      <img src={logo} className='logo' alt='logo' />
+      <h1>{title}</h1>
+    </div>
+  );
+}
+```
+
+Inspect the output using the React Developer Tool.
+
 ## Calling a Function
 
-Create an array of pirate quotes and a randomize function that selects a random pirateCall: `pirateCalls[x]`
+Create an array of pirate quotes and a randomize function that selects a random pirateCall: 
 
 ```js
 const pirateCalls = [
@@ -387,8 +299,10 @@ const pirateCalls = [
   'Shiver me timbers!',
 ];
 
-const randomize = () =>
-  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+function randomize() {
+  return pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+}
+
 ```
 
 And then call the function:
@@ -402,6 +316,15 @@ function App() {
     </div>
   );
 }
+```
+
+Note: it would be more common to see an arrow functionn being employed. 
+
+Change the randomize function:
+
+```js
+const randomize = () =>
+  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 ```
 
 ## Importing and Exporting Components
@@ -547,6 +470,21 @@ function App() {
 }
 ```
 
+Exercise: Convert the above to use an arrow function.
+
+```js
+function App() {
+  return (
+    <div>
+      <Header title={randomize()} />
+      {piratesFile.map(pirate => (
+        <Pirate tagline={randomize()} />
+      ))}
+    </div>
+  );
+}
+```
+
 Let's use some data from the piratesFile instead:
 
 ```js
@@ -576,7 +514,7 @@ class Pirate extends React.Component {
 }
 ```
 
-Note the index error: "Each child in a list should have a unique "key" prop."
+Note the warning: "Each child in a list should have a unique "key" prop."
 
 ```js
 function App() {
@@ -608,7 +546,7 @@ function App() {
 }
 ```
 
-In Pirate.js
+In Pirate.js we import an avatar
 
 ```js
 import React from 'react';
@@ -639,7 +577,129 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-Make any desired css adjustments to the imported pirates.css file.
+Destructuring in a class component:
+
+```js
+class Pirate extends React.Component {
+  render() {
+    const { name, year, weapon, vessel, desc } = this.props.pirate;
+    return (
+      <div className='pirate'>
+        <ul>
+          <li>
+            <img src={avatar} alt='pirate' />
+            <h3>{name}</h3>
+            <p>Died: {year}</p>
+            <p>Favorite weapon: {weapon}</p>
+            <p>Sailed on: {vessel}</p>
+          </li>
+          <li>
+            <p>{desc}</p>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+```
+
+Compare the functional component below with the class component:
+
+```js
+function Pirate(props) {
+  const { name, year, weapon, vessel, desc } = props.pirate;
+  return (
+    <div className='pirate'>
+      <ul>
+        <li>
+          <img src={avatar} alt='pirate' />
+          <h3>{name}</h3>
+          <p>Died: {year}</p>
+          <p>Favorite weapon: {weapon}</p>
+          <p>Sailed on: {vessel}</p>
+        </li>
+        <li>
+          <p>{desc}</p>
+        </li>
+      </ul>
+    </div>
+  );
+}
+```
+
+Examine the HTML structure and the CSS for the Pirate components. Use CSS grid instead of flexbox alongside a improved HTML structure.
+
+Pirate.css:
+
+```css
+main {
+  font-family: 'Trade Winds', cursive;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 1.5rem;
+  align-items: center;
+  border-bottom: 1px dotted #007eb6;
+}
+
+main ul {
+  list-style: none;
+  padding: 0;
+}
+
+article {
+  line-height: 1.8;
+}
+
+section {
+  margin: 0 2rem;
+}
+
+
+```
+
+The Pirate functional component:
+
+```js
+function Pirate(props) {
+  const { name, year, weapon, vessel, desc } = props.pirate;
+  return (
+    <div className='pirate'>
+      <div className='pirate-data'>
+        <ul>
+          <li>
+            <img src={avatar} alt='pirate' />
+          </li>
+          <li>
+            <h3>{name}</h3>
+          </li>
+          <li>Died: {year}</li>
+          <li>Favorite weapon: {weapon}</li>
+          <li>Sailed on: {vessel}</li>
+        </ul>
+      </div>
+      <p>{desc}</p>
+    </div>
+  );
+}
+```
+
+And a new section tag in App.js:
+
+```js
+function App() {
+  return (
+    <div>
+      <Header title={randomize()} />
+      {piratesFile.map((pirate, index) => (
+        <section>
+          <Pirate key={index} pirate={pirate} />
+        </section>
+      ))}
+    </div>
+  );
+}
+```
+
 
 ## Additional Components
 
