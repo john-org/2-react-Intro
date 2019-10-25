@@ -2,40 +2,6 @@
 
 Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld/intermediate/pirates-build/)
 
-- [React Intro](#react-intro)
-  - [Homework](#homework)
-  - [Create React App](#create-react-app)
-    - [Examining the Project Structure](#examining-the-project-structure)
-    - [JSX](#jsx)
-    - [Project Prep](#project-prep)
-    - [Components](#components)
-  - [Calling a Function](#calling-a-function)
-  - [Importing and Exporting Components](#importing-and-exporting-components)
-  - [Header Functional Component](#header-functional-component)
-  - [Rendering Multiple Components](#rendering-multiple-components)
-  - [Additional Components](#additional-components)
-  - [The React Developer Tool](#the-react-developer-tool)
-  - [Adding Events](#adding-events)
-  - [State](#state)
-    - [Passing a Function as a Prop](#passing-a-function-as-a-prop)
-  - [Resetting the Form](#resetting-the-form)
-  - [Removing a Pirate](#removing-a-pirate)
-  - [Build a Site](#build-a-site)
-  - [Adding Form Fields](#adding-form-fields)
-  - [Destructuring](#destructuring)
-  - [Persisting the data](#persisting-the-data)
-  - [Notes](#notes)
-    - [Prototypal inheritance](#prototypal-inheritance)
-    - [Example: Array](#example-array)
-    - [Classes](#classes)
-    - [Static Methods](#static-methods)
-    - [Static methods on an Array](#static-methods-on-an-array)
-    - [Getters and Setters](#getters-and-setters)
-    - [Extending Classes](#extending-classes)
-      - [Super and Extending Classes](#super-and-extending-classes)
-    - [Extending Arrays](#extending-arrays)
-  - [Review For... In Loops](#review-for-in-loops)
-
 ## Homework
 
 Continue working through the Free Code Camp exercises. 
@@ -340,7 +306,6 @@ In `src/components/Pirate.js`:
 
 ```js
 import React from 'react';
-
 import '../assets/css/Pirate.css';
 
 function Pirate(props) {
@@ -387,6 +352,14 @@ Convert the Pirate component into a class component:
 ```js
 import React from 'react';
 import '../assets/css/Pirate.css';
+
+// function Pirate(props) {
+//   return (
+//     <div className="pirate">
+//       <p>{props.tagline}</p>
+//     </div>
+//   );
+// }
 
 class Pirate extends React.Component {
   render() {
@@ -1529,21 +1502,6 @@ and a car with properties.
 
 Prototypal inheritance - methods on the original constructor will be inherited.
 
-### Example: Array
-
-Create an array:
-
-```sh
-> const names = ['John', 'Henry']
-```
-
-Examine the Array methods
-
-```sh
-> names.join(', ')
-> names.pop()
-```
-
 Add a prototype:
 
 ```js
@@ -1627,11 +1585,11 @@ static info() {
 
 Inspect the expo prototype.
 
-A static method is similar to `Array.of` - in that it is not inherited.
+<!-- A static method is similar to `Array.of` - in that it is not inherited. -->
 
-### Static methods on an Array
+<!-- ### Static methods on an Array -->
 
-`Array.of` and the spread operator:
+<!-- `Array.of` and the spread operator:
 
 [Emmet](https://docs.emmet.io/abbreviations/syntax/) (ctrl-e):
 
@@ -1649,7 +1607,7 @@ But `.of` is not inerited
 ```sh
 > numbers = [6,7,8,9]
 > numbers.of(1,2,3,4)
-```
+``` -->
 
 A static method is applied to Cars only:
 
@@ -1691,6 +1649,14 @@ get nicknames() {
 
 ```sh
 > expo.nicknames
+```
+
+or
+
+```js
+  get description() {
+    return `${this.model} is a ${this.make} with the nickname "${this.nick}."`;
+  }
 ```
 
 ### Extending Classes
@@ -1791,7 +1757,7 @@ Make our own classes modeled after Array.
 Start off with an array with a property:
 
 ```js
-const movies = new MovieCollection(
+const favMovies = new MovieCollection(
   'My Favorite Movies',
   { name: 'Bee Movie', stars: 10 },
   { name: 'Star Wars Trek', stars: 1 },
@@ -1815,11 +1781,11 @@ class MovieCollection extends Array {
 Super calls the Array prototype with a spread operator.
 
 ```sh
-> movies[4]
-> movies.name
+> favMovies[0]
+> favMovies.name
 ```
 
-We have an Array that also has properties (possible because in JS, Arrays are objects):
+We have an Array that also has properties (possible because in JS, Arrays are objects), e.g.:
 
 ```sh
 > typeof [1,2]
@@ -1833,7 +1799,7 @@ add(movie) {
 }
 ```
 
-## Review For... In Loops
+## for... In Loops
 
 A `for...in` loop is a modified version of a for loop that you can use to loop through objects.
 
@@ -1842,15 +1808,17 @@ The first part, `key`, is a variable that gets assigned to the object key on eac
 `for... in`:
 
 ```sh
-> for (const movie in movies){ console.log(movie) }
+> for (const movie in favMovies){ console.log(movie) }
 ```
 
 Returns the key _and_ the name property.
 
-Also useful will be `for... of` which returns only the array:
+## for... of Loops
+
+Also useful will be `for... of` which returns only the array portion:
 
 ```sh
-> for (const movie of movies){ console.log(movie) }
+> for (const movie of favMovies){ console.log(movie) }
 ```
 
 We get the object (not the key) and the property (`name`) is not shown.
@@ -1858,7 +1826,7 @@ We get the object (not the key) and the property (`name`) is not shown.
 N.B. for of loops skip over the properties.
 
 ```sh
-> movies.topRated()
+> favMovies.topRated()
 ```
 
 See `topRated()`:
@@ -1876,19 +1844,20 @@ topRated() {
 ```
 
 ```sh
-> console.table(movies.topRated())
+> console.table(favMovies.topRated())
 ```
 
 Using the `limit`:
 
 ```sh
-> console.table(movies.topRated(2))
+> console.table(favMovies.topRated(2))
 ```
 
-If you just want the keys:
+If you just want the keys, values:
 
 ```sh
-> Object.keys(movies)
+> Object.keys(favMovies)
+> Object.values(favMovies)
 ```
 
 We will be using this with React.
