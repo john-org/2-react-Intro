@@ -399,13 +399,15 @@ function Header(props) {
 export default Header;
 ```
 
-Import `Header.js` into `App.js` and add it to `App.js`:
+Import `Header.js` into `App.js`:
 
 ```js
 import React from 'react';
 import Pirate from './components/Pirate';
 import Header from './components/Header';
 ```
+
+And add it to `App`:
 
 ```js
 function App() {
@@ -419,6 +421,8 @@ function App() {
 ```
 
 Note that when we have multiple lines we use `return( ... )` instead of just `return ...` and we _must_ have all items inside an enclosing element.
+
+# fall2019 Start Here
 
 ## Rendering Multiple Components
 
@@ -458,7 +462,7 @@ function App() {
 }
 ```
 
-Let's use some data from the piratesFile instead:
+Let's pass some data from the piratesFile as an additional property:
 
 ```js
 function App() {
@@ -466,14 +470,14 @@ function App() {
     <div>
       <Header title={randomize()} />
       {piratesFile.map(pirate => (
-        <Pirate name={pirate.name} />
+        <Pirate tagline={randomize()} name={pirate.name} />
       ))}
     </div>
   );
 }
 ```
 
-In `Pirate.js`:
+In `Pirate.js` we access the data via props:
 
 ```js
 class Pirate extends React.Component {
@@ -481,6 +485,7 @@ class Pirate extends React.Component {
     return (
       <div className="pirate">
         <p>{this.props.name}</p>
+        <p>Favorite saying: {this.props.tagline}</p>
       </div>
     );
   }
@@ -495,12 +500,50 @@ function App() {
     <div>
       <Header title={randomize()} />
       {piratesFile.map((pirate, index) => (
-        <Pirate key={index} name={pirate.name} />
+        <Pirate 
+        key={index} 
+        tagline={randomize()} 
+        name={pirate.name} />
       ))}
     </div>
   );
 }
 ```
+
+Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html) documentation.
+
+### Demo
+
+```js
+const numbers = [1, 2, 3, 4, 5];
+
+const listItems = numbers.map(number => <li>{number}</li>);
+
+const randomize = () =>
+  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+
+function App() {
+  return (
+    <div>
+      <Header title={randomize()} />
+      <ul>{listItems}</ul>
+      {piratesFile.map((pirate, index) => (
+        <Pirate key={index} tagline={randomize()} name={pirate.name} />
+      ))}
+    </div>
+  );
+}
+```
+
+The numbers list needs a key:
+
+`const listItems = numbers.map(number => <li key={number}>{number}</li>);`
+
+I don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues with component state. 
+
+Add `id: 1,` with incrememnting to each of the items in the array and use them:
+
+`<Pirate key={pirate.id} tagline={randomize()} name={pirate.name} />`
 
 Build out the list.
 
@@ -512,14 +555,14 @@ function App() {
     <div>
       <Header title={randomize()} />
       {piratesFile.map((pirate, index) => (
-        <Pirate key={index} pirate={pirate} />
+        <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
       ))}
     </div>
   );
 }
 ```
 
-In Pirate.js we import an avatar
+Import an avatar in Pirate.js:
 
 ```js
 import React from 'react';
@@ -539,6 +582,7 @@ class Pirate extends React.Component {
             <p>Sailed on: {this.props.pirate.vessel}</p>
           </li>
           <li>
+            <h2>"{this.props.tagline}"</h2>
             <p>{this.props.pirate.desc}</p>
           </li>
         </ul>
@@ -550,23 +594,24 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-Destructuring in a class component:
+Destructure the variables from props:
 
 ```js
 class Pirate extends React.Component {
   render() {
     const { name, year, weapon, vessel, desc } = this.props.pirate;
     return (
-      <div className='pirate'>
+      <div className="pirate">
         <ul>
           <li>
-            <img src={avatar} alt='pirate' />
+            <img src={avatar} alt="pirate" />
             <h3>{name}</h3>
             <p>Died: {year}</p>
             <p>Favorite weapon: {weapon}</p>
             <p>Sailed on: {vessel}</p>
           </li>
           <li>
+            <h2>"{this.props.tagline}"</h2>
             <p>{desc}</p>
           </li>
         </ul>
@@ -576,22 +621,22 @@ class Pirate extends React.Component {
 }
 ```
 
-Compare the functional component below with the class component:
+Comment out the class component and rewrite the functional component to mirror the class component:
 
 ```js
-function Pirate(props) {
-  const { name, year, weapon, vessel, desc } = props.pirate;
+function Pirate({ tagline, pirate: { desc, name, year, weapon, vessel } }) {
   return (
-    <div className='pirate'>
+    <div className="pirate">
       <ul>
         <li>
-          <img src={avatar} alt='pirate' />
+          <img src={avatar} alt="pirate" />
           <h3>{name}</h3>
           <p>Died: {year}</p>
           <p>Favorite weapon: {weapon}</p>
           <p>Sailed on: {vessel}</p>
         </li>
         <li>
+          <h2>"{tagline}"</h2>
           <p>{desc}</p>
         </li>
       </ul>
@@ -627,20 +672,19 @@ section {
   margin: 0 2rem;
 }
 
-
 ```
 
-The Pirate functional component:
+Alter the HTML around the Pirate functional component to conform to the CSS above:
 
 ```js
 function Pirate(props) {
   const { name, year, weapon, vessel, desc } = props.pirate;
   return (
     <main>
-      <aside className='pirate-data'>
+      <aside className="pirate-data">
         <ul>
           <li>
-            <img src={avatar} alt='pirate' />
+            <img src={avatar} alt="pirate" />
           </li>
           <li>
             <h3>{name}</h3>
@@ -650,13 +694,16 @@ function Pirate(props) {
           <li>Sailed on: {vessel}</li>
         </ul>
       </aside>
-      <article>{desc}</article>
+      <article>
+        <h2>"{tagline}"</h2>
+        <p>{desc}</p>
+      </article>
     </main>
   );
 }
 ```
 
-And a new section tag in App.js:
+And a new section tag in App.js to conform to the CSS:
 
 ```js
 function App() {
@@ -665,14 +712,13 @@ function App() {
       <Header title={randomize()} />
       {piratesFile.map((pirate, index) => (
         <section>
-          <Pirate key={index} pirate={pirate} />
+          <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
         </section>
       ))}
     </div>
   );
 }
 ```
-
 
 ## Additional Components
 
