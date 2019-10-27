@@ -1076,20 +1076,20 @@ Test by entering a pirate in the form and examining the browser console.
 
 State is data at a particular moment in time. It’s the current “state” of your data.
 
-Today’s more popular JavaScript frameworks, including React and Vue, use state plus components to make managing the UI easier.
+JavaScript frameworks, including React, Angular and Vue, use state _and_ components to make managing the UI easier.
 
-With this approach, instead of targeting specific elements in the DOM and adjusting a class here or a style there, you treat your data, or state, as the single source of truth.
+Instead of using vanilla JS to target specific elements in the DOM and adjust a class or a style, you treat your data, or state, as the single source of truth.
 
-When you update your state, you render a fresh copy of the UI based on the new data, and move on. You never have to think about which element in the DOM to target or how it needs to change.
+When you update your state, your framework renders a new copy of the UI based on the new data. You never have to think about which element in the DOM to target or how it needs to change.
 
 The key difference between props and [state](https://facebook.github.io/react-native/docs/state.html):
 
 - state is internal and controlled by the component itself
 - props are external and controlled by whatever component renders the component. - [ref](http://buildwithreact.com/tutorial/state).
 
-Get the pirate object into state.
+### The Pirate Object in State
 
-We initialize the state in `App.js` to an empty object.
+Initialize state in `App.js` to an empty object.
 
 Since `App.js` is a functional component and functional components are not used for state we need to cpnvert it to a class component.
 
@@ -1118,9 +1118,9 @@ class App extends React.Component {
       <>
         <Header title={randomize()} />
         <PirateForm />
-        {piratesFile.map((pirate, index) => (
-          <Pirate key={index} pirate={pirate} />
-        ))}
+      {piratesFile.map(pirate => (
+        <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
+      ))}
       </>
     );
   }
@@ -1149,9 +1149,9 @@ render() {
     <>
       <Header title={randomize()} />
       <PirateForm addPirate={this.addPirate} />
-      {this.state.pirates.map((pirate, index) => (
-        <Pirate key={index} pirate={pirate} />
-      ))}
+        {this.state.pirates.map(pirate => (
+          <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
+        ))}
     </>
   );
 }
@@ -1160,7 +1160,7 @@ render() {
 And add a method to `App.js` that will accept the new pirate created by the form:
 
 ```js
-addPirate = pirate => {
+const addPirate = pirate => {
   console.log(pirate);
 };
 ```
@@ -1169,27 +1169,27 @@ Our `createPirate` function in `AddPirateForm` is called and works but it does n
 
 ### Passing a Function as a Prop
 
-We need to make the `addPirate` function available to the `AddPirateForm` by passing it using props:
+We need to make the `addPirate` function available to the `AddPirateForm` by passing it down the component chain using prop drilling:
 
 `App.js > PirateForm > AddPirateForm`
 
-- To `PirateForm` from `App.js` we will use `<PirateForm addPirate={this.addPirate} />`:
+- To get from  `PirateForm` from `App.js` we will use `<PirateForm addPirate={this.addPirate} />`:
 
 ```js
-  render() {
-    return (
-      <>
-        <Header title={randomize()} />
-        <PirateForm addPirate={this.addPirate} />
-        {this.state.pirates.map((pirate, index) => (
-          <Pirate key={index} pirate={pirate} />
-        ))}
-      </>
-    );
-  }
+render() {
+  return (
+    <>
+      <Header title={randomize()} />
+      <PirateForm addPirate={addPirate} />
+      {this.state.pirates.map(pirate => (
+        <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
+      ))}
+    </>
+  );
+}
 ```
 
-Examine the `PirateForm` props in React tool.
+Examine the `PirateForm` props in React tool. We have passed the function in App.js down to the component just as we might pass any property.
 
 The function needs to be available in AddPirateForm which is one level deeper.
 
@@ -1237,10 +1237,10 @@ createPirate = event => {
 
 In App.js, expand on the function.
 
-Spread a copy of the current stat into a new local pisrates variable:
+Spread a copy of the current state into a new local pirates variable:
 
 ```js
-addPirate = pirate => {
+const addPirate = pirate => {
   console.log(pirate);
   //take a copy of the current state and put it into pirates var
   const pirates = [...this.state.pirates];
@@ -1248,10 +1248,15 @@ addPirate = pirate => {
 };
 ```
 
+We have two variables:
+
+1. `pirate` - the newly created pirate created via the form 
+2. `pirates` - the existing collection of pirates
+
 Add the pirate passed from the form to the new pirates array:
 
 ```js
-addPirate = pirate => {
+const addPirate = pirate => {
   console.log(pirate);
   //take a copy of the current state and put it into pirates var
   const pirates = [...this.state.pirates];
@@ -1260,6 +1265,8 @@ addPirate = pirate => {
   console.log(pirates);
 };
 ```
+
+Examine the variables in the inspector.
 
 And then use React's `setSate()` function to update the state:
 
