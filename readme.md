@@ -4,11 +4,18 @@ Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld
 
 ## Homework
 
-Continue working through the Free Code Camp exercises. 
+Continue working through the Free Code Camp exercises.
 
 Review the notes below, step through them again to recreate the Pirates project on your own. If you need a completed version for reference see the branch `summer2019-done`.
 
 Add date and description fields to the form.
+
+## Reading 
+
+[React Components and Props](https://reactjs.org/docs/components-and-props.html)
+[React State](https://reactjs.org/docs/state-and-lifecycle.html)
+[React List and Keys](https://reactjs.org/docs/lists-and-keys.html)
+[React Forms](https://reactjs.org/docs/forms.html)
 
 ## Create React App
 
@@ -295,6 +302,46 @@ const randomize = () =>
 
 ## Importing and Exporting Components
 
+## fall2019 Start Here
+
+## Quick Review
+
+1. [.map()](https://www.freecodecamp.org/news/the-ultimate-guide-to-javascript-array-methods-map/)
+
+```js
+var arr = [1,2,3]
+
+var multiplyByTwo = arr.map( function(num){
+  return num *=2
+})
+
+console.log(multiplyByTwo)`
+```
+
+2. [.filter()](https://www.freecodecamp.org/news/javascript-map-reduce-and-filter-explained-with-examples/)
+
+```js
+var arr = [1,2,3]
+
+var filterLessThanThree = arr.filter( function(num){
+  return num < 3
+})
+
+console.log(filterLessThanThree)
+```
+
+3. [.reduce](https://www.freecodecamp.org/news/reduce-f47a7da511a9/)
+
+```js
+var arr = [1,2,3]
+
+var arrayTotal = arr.reduce( function(total, amount){
+  return total + amount 
+})
+
+console.log(arrayTotal)
+```
+
 Convert the Header and Pirate component to standalone components.
 
 - Comment out the Header and Pirate components from `App.js`.
@@ -402,8 +449,6 @@ export default Header;
 Import `Header.js` into `App.js`:
 
 ```js
-import React from 'react';
-import Pirate from './components/Pirate';
 import Header from './components/Header';
 ```
 
@@ -422,17 +467,15 @@ function App() {
 
 Note that when we have multiple lines we use `return( ... )` instead of just `return ...` and we _must_ have all items inside an enclosing element.
 
-# fall2019 Start Here
-
 ## Rendering Multiple Components
 
-Import an array of sample pirates into App.js:
+Import an array of sample pirates into `App.js`:
 
 ```js
 import piratesFile from './data/sample-pirates-array';
 ```
 
-Examine the contents of the file. We will create multiple pirates using `.map()`:
+In `App.js` create multiple pirates using `.map()`:
 
 ```js
 function App() {
@@ -462,7 +505,7 @@ function App() {
 }
 ```
 
-Let's pass some data from the piratesFile as an additional property:
+Pass some data from the piratesFile as an additional property:
 
 ```js
 function App() {
@@ -484,7 +527,7 @@ class Pirate extends React.Component {
   render() {
     return (
       <div className="pirate">
-        <p>{this.props.name}</p>
+        <h2>{this.props.name}</h2>
         <p>Favorite saying: {this.props.tagline}</p>
       </div>
     );
@@ -493,6 +536,8 @@ class Pirate extends React.Component {
 ```
 
 Note the warning: "Each child in a list should have a unique "key" prop."
+
+Add a key using the index of the item in the array (`.map` can take the index of the array as an argument): 
 
 ```js
 function App() {
@@ -510,17 +555,13 @@ function App() {
 }
 ```
 
-Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html) documentation.
+### Demo - React Keys
 
-### Demo
+Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html) documentation.
 
 ```js
 const numbers = [1, 2, 3, 4, 5];
-
 const listItems = numbers.map(number => <li>{number}</li>);
-
-const randomize = () =>
-  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 
 function App() {
   return (
@@ -539,13 +580,13 @@ The numbers list needs a key:
 
 `const listItems = numbers.map(number => <li key={number}>{number}</li>);`
 
-I don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues with component state. 
+I don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues. 
 
-Add `id: 1,` with incrememnting to each of the items in the array and use them:
+Add `id: 1,` with incrememnting to each of the items in `sample-pirates-array.js`:
 
 `<Pirate key={pirate.id} tagline={randomize()} name={pirate.name} />`
 
-Build out the list.
+and use them to build out the list.
 
 In App.js, instead of passing just the name (`name={pirate.name}`) we will pass the entire pirate object (`pirate={pirate}`):
 
@@ -554,7 +595,7 @@ function App() {
   return (
     <div>
       <Header title={randomize()} />
-      {piratesFile.map((pirate, index) => (
+      {piratesFile.map((pirate) => (
         <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
       ))}
     </div>
@@ -564,11 +605,11 @@ function App() {
 
 Import an avatar in Pirate.js:
 
-```js
-import React from 'react';
-import '../assets/css/Pirate.css';
-import avatar from '../assets/img/avatar.png';
+`import avatar from '../assets/img/avatar.png';`
 
+and use the new pirate prop:
+
+```js
 class Pirate extends React.Component {
   render() {
     return (
@@ -590,8 +631,6 @@ class Pirate extends React.Component {
     );
   }
 }
-
-export default Pirate;
 ```
 
 Destructure the variables from props:
@@ -621,6 +660,8 @@ class Pirate extends React.Component {
 }
 ```
 
+Note: `tagline` cannot be destructured here because it is not part of the pirate prop.
+
 Comment out the class component and rewrite the functional component to mirror the class component:
 
 ```js
@@ -645,46 +686,16 @@ function Pirate({ tagline, pirate: { desc, name, year, weapon, vessel } }) {
 }
 ```
 
-Examine the HTML structure and the CSS for the Pirate components. Use CSS grid instead of flexbox alongside a improved HTML structure.
-
-Pirate.css:
-
-```css
-main {
-  font-family: 'Trade Winds', cursive;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 1.5rem;
-  align-items: center;
-  border-bottom: 1px dotted #007eb6;
-}
-
-main ul {
-  list-style: none;
-  padding: 0;
-}
-
-article {
-  line-height: 1.8;
-}
-
-section {
-  margin: 0 2rem;
-}
-
-```
-
-Alter the HTML around the Pirate functional component to conform to the CSS above:
+Improve the HTML for the Pirate component by making it more semantic:
 
 ```js
-function Pirate(props) {
-  const { name, year, weapon, vessel, desc } = props.pirate;
+function Pirate({ tagline, pirate: { desc, name, year, weapon, vessel } }) {
   return (
     <main>
-      <aside className="pirate-data">
+      <aside className='pirate-data'>
         <ul>
           <li>
-            <img src={avatar} alt="pirate" />
+            <img src={avatar} alt='pirate' />
           </li>
           <li>
             <h3>{name}</h3>
@@ -703,21 +714,34 @@ function Pirate(props) {
 }
 ```
 
-And a new section tag in App.js to conform to the CSS:
+Use CSS grid instead of flexbox to format the Pirate components.
 
-```js
-function App() {
-  return (
-    <div>
-      <Header title={randomize()} />
-      {piratesFile.map((pirate, index) => (
-        <section>
-          <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
-        </section>
-      ))}
-    </div>
-  );
+In `Pirate.css`:
+
+```css
+main {
+  font-family: 'Trade Winds', cursive;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 1.5rem;
+  align-items: center;
+  border-bottom: 1px dotted #007eb6;
+  margin: 0 2rem;
 }
+
+main ul {
+  list-style: none;
+  padding: 0;
+}
+
+article {
+  line-height: 1.8;
+}
+
+h2, h3 {
+  font-weight: normal;
+}
+
 ```
 
 ## Additional Components
@@ -740,6 +764,12 @@ class PirateForm extends React.Component {
 }
 
 export default PirateForm;
+```
+
+Import PirateForm and add it to `App.js`:
+
+```js
+import PirateForm from './components/PirateForm';
 ```
 
 Note the import statement and JSX. This file relies on another component.
@@ -766,13 +796,9 @@ class AddPirateForm extends React.Component {
 export default AddPirateForm;
 ```
 
-Import PirateForm and add it to `App.js`:
+Use PirateForm in `App.js`:
 
 ```js
-import PirateForm from './components/PirateForm';
-
-...
-
 function App() {
   return (
     <div>
@@ -794,15 +820,15 @@ Install the [React Developer Tool](https://chrome.google.com/webstore/search/rea
 - https://www.codecademy.com/
 - https://www.nytimes.com/
 
+Note the key property on repeated or 'mapped' UI elements.
+
 Examine the current application's component structure (nesting).
 
-- Select `<Pirate />`
-- Search for Pirate
-- Clean up unnecessary divs by using React fragments: `<> ... </>`
+Take a breif tour of the options in the React Developer tool.
 
 ## Adding Events
 
-Temporary in App.js:
+Demo in `App.js`:
 
 ```js
 const handleClick = () => alert('whoa');
@@ -890,9 +916,99 @@ export default AddPirateForm;
 
 Test using the form button.
 
-In order to capture that values we will enter into the form fields we need to create [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html). Refs in React are roughly equivalent to `document.querySelector()`
+## React Controlled Components
 
-Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input:
+Demo: a class component with state:
+
+```js
+import React from 'react';
+import '../assets/css/AddPirateForm.css';
+
+class AddPirateForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { name: '' };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    console.log(event.target.value);
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type='text'
+          placeholder='Pirate name'
+          value={this.state.value}
+          onChange={this.handleChange}
+        />
+        <button type='submit'>Add Pirate</button>
+      </form>
+    );
+  }
+}
+
+export default AddPirateForm;
+```
+
+Demo: the same component using the [ES6 class fields](https://blog.g2i.co/react-class-components-with-es6-and-class-fields-927b2b59f94e) proposal:
+
+```js
+import React from 'react';
+import '../assets/css/AddPirateForm.css';
+
+class AddPirateForm extends React.Component {
+  state = { value: '' };
+
+  handleChange = event => {
+    console.log(event.target.value);
+    this.setState({ value: event.target.value });
+  };
+
+  handleSubmit = event => {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  };
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type='text'
+          placeholder='Pirate name'
+          value={this.state.value}
+          onChange={this.handleChange}
+        />
+        <button type='submit'>Add Pirate</button>
+        <p>{this.state.value}</p>
+      </form>
+    );
+  }
+}
+
+export default AddPirateForm;
+```
+
+## React Form: Uncontrolled
+
+In a class component a function is actually a method on the extended class so and is placed within the class. In a functional component they are typically included outside the function.
+
+In order to capture the values in the form fields we will create [refs](https://reactjs.org/docs/uncontrolled-components.html) in an uncontrolled component. 
+
+For ease of understanding, `Refs` in React can be thought of as being roughly equivalent to `document.querySelector()`.
+
+Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input.
+
+In `AddPirateForm.js`:
 
 ```js
 import React from 'react';
