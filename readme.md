@@ -1271,19 +1271,31 @@ Examine the variables in the inspector.
 And then use React's `setSate()` function to update the state:
 
 ```js
-addPirate = pirate => {
-  console.log(pirate);
-  //take a copy of the current state and put it into pirates var
-  const pirates = [...this.state.pirates];
-  console.log(pirates);
-  pirates.unshift(pirate);
-  console.log(pirates);
-  //set state pirates with var pirates
-  this.setState({ pirates: pirates });
-};
+ const addPirate = pirate => {
+   console.log(pirate);
+   //take a copy of the current state and put it into newPirates var
+   const newPirates = [...this.state.pirates];
+   console.log(newPirates);
+   newPirates.unshift(pirate);
+   console.log(newPirates);
+   //set state pirates with var pirates
+   this.setState({ pirates: newPirates });
+ };
 ```
 
 Note: whenever you use `setState()` it triggers a re-rendering of the content without refreshing the page.
+
+Try: `pirates.push(pirate);`
+
+Another way of accomplishing the same state change might be:
+
+- `this.setState({ pirates: this.state.pirates.concat([pirate]) });`
+
+`concat()` is an array method that returns a new array.
+
+- ` this.setState({ pirates: [...this.state.pirates, pirate] });`
+
+The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `...` creates a new array using an existing array as one part of it.
 
 Remember, in order for us to see this we need to map the pirates to state and not to the imported pirates:
 
@@ -1291,19 +1303,17 @@ Remember, in order for us to see this we need to map the pirates to state and no
 render() {
   return (
     <>
-      <Header title={randomize()} />
-      <PirateForm addPirate={this.addPirate} />
-      {this.state.pirates.map((pirate, index) => (
-        <Pirate key={index} pirate={pirate} />
-      ))}
+        <Header title={randomize()} />
+        <PirateForm addPirate={addPirate} />
+        {this.state.pirates.map(pirate => (
+          <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
+        ))}
     </>
   );
 }
 ```
 
 We should now be able to create a pirate using the form and see it in the browser.
-
-Try: `pirates.push(pirate);`
 
 ## Resetting the Form
 
@@ -1324,14 +1334,14 @@ createPirate = event => {
 };
 ```
 
-The form should now empty and the `addPirate` function is called to store our pirate in state.
+The form should now empty on submit and the `addPirate` function is called to store our pirate in state.
 
 ## Removing a Pirate
 
 Add a new method to `App.js`:
 
 ```js
-removePirate = index => {
+const removePirate = index => {
   console.log(index);
   const pirates = [...this.state.pirates];
   pirates.splice(index, 1);
@@ -1347,36 +1357,84 @@ Pass the prop to `Pirate` from App using `removePirate = {this.removePirate}`:
 `App.js`:
 
 ```js
-{
-  this.state.pirates.map((pirate, index) => (
-    <Pirate key={index} pirate={pirate} removePirate={this.removePirate} />
-  ));
+{this.state.pirates.map(pirate => (
+  <Pirate
+    key={pirate.id}
+    tagline={randomize()}
+    pirate={pirate}
+    removePirate={this.removePirate}
+  />
+))}
+```
+
+Since we want the controls to be associated with each Pirate entry we'll add them to the `Pirate` component by including a new list item: 
+
+`<li><button onClick={() => this.props.removePirate(0)}>Remove ☠️</button></li>`
+
+`<button onClick={() => removePirate(0)}>Remove ☠️</button>`
+
+- `Pirate.js` functional component:
+
+```js
+function Pirate({
+  removePirate,
+  tagline,
+  pirate: { desc, name, year, weapon, vessel },
+}) {
+  return (
+    <main>
+      <aside className="pirate-data">
+        <ul>
+          <li>
+            <img src={avatar} alt="pirate" />
+          </li>
+          <li>
+            <h3>{name}</h3>
+          </li>
+          <li>Died: {year}</li>
+          <li>Favorite weapon: {weapon}</li>
+          <li>Sailed on: {vessel}</li>
+        </ul>
+      </aside>
+      <article>
+        <h2>"{tagline}"</h2>
+        <p>{desc}</p>
+        <button onClick={() => removePirate(0)}>Remove ☠️</button>
+      </article>
+    </main>
+  );
 }
 ```
 
-Since we want the controls to be associated with each Pirate entry we'll add them to the `Pirate` component by including a new list item: `<li><button onClick={() => this.props.removePirate('pirate1')}>X</button></li>`.
-
-- `Pirate.js`:
+Class component:
 
 ```js
 class Pirate extends React.Component {
   render() {
+    const { name, year, weapon, vessel, desc } = this.props.pirate;
     return (
-      <div className="pirate">
-        <ul>
-          <li>
-            <img src={avatar} alt="pirate" />
-            <button onClick={() => this.props.removePirate(0)}>X</button>
-          </li>
-          <li>
-            <h3>{this.props.pirate.name}</h3>
-            <p>Died: {this.props.pirate.year}</p>
-            <p>Favorite weapon: {this.props.pirate.weapon}</p>
-            <p>Sailed on: {this.props.pirate.vessel}</p>
-            <p>{this.props.pirate.desc}</p>
-          </li>
-        </ul>
-      </div>
+      <main>
+        <aside className="pirate-data">
+          <ul>
+            <li>
+              <img src={avatar} alt="pirate" />
+            </li>
+            <li>
+              <h3>{name}</h3>
+            </li>
+            <li>Died: {year}</li>
+            <li>Favorite weapon: {weapon}</li>
+            <li>Sailed on: {vessel}</li>
+          </ul>
+        </aside>
+        <article>
+          <h2>"{this.props.tagline}"</h2>
+          <p>{desc}</p>
+          {/* prettier-ignore */}
+          <button onClick={() => this.props.removePirate(0)}>Remove <span role="img" arial-label="skull">☠️</span>
+          </button>
+        </article>
+      </main>
     );
   }
 }
@@ -1384,7 +1442,7 @@ class Pirate extends React.Component {
 
 We have temporarily hard coded the button to remove just one pirate from the list.
 
-Pass it along as part of the Pirate component `index={index}` in App.
+In order to create a generic delete that will work for all pirates, pass the index to the Pirate component `index={index}` in App.
 
 - `App.js`:
 
@@ -1514,7 +1572,7 @@ input {
 }
 ```
 
-## Destructuring
+<!-- ## Destructuring
 
 `const { name, year, weapon, vessel, desc } = this.props.pirate;`
 
@@ -1555,7 +1613,7 @@ class Pirate extends React.Component {
 }
 
 export default Pirate;
-```
+``` -->
 
 ## Persisting the data
 
@@ -1575,7 +1633,7 @@ We will use this to connect to a backend service called [Firebase](https://fireb
 
 `npm install --save re-base firebase`
 
-Create base.js in `src`:
+Create `base.js` in `src`:
 
 ```js
 import Rebase from 're-base'; // mirrors state to FB
