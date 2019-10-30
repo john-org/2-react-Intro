@@ -302,9 +302,7 @@ const randomize = () =>
 
 ## Importing and Exporting Components
 
-## fall2019 Start Here
-
-## Quick Review
+### Quick Review
 
 1. [.map()](https://www.freecodecamp.org/news/the-ultimate-guide-to-javascript-array-methods-map/)
 
@@ -1072,6 +1070,8 @@ createPirate = event => {
 
 Test by entering a pirate in the form and examining the browser console.
 
+## fall2019 Start Here
+
 ## State
 
 State is data at a particular moment in time. It’s the current “state” of your data.
@@ -1091,7 +1091,7 @@ The key difference between props and [state](https://facebook.github.io/react-na
 
 Initialize state in `App.js` to an empty object.
 
-Since `App.js` is a functional component and functional components are not used for state we need to cpnvert it to a class component.
+Since `App.js` is a functional component and functional components are not used for state we need to convert it to a class component.
 
 `App.js`:
 
