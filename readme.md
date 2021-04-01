@@ -734,16 +734,14 @@ Create a new component `PirateForm.js` in the components folder:
 import React from "react";
 import AddPirateForm from "./AddPirateForm";
 
-class PirateForm extends React.Component {
-  render() {
-    return (
-      <div className="pirate">
-        <h3>Ahoy from the PirateForm Component</h3>
-        <AddPirateForm />
-      </div>
-    );
-  }
-}
+const PirateForm = () => {
+  return (
+    <div className="pirate">
+      <h3>Ahoy from the PirateForm Component</h3>
+      <AddPirateForm />
+    </div>
+  );
+};
 
 export default PirateForm;
 ```
@@ -762,18 +760,16 @@ Create the component - `AddPirateForm.js` in components:
 import React from "react";
 import "../assets/css/AddPirateForm.css";
 
-class AddPirateForm extends React.Component {
-  render() {
-    return (
-      <form>
-        <input type="text" placeholder="Pirate name" />
-        <input type="text" placeholder="Pirate vessel" />
-        <input type="text" placeholder="Pirate weapon" />
-        <button type="submit">Add Pirate</button>
-      </form>
-    );
-  }
-}
+const AddPirateForm = () => {
+  return (
+    <form>
+      <input type="text" placeholder="Pirate name" />
+      <input type="text" placeholder="Pirate vessel" />
+      <input type="text" placeholder="Pirate weapon" />
+      <button type="submit">Add Pirate</button>
+    </form>
+  );
+};
 
 export default AddPirateForm;
 ```
@@ -796,7 +792,7 @@ function App() {
 
 ## The React Developer Tool
 
-Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) in Chrome and inspect:
+Using the [React Developer Tool](https://chrome.google.com/webstore/search/react) in Chrome inspect:
 
 - https://www.netflix.com/
 - https://www.codecademy.com/
@@ -806,9 +802,11 @@ Note the key property on repeated or 'mapped' UI elements.
 
 Examine the current application's component structure (nesting).
 
-Take a breif tour of the options in the React Developer tool.
+Take a brief tour of the options in the React Developer tool.
 
-## Adding Events
+## DEMO Adding Events
+
+<!-- do this in the form? -->
 
 Demo in `App.js`:
 
@@ -831,11 +829,13 @@ function App() {
 
 In vanilla JS we use an event listener to listen for events. In React you use a camel case event on the element.
 
+<!-- end DEMO -->
+
 Add an event to the AddPirateForm:
 
 `<form onSubmit = { (e) => this.createPirate(e) }>`
 
-to `AddPirateForm`:
+And to `AddPirateForm`:
 
 ```js
 class PirateForm extends React.Component {
@@ -852,46 +852,44 @@ class PirateForm extends React.Component {
 }
 ```
 
-And create a method on the class:
+And create a function in `AddPirateForm`:
 
 ```js
-createPirate(event) {
-  console.log('making a pirate')
+function createPirate(event) {
+  console.log("making a pirate");
 }
 ```
 
 Clicking on a submit button reloads the page so add:
 
 ```js
-createPirate(event) {
+function createPirate(event) {
   event.preventDefault();
-  console.log('making a pirate')
+  console.log("making a pirate");
 }
 ```
 
 E.g.:
 
 ```js
-import React, { Component } from "react";
+import React from "react";
 import "../assets/css/AddPirateForm.css";
 
-class AddPirateForm extends Component {
-  createPirate(event) {
-    event.preventDefault();
-    console.log("making a pirate");
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.createPirate}>
-        <input name="name" type="text" placeholder="Pirate name" />
-        <input name="vessel" type="text" placeholder="Pirate vessel" />
-        <input name="weapon" type="text" placeholder="Pirate weapon" />
-        <button type="submit">Add Pirate</button>
-      </form>
-    );
-  }
+function createPirate(event) {
+  event.preventDefault();
+  console.log("making a pirate");
 }
+
+const AddPirateForm = () => {
+  return (
+    <form onSubmit={(e) => createPirate(e)}>
+      <input type="text" placeholder="Pirate name" />
+      <input type="text" placeholder="Pirate vessel" />
+      <input type="text" placeholder="Pirate weapon" />
+      <button type="submit">Add Pirate</button>
+    </form>
+  );
+};
 
 export default AddPirateForm;
 ```
@@ -941,6 +939,8 @@ class AddPirateForm extends React.Component {
 
 export default AddPirateForm;
 ```
+
+<!-- STOPPED UPDATING -->
 
 Demo: the same component using the [ES6 class fields](https://blog.g2i.co/react-class-components-with-es6-and-class-fields-927b2b59f94e) proposal:
 
