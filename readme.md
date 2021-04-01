@@ -4,13 +4,13 @@ Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld
 
 ## Homework
 
-Continue working through the Free Code Camp exercises.
+Continue working on the session one exercises.
 
-Review the notes below, step through them again to recreate the Pirates project on your own. If you need a completed version for reference see the branch `summer2019-done`.
+<!-- Review the notes below, step through them again to recreate the Pirates project on your own. If you need a completed version for reference see the branch `summer2019-done`.
 
-Add date and description fields to the form.
+Add date and description fields to the form. -->
 
-## Reading 
+## Reading
 
 [React Components and Props](https://reactjs.org/docs/components-and-props.html)
 [React State](https://reactjs.org/docs/state-and-lifecycle.html)
@@ -21,7 +21,7 @@ Add date and description fields to the form.
 
 Creating a React project requires a lot of tooling and setup. Fortunately Facebook has created a bootstrapping system called [Create React App](https://facebook.github.io/create-react-app/)
 
-To create a new project, ensure that you are in today's project folder and run:
+To create a new project, ensure that you are cd'ed in today's project folder and run:
 
 ```sh
 npx create-react-app pirates
@@ -49,7 +49,7 @@ Open `index.js` from `src`.
 - This is the only place where `ReactDOM.render()` will occur:
 
 ```js
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Open `App.js` (note the capital "A") from `src`.
@@ -59,10 +59,10 @@ This is the only React component in this starter project.
 Instead of using a script tag, this component imports React from the node modules folder:
 
 ```js
-import React from 'react';
+import React from "react";
 ```
 
-`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller pieces. ES6 modules are not natively supported in browsers so a "bundler" is required. [Webpack](https://webpack.js.org/) has been installed by Create React App and is working under the hood in our project.
+`import` and `export` are part of the ES6 Module system that allows us to break down code into smaller pieces. ES6 modules are not natively supported in all browsers so a "bundler" is required. [Webpack](https://webpack.js.org/) has been installed by Create React App and is working under the hood in our project.
 
 The main body of the component is a function that returns JSX (_not_ HTML).
 
@@ -119,23 +119,22 @@ Copy the material below and overwrite `public/index.html`:
 
 ### Components
 
-All modern front end systems employ a component architecture. 
+All modern front end systems employ a component architecture.
 
-Add the following to `index.js`:
+<!-- Add the following to `index.js`:
 
 ```js
 function Pirates() {
   return <p>Ahoy there!</p>;
 }
-
 ```
 
-Delete and reset index.js to its original state.
+Delete and reset index.js to its original state. -->
 
 Create and use the Pirate component in `App.js`. Copy and overwrite App.js with the following:
 
 ```js
-import React from 'react';
+import React from "react";
 
 function App() {
   return <Pirate />;
@@ -148,7 +147,7 @@ function Pirate() {
 export default App;
 ```
 
-Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) for Chrome or Firefox and inspect the components. 
+Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) for Chrome or Firefox and inspect the components.
 
 Add a property (`prop`) to the Pirate component instance in `App.js`:
 
@@ -184,7 +183,7 @@ function Pirate({ tagline }) {
 }
 ```
 
-The fact that you can pass props to a component makes them very powerful.
+The fact that you can pass props to a reusable component makes them very powerful.
 
 ```js
 function App() {
@@ -198,7 +197,7 @@ function App() {
 }
 ```
 
-Create a second component for the header:
+Create a second component for the header in `App.js`:
 
 ```js
 function Header() {
@@ -216,8 +215,8 @@ Note the errors.
 Import the logo and some css for it:
 
 ```js
-import './assets/css/Header.css';
-import logo from './assets/img/anchor.svg';
+import "./assets/css/Header.css";
+import logo from "./assets/img/anchor.svg";
 ```
 
 Render it to the DOM via App while passing it a prop:
@@ -238,8 +237,8 @@ Use the title prop:
 ```js
 function Header(props) {
   return (
-    <div className='header'>
-      <img src={logo} className='logo' alt='logo' />
+    <div className="header">
+      <img src={logo} className="logo" alt="logo" />
       <h1>{props.title}</h1>
     </div>
   );
@@ -251,8 +250,8 @@ Destructure it:
 ```js
 function Header({ title }) {
   return (
-    <div className='header'>
-      <img src={logo} className='logo' alt='logo' />
+    <div className="header">
+      <img src={logo} className="logo" alt="logo" />
       <h1>{title}</h1>
     </div>
   );
@@ -263,19 +262,18 @@ Inspect the output using the React Developer Tool.
 
 ## Calling a Function
 
-Create an array of pirate quotes and a randomize function that selects a random pirateCall: 
+Create an array of pirate quotes and a randomize function that selects a random pirateCall:
 
 ```js
 const pirateCalls = [
-  'Aaarg, belay that!',
-  'Avast me hearties!',
-  'Shiver me timbers!',
+  "Aaarg, belay that!",
+  "Avast me hearties!",
+  "Shiver me timbers!",
 ];
 
 function randomize() {
   return pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 }
-
 ```
 
 And then call the function:
@@ -291,7 +289,7 @@ function App() {
 }
 ```
 
-Note: it would be more common to see an arrow functionn being employed. 
+Note: it would be more common to see an arrow function being employed.
 
 Change the randomize function:
 
@@ -307,40 +305,40 @@ const randomize = () =>
 1. [.map()](https://www.freecodecamp.org/news/the-ultimate-guide-to-javascript-array-methods-map/)
 
 ```js
-var arr = [1,2,3]
+var arr = [1, 2, 3];
 
-var multiplyByTwo = arr.map( function(num){
-  return num *=2
-})
+var multiplyByTwo = arr.map(function (num) {
+  return (num *= 2);
+});
 
-console.log(multiplyByTwo)`
+console.log(multiplyByTwo);
 ```
 
 2. [.filter()](https://www.freecodecamp.org/news/javascript-map-reduce-and-filter-explained-with-examples/)
 
 ```js
-var arr = [1,2,3]
+var arr = [1, 2, 3];
 
-var filterLessThanThree = arr.filter( function(num){
-  return num < 3
-})
+var filterLessThanThree = arr.filter(function (num) {
+  return num < 3;
+});
 
-console.log(filterLessThanThree)
+console.log(filterLessThanThree);
 ```
 
 3. [.reduce](https://www.freecodecamp.org/news/reduce-f47a7da511a9/)
 
 ```js
-var arr = [1,2,3]
+var arr = [1, 2, 3];
 
-var arrayTotal = arr.reduce( function(total, amount){
-  return total + amount 
-})
+var arrayTotal = arr.reduce(function (total, amount) {
+  return total + amount;
+}, 0);
 
-console.log(arrayTotal)
+console.log(arrayTotal);
 ```
 
-Convert the Header and Pirate component to standalone components.
+## Convert the Header and Pirate component to standalone components.
 
 - Comment out the Header and Pirate components from `App.js`.
 - Comment out the imported css and logo
@@ -350,8 +348,8 @@ Convert the Header and Pirate component to standalone components.
 In `src/components/Pirate.js`:
 
 ```js
-import React from 'react';
-import '../assets/css/Pirate.css';
+import React from "react";
+import "../assets/css/Pirate.css";
 
 function Pirate(props) {
   return (
@@ -367,13 +365,13 @@ export default Pirate;
 We use the component in `App.js` by first importing it and then returning it:
 
 ```js
-import React from 'react';
-import Pirate from './components/Pirate';
+import React from "react";
+import Pirate from "./components/Pirate";
 
 const pirateCalls = [
-  'Aaarg, belay that!',
-  'Avast me hearties!',
-  'Shiver me timbers!',
+  "Aaarg, belay that!",
+  "Avast me hearties!",
+  "Shiver me timbers!",
 ];
 
 const randomize = () =>
@@ -395,8 +393,8 @@ So far we have only used React functional components. There is another type call
 Convert the Pirate component into a class component:
 
 ```js
-import React from 'react';
-import '../assets/css/Pirate.css';
+import React from "react";
+import "../assets/css/Pirate.css";
 
 // function Pirate(props) {
 //   return (
@@ -421,16 +419,16 @@ export default Pirate;
 
 Note the render method and `this` in the paragraph. The JavaScript `this` keyword refers to the object it belongs to.
 
-A functional component is just a plain JavaScript function which accepts props as an argument and returns a React element. A class component requires you to extend from React.Component and create a render function which returns a React element.
+A functional component is just a plain JavaScript function which accepts props as an argument and returns a React element. A class component requires you to extend from `React.Component` and create a render function which returns a React element.
 
 ## Header Functional Component
 
 Create a new `Header.js` component in the `components` folder:
 
 ```js
-import React from 'react';
-import '../assets/css/Header.css';
-import logo from '../assets/img/anchor.svg';
+import React from "react";
+import "../assets/css/Header.css";
+import logo from "../assets/img/anchor.svg";
 
 function Header(props) {
   return (
@@ -447,7 +445,7 @@ export default Header;
 Import `Header.js` into `App.js`:
 
 ```js
-import Header from './components/Header';
+import Header from "./components/Header";
 ```
 
 And add it to `App`:
@@ -470,7 +468,7 @@ Note that when we have multiple lines we use `return( ... )` instead of just `re
 Import an array of sample pirates into `App.js`:
 
 ```js
-import piratesFile from './data/sample-pirates-array';
+import piratesFile from "./data/sample-pirates-array";
 ```
 
 In `App.js` create multiple pirates using `.map()`:
@@ -480,22 +478,7 @@ function App() {
   return (
     <div>
       <Header title={randomize()} />
-      {piratesFile.map(function(pirate) {
-        return <Pirate tagline={randomize()} />;
-      })}
-    </div>
-  );
-}
-```
-
-Exercise: Convert the above to use an arrow function.
-
-```js
-function App() {
-  return (
-    <div>
-      <Header title={randomize()} />
-      {piratesFile.map(pirate => (
+      {piratesFile.map((pirate) => (
         <Pirate tagline={randomize()} />
       ))}
     </div>
@@ -510,7 +493,7 @@ function App() {
   return (
     <div>
       <Header title={randomize()} />
-      {piratesFile.map(pirate => (
+      {piratesFile.map((pirate) => (
         <Pirate tagline={randomize()} name={pirate.name} />
       ))}
     </div>
@@ -533,9 +516,9 @@ class Pirate extends React.Component {
 }
 ```
 
-Note the warning: "Each child in a list should have a unique "key" prop."
+Note the browser console warning: "Each child in a list should have a unique "key" prop."
 
-Add a key using the index of the item in the array (`.map` can take the index of the array as an argument): 
+Add a key using the index of the item in the array (`.map` can take the index of the array as an argument):
 
 ```js
 function App() {
@@ -543,23 +526,20 @@ function App() {
     <div>
       <Header title={randomize()} />
       {piratesFile.map((pirate, index) => (
-        <Pirate 
-        key={index} 
-        tagline={randomize()} 
-        name={pirate.name} />
+        <Pirate key={index} tagline={randomize()} name={pirate.name} />
       ))}
     </div>
   );
 }
 ```
 
-### Demo - React Keys
+### DEMO - React Keys
 
 Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html) documentation.
 
 ```js
 const numbers = [1, 2, 3, 4, 5];
-const listItems = numbers.map(number => <li>{number}</li>);
+const listItems = numbers.map((number) => <li>{number}</li>);
 
 function App() {
   return (
@@ -578,13 +558,13 @@ The numbers list needs a key:
 
 `const listItems = numbers.map(number => <li key={number}>{number}</li>);`
 
-I don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues. 
+Don’t use indexes for keys if the order or number of items may change. This will negatively impact performance and will cause issues.
 
-Add `id: 1,` with incrememnting to each of the items in `sample-pirates-array.js`:
+<!-- end DEMO -->
 
-`<Pirate key={pirate.id} tagline={randomize()} name={pirate.name} />`
+Use the pirates name as a unique id:
 
-and use them to build out the list.
+`<Pirate key={pirate.name} tagline={randomize()} name={pirate.name} />`
 
 In App.js, instead of passing just the name (`name={pirate.name}`) we will pass the entire pirate object (`pirate={pirate}`):
 
@@ -594,7 +574,7 @@ function App() {
     <div>
       <Header title={randomize()} />
       {piratesFile.map((pirate) => (
-        <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
+        <Pirate key={pirate.name} tagline={randomize()} pirate={pirate} />
       ))}
     </div>
   );
@@ -637,6 +617,7 @@ Destructure the variables from props:
 class Pirate extends React.Component {
   render() {
     const { name, year, weapon, vessel, desc } = this.props.pirate;
+    const { tagline } = this.props;
     return (
       <div className="pirate">
         <ul>
@@ -658,7 +639,7 @@ class Pirate extends React.Component {
 }
 ```
 
-Note: `tagline` cannot be destructured here because it is not part of the pirate prop.
+Note: `tagline` cannot be destructured from pirate because it is not part of the pirate prop.
 
 Comment out the class component and rewrite the functional component to mirror the class component:
 
@@ -675,7 +656,7 @@ function Pirate({ tagline, pirate: { desc, name, year, weapon, vessel } }) {
           <p>Sailed on: {vessel}</p>
         </li>
         <li>
-          <h2>"{tagline}"</h2>
+          <h2>{tagline}</h2>
           <p>{desc}</p>
         </li>
       </ul>
@@ -690,10 +671,10 @@ Improve the HTML for the Pirate component by making it more semantic:
 function Pirate({ tagline, pirate: { desc, name, year, weapon, vessel } }) {
   return (
     <main>
-      <aside className='pirate-data'>
+      <aside className="pirate-data">
         <ul>
           <li>
-            <img src={avatar} alt='pirate' />
+            <img src={avatar} alt="pirate" />
           </li>
           <li>
             <h3>{name}</h3>
@@ -704,7 +685,7 @@ function Pirate({ tagline, pirate: { desc, name, year, weapon, vessel } }) {
         </ul>
       </aside>
       <article>
-        <h2>"{tagline}"</h2>
+        <h2>{tagline}</h2>
         <p>{desc}</p>
       </article>
     </main>
@@ -718,7 +699,7 @@ In `Pirate.css`:
 
 ```css
 main {
-  font-family: 'Trade Winds', cursive;
+  font-family: "Trade Winds", cursive;
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: 1.5rem;
@@ -734,21 +715,24 @@ main ul {
 
 article {
   line-height: 1.8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-h2, h3 {
+h2,
+h3 {
+  font-family: "Trade Winds", cursive;
   font-weight: normal;
 }
-
 ```
 
-## Additional Components
+## React Forms
 
 Create a new component `PirateForm.js` in the components folder:
 
 ```js
-import React from 'react';
-import AddPirateForm from './AddPirateForm';
+import React from "react";
+import AddPirateForm from "./AddPirateForm";
 
 class PirateForm extends React.Component {
   render() {
@@ -767,7 +751,7 @@ export default PirateForm;
 Import PirateForm and add it to `App.js`:
 
 ```js
-import PirateForm from './components/PirateForm';
+import PirateForm from "./components/PirateForm";
 ```
 
 Note the import statement and JSX. This file relies on another component.
@@ -775,8 +759,8 @@ Note the import statement and JSX. This file relies on another component.
 Create the component - `AddPirateForm.js` in components:
 
 ```js
-import React from 'react';
-import '../assets/css/AddPirateForm.css';
+import React from "react";
+import "../assets/css/AddPirateForm.css";
 
 class AddPirateForm extends React.Component {
   render() {
@@ -829,7 +813,7 @@ Take a breif tour of the options in the React Developer tool.
 Demo in `App.js`:
 
 ```js
-const handleClick = () => alert('whoa');
+const handleClick = () => alert("whoa");
 
 function App() {
   return (
@@ -888,13 +872,13 @@ createPirate(event) {
 E.g.:
 
 ```js
-import React, { Component } from 'react';
-import '../assets/css/AddPirateForm.css';
+import React, { Component } from "react";
+import "../assets/css/AddPirateForm.css";
 
 class AddPirateForm extends Component {
   createPirate(event) {
     event.preventDefault();
-    console.log('making a pirate');
+    console.log("making a pirate");
   }
 
   render() {
@@ -919,13 +903,13 @@ Test using the form button.
 Demo: a class component with state:
 
 ```js
-import React from 'react';
-import '../assets/css/AddPirateForm.css';
+import React from "react";
+import "../assets/css/AddPirateForm.css";
 
 class AddPirateForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: '' };
+    this.state = { name: "" };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -936,7 +920,7 @@ class AddPirateForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
+    alert("A name was submitted: " + this.state.value);
     event.preventDefault();
   }
 
@@ -944,12 +928,12 @@ class AddPirateForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <input
-          type='text'
-          placeholder='Pirate name'
+          type="text"
+          placeholder="Pirate name"
           value={this.state.value}
           onChange={this.handleChange}
         />
-        <button type='submit'>Add Pirate</button>
+        <button type="submit">Add Pirate</button>
       </form>
     );
   }
@@ -961,19 +945,19 @@ export default AddPirateForm;
 Demo: the same component using the [ES6 class fields](https://blog.g2i.co/react-class-components-with-es6-and-class-fields-927b2b59f94e) proposal:
 
 ```js
-import React from 'react';
-import '../assets/css/AddPirateForm.css';
+import React from "react";
+import "../assets/css/AddPirateForm.css";
 
 class AddPirateForm extends React.Component {
-  state = { value: '' };
+  state = { value: "" };
 
-  handleChange = event => {
+  handleChange = (event) => {
     console.log(event.target.value);
     this.setState({ value: event.target.value });
   };
 
-  handleSubmit = event => {
-    alert('A name was submitted: ' + this.state.value);
+  handleSubmit = (event) => {
+    alert("A name was submitted: " + this.state.value);
     event.preventDefault();
   };
 
@@ -981,12 +965,12 @@ class AddPirateForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <input
-          type='text'
-          placeholder='Pirate name'
+          type="text"
+          placeholder="Pirate name"
           value={this.state.value}
           onChange={this.handleChange}
         />
-        <button type='submit'>Add Pirate</button>
+        <button type="submit">Add Pirate</button>
         <p>{this.state.value}</p>
       </form>
     );
@@ -1000,7 +984,7 @@ export default AddPirateForm;
 
 In a class component a function is actually a method on the extended class so and is placed within the class. In a functional component they are typically included outside the function.
 
-In order to capture the values in the form fields we will create [refs](https://reactjs.org/docs/uncontrolled-components.html) in an uncontrolled component. 
+In order to capture the values in the form fields we will create [refs](https://reactjs.org/docs/uncontrolled-components.html) in an uncontrolled component.
 
 For ease of understanding, `Refs` in React can be thought of as being roughly equivalent to `document.querySelector()`.
 
@@ -1009,17 +993,17 @@ Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the f
 In `AddPirateForm.js`:
 
 ```js
-import React from 'react';
-import '../assets/css/AddPirateForm.css';
+import React from "react";
+import "../assets/css/AddPirateForm.css";
 
 class AddPirateForm extends React.Component {
   nameRef = React.createRef();
   vesselRef = React.createRef();
   weaponRef = React.createRef();
 
-  createPirate = event => {
+  createPirate = (event) => {
     event.preventDefault();
-    console.log('making a pirate');
+    console.log("making a pirate");
   };
 
   render() {
@@ -1057,7 +1041,7 @@ Create a pirate object in `AddPirateForm`'s `createPirate` function.
 `AddPirateForm.js`:
 
 ```js
-createPirate = event => {
+createPirate = (event) => {
   event.preventDefault();
   const pirate = {
     name: this.nameRef.current.value,
@@ -1096,19 +1080,19 @@ Since `App.js` is a functional component and functional components are not used 
 `App.js`:
 
 ```js
-import React from 'react';
-import Pirate from './components/Pirate';
-import Header from './components/Header';
-import PirateForm from './components/PirateForm';
+import React from "react";
+import Pirate from "./components/Pirate";
+import Header from "./components/Header";
+import PirateForm from "./components/PirateForm";
 
-import piratesFile from './data/sample-pirates-array';
+import piratesFile from "./data/sample-pirates-array";
 
 class App extends React.Component {
   render() {
     const pirateCalls = [
-      'Aaarg, belay that!',
-      'Avast me hearties!',
-      'Shiver me timbers!',
+      "Aaarg, belay that!",
+      "Avast me hearties!",
+      "Shiver me timbers!",
     ];
 
     const randomize = () =>
@@ -1118,9 +1102,9 @@ class App extends React.Component {
       <>
         <Header title={randomize()} />
         <PirateForm />
-      {piratesFile.map(pirate => (
-        <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
-      ))}
+        {piratesFile.map((pirate) => (
+          <Pirate key={pirate.id} tagline={randomize()} pirate={pirate} />
+        ))}
       </>
     );
   }
@@ -1160,7 +1144,7 @@ render() {
 And add a method to `App.js` that will accept the new pirate created by the form:
 
 ```js
-const addPirate = pirate => {
+const addPirate = (pirate) => {
   console.log(pirate);
 };
 ```
@@ -1173,7 +1157,7 @@ We need to make the `addPirate` function available to the `AddPirateForm` by pas
 
 `App.js > PirateForm > AddPirateForm`
 
-- To get from  `PirateForm` from `App.js` we will use `<PirateForm addPirate={this.addPirate} />`:
+- To get from `PirateForm` from `App.js` we will use `<PirateForm addPirate={this.addPirate} />`:
 
 ```js
 render() {
@@ -1196,8 +1180,8 @@ The function needs to be available in AddPirateForm which is one level deeper.
 Pass the prop to `AddPirateForm` from `PirateForm`:
 
 ```js
-import React, { Component } from 'react';
-import AddPirateForm from './AddPirateForm';
+import React, { Component } from "react";
+import AddPirateForm from "./AddPirateForm";
 
 class PirateForm extends Component {
   render() {
@@ -1224,7 +1208,7 @@ In `AddPirateForm`:
 `this.props.addPirate(pirate);`
 
 ```js
-createPirate = event => {
+createPirate = (event) => {
   event.preventDefault();
   const pirate = {
     name: this.nameRef.current.value,
@@ -1240,7 +1224,7 @@ In App.js, expand on the function.
 Spread a copy of the current state into a new local pirates variable:
 
 ```js
-const addPirate = pirate => {
+const addPirate = (pirate) => {
   console.log(pirate);
   //take a copy of the current state and put it into pirates var
   const pirates = [...this.state.pirates];
@@ -1250,13 +1234,13 @@ const addPirate = pirate => {
 
 We have two variables:
 
-1. `pirate` - the newly created pirate created via the form 
+1. `pirate` - the newly created pirate created via the form
 2. `pirates` - the existing collection of pirates
 
 Add the pirate passed from the form to the new pirates array:
 
 ```js
-const addPirate = pirate => {
+const addPirate = (pirate) => {
   console.log(pirate);
   //take a copy of the current state and put it into pirates var
   const pirates = [...this.state.pirates];
@@ -1271,16 +1255,16 @@ Examine the variables in the inspector.
 And then use React's `setSate()` function to update the state:
 
 ```js
- const addPirate = pirate => {
-   console.log(pirate);
-   //take a copy of the current state and put it into newPirates var
-   const newPirates = [...this.state.pirates];
-   console.log(newPirates);
-   newPirates.unshift(pirate);
-   console.log(newPirates);
-   //set state pirates with var pirates
-   this.setState({ pirates: newPirates });
- };
+const addPirate = (pirate) => {
+  console.log(pirate);
+  //take a copy of the current state and put it into newPirates var
+  const newPirates = [...this.state.pirates];
+  console.log(newPirates);
+  newPirates.unshift(pirate);
+  console.log(newPirates);
+  //set state pirates with var pirates
+  this.setState({ pirates: newPirates });
+};
 ```
 
 Note: whenever you use `setState()` it triggers a re-rendering of the content without refreshing the page.
@@ -1322,7 +1306,7 @@ We have refs on the input fields. When we click "Add Pirate" the form still hold
 - Use `event.currentTarget.reset();` in `AddPirateFrom`:
 
 ```js
-createPirate = event => {
+createPirate = (event) => {
   event.preventDefault();
   const pirate = {
     name: this.nameRef.current.value,
@@ -1341,7 +1325,7 @@ The form should now empty on submit and the `addPirate` function is called to st
 Add a new method to `App.js`:
 
 ```js
-const removePirate = index => {
+const removePirate = (index) => {
   console.log(index);
   const pirates = [...this.state.pirates];
   pirates.splice(index, 1);
@@ -1357,17 +1341,19 @@ Pass the prop to `Pirate` from App using `removePirate = {this.removePirate}`:
 `App.js`:
 
 ```js
-{this.state.pirates.map(pirate => (
-  <Pirate
-    key={pirate.id}
-    tagline={randomize()}
-    pirate={pirate}
-    removePirate={this.removePirate}
-  />
-))}
+{
+  this.state.pirates.map((pirate) => (
+    <Pirate
+      key={pirate.id}
+      tagline={randomize()}
+      pirate={pirate}
+      removePirate={this.removePirate}
+    />
+  ));
+}
 ```
 
-Since we want the controls to be associated with each Pirate entry we'll add them to the `Pirate` component by including a new list item: 
+Since we want the controls to be associated with each Pirate entry we'll add them to the `Pirate` component by including a new list item:
 
 `<li><button onClick={() => this.props.removePirate(0)}>Remove ☠️</button></li>`
 
@@ -1397,7 +1383,7 @@ function Pirate({
         </ul>
       </aside>
       <article>
-        <h2>"{tagline}"</h2>
+        <h2>{tagline}</h2>
         <p>{desc}</p>
         <button onClick={() => removePirate(0)}>Remove ☠️</button>
       </article>
@@ -1494,8 +1480,8 @@ npm run build
 In AddPirateForm.js:
 
 ```js
-import React from 'react';
-import '../assets/css/AddPirateForm.css';
+import React from "react";
+import "../assets/css/AddPirateForm.css";
 
 class AddPirateForm extends React.Component {
   nameRef = React.createRef();
@@ -1504,7 +1490,7 @@ class AddPirateForm extends React.Component {
   yearRef = React.createRef();
   descRef = React.createRef();
 
-  createPirate = event => {
+  createPirate = (event) => {
     event.preventDefault();
     const pirate = {
       name: this.nameRef.current.value,
@@ -1636,14 +1622,14 @@ We will use this to connect to a backend service called [Firebase](https://fireb
 Create `base.js` in `src`:
 
 ```js
-import Rebase from 're-base'; // mirrors state to FB
-import firebase from 'firebase/app';
-import 'firebase/database';
+import Rebase from "re-base"; // mirrors state to FB
+import firebase from "firebase/app";
+import "firebase/database";
 
 const config = {
-  apiKey: 'AIzaSyAHnKw63CUBAqSuCREgils_waYJ0qwpGiU',
-  authDomain: 'daniel-deverell-pirates.firebaseapp.com',
-  databaseURL: 'https://daniel-deverell-pirates.firebaseio.com',
+  apiKey: "AIzaSyAHnKw63CUBAqSuCREgils_waYJ0qwpGiU",
+  authDomain: "daniel-deverell-pirates.firebaseapp.com",
+  databaseURL: "https://daniel-deverell-pirates.firebaseio.com",
 };
 
 const app = firebase.initializeApp(config);
@@ -1655,7 +1641,7 @@ export { base };
 Import it into App.js:
 
 ```js
-import { base } from './base';
+import { base } from "./base";
 ```
 
 And reset the pirates state to an empty array:
@@ -1732,9 +1718,9 @@ Prototypal inheritance - methods on the original constructor will be inherited.
 Add a prototype:
 
 ```js
-Car.prototype.drive = function() {
+Car.prototype.drive = function () {
   console.log(
-    `Vroom vroom 🚗 🚗 🚗! I'm a ${this.model} and I'm a ${this.make}`,
+    `Vroom vroom 🚗 🚗 🚗! I'm a ${this.model} and I'm a ${this.make}`
   );
 };
 ```
@@ -1744,7 +1730,7 @@ Examine the prototype on the car object.
 Add a second car:
 
 ```js
-const miata = new Car('Miata', 'Mazda');
+const miata = new Car("Miata", "Mazda");
 ```
 
 Execute the drive method:
@@ -1756,7 +1742,7 @@ Execute the drive method:
 Add an additional method:
 
 ```js
-Car.prototype.stop = function() {
+Car.prototype.stop = function () {
   console.log(`Screech! 🚒 🚑 🚓`);
 };
 ```
@@ -1781,7 +1767,7 @@ class Car {
   }
   drive() {
     console.log(
-      `Vroom vroom 🚗🚗🚗! I'm a ${this.model} and I'm a ${this.make}`,
+      `Vroom vroom 🚗🚗🚗! I'm a ${this.model} and I'm a ${this.make}`
     );
   }
   stop() {
@@ -1907,7 +1893,7 @@ class Animal {
   }
 }
 
-const rhino = new Animal('Rhiney');
+const rhino = new Animal("Rhiney");
 ```
 
 ```sh
@@ -1936,7 +1922,7 @@ class Dog extends Animal {
 This will not work:
 
 ```js
-const yorik = new Dog('Yorik', 'Terrier');
+const yorik = new Dog("Yorik", "Terrier");
 ```
 
 We need to call `super` first and here, super needs a name:
@@ -1985,11 +1971,11 @@ Start off with an array with a property:
 
 ```js
 const favMovies = new MovieCollection(
-  'My Favorite Movies',
-  { name: 'Bee Movie', stars: 10 },
-  { name: 'Star Wars Trek', stars: 1 },
-  { name: 'Virgin Suicides', stars: 7 },
-  { name: 'King of the Road', stars: 8 },
+  "My Favorite Movies",
+  { name: "Bee Movie", stars: 10 },
+  { name: "Star Wars Trek", stars: 1 },
+  { name: "Virgin Suicides", stars: 7 },
+  { name: "King of the Road", stars: 8 }
 );
 ```
 
@@ -2099,8 +2085,8 @@ change name and import as scss then install sass
 
 svg
 import logo, { ReactComponent as Anchor } from '../assets/img/anchor.svg';
-      {/* <img src={logo} className={styles.logo} alt="logo" /> */}
-      <Anchor className={styles.logo} />
+{/_ <img src={logo} className={styles.logo} alt="logo" /> _/}
+<Anchor className={styles.logo} />
 
 https://egghead.io/lessons/react-add-sass-support-to-create-react-app-2-0
 
