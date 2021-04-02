@@ -12,10 +12,7 @@ Add date and description fields to the form. -->
 
 ## Reading
 
-- [React Components and Props](https://reactjs.org/docs/components-and-props.html)
-- [React State](https://reactjs.org/docs/state-and-lifecycle.html)
-- [React List and Keys](https://reactjs.org/docs/lists-and-keys.html)
-- [React Forms](https://reactjs.org/docs/forms.html)
+- [The Main Concepts of React](https://reactjs.org/docs/hello-world.html)
 
 ## Create React App
 
@@ -24,7 +21,7 @@ Creating a React project requires a lot of tooling and setup. Fortunately Facebo
 To create a new project, ensure that you are cd'ed in today's project folder and run:
 
 ```sh
-npx create-react-app pirates
+$ npx create-react-app pirates
 ```
 
 Note: `npm` _manages_ packages while `npx` _executes_ Node packages. The first argument `create-react-app` is the package you are executing, the second `pirates` is the name of the project.
@@ -32,11 +29,12 @@ Note: `npm` _manages_ packages while `npx` _executes_ Node packages. The first a
 Run the project:
 
 ```sh
-cd pirates
-code .
+$ cd pirates
+$ code .
+
 ```
 
-Open VS Code's terminal and run `npm start`.
+Open VS Code's terminal and type `$ npm run start`.
 
 ### Examining the Project Structure
 
@@ -68,12 +66,42 @@ The main body of the component is a function that returns JSX (_not_ HTML).
 
 ### JSX
 
+Note this code:
+
+```js
+import React from "react";
+
+function App() {
+  return <h1 id="wrapper">Hello World</h1>;
+}
+```
+
+You cannot have HTML in JavaScript as shown above. The portion that looks like HTML is in fact [JSX](https://reactjs.org/docs/introducing-jsx.html).
+
+It is transformed in regular JavaScript under the hood:
+
+```js
+import React from "react";
+
+function App() {
+  return React.createElement(
+    "h1",
+    {
+      id: "wrapper",
+    },
+    "Hello World"
+  );
+}
+```
+
+The library responsible for this is called [Babel](https://babeljs.io/).
+
 JSX requirements and features:
 
 1. `src={logo}` - JSX curly braces allow the use of JS expressions
 2. `className="App-header"` - `class` is a reserved word in JavaScript
 3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
-4. everything is nested in a single tag
+4. everything returned must be nested in a single tag
 
 Commenting code in JSX looks a little different from regular JavaScript comments and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
 
@@ -121,17 +149,7 @@ Copy the material below and overwrite `public/index.html`:
 
 All modern front end systems employ a component architecture.
 
-<!-- Add the following to `index.js`:
-
-```js
-function Pirates() {
-  return <p>Ahoy there!</p>;
-}
-```
-
-Delete and reset index.js to its original state. -->
-
-Create and use the Pirate component in `App.js`. Copy and overwrite App.js with the following:
+Create and use a Pirate component in `App.js`:
 
 ```js
 import React from "react";
@@ -149,6 +167,8 @@ export default App;
 
 Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) for Chrome or Firefox and inspect the components.
 
+## Props
+
 Add a property (`prop`) to the Pirate component instance in `App.js`:
 
 ```js
@@ -165,17 +185,7 @@ function Pirate(props) {
 }
 ```
 
-Note that we have to pass props to the Pirate function.
-
-We _cannot_ do something like this:
-
-```js
-function Pirate() {
-  return <p>{tagline}</p>;
-}
-```
-
-However we can [destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) the tagline variable from props:
+We can [destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) the tagline variable from props:
 
 ```js
 function Pirate({ tagline }) {
@@ -197,9 +207,72 @@ function App() {
 }
 ```
 
-Create a second component for the header in `App.js`:
+---
+
+## DEMO Children
+
+React includes children as a property.
 
 ```js
+// Note: this structure is simplified
+function App() {
+  return React.createElement(
+    (type: "h1"),
+    (props: {
+      id: "wrapper",
+      children: "Hello World",
+    })
+  );
+}
+```
+
+Here we are not using `<Pirate />` as a self closing tag:
+
+```js
+import React from "react";
+
+function App() {
+  return <Pirate>Avast</Pirate>;
+}
+
+function Pirate(props) {
+  return <p>{props.children}</p>;
+}
+
+export default App;
+```
+
+If we add another property and use destructuring our components would look like this:
+
+```js
+import React from "react";
+
+function App() {
+  return <Pirate tagline="mateys!!">Avast</Pirate>;
+}
+
+function Pirate({ children, tagline }) {
+  return (
+    <p>
+      {children} {tagline}
+    </p>
+  );
+}
+
+export default App;
+```
+
+A term you will hear a lot is "composition" or "compose." A key feature of React is the composition of components.
+
+---
+
+Create a `components` folder in `src` to hold our components.
+
+Create a second component `Header.js` in the new components directory:
+
+```js
+import React from "react";
+
 function Header() {
   return (
     <div className="header">
@@ -208,6 +281,8 @@ function Header() {
     </div>
   );
 }
+
+export default Header;
 ```
 
 Note the errors.
@@ -215,13 +290,16 @@ Note the errors.
 Import the logo and some css for it:
 
 ```js
-import "./assets/css/Header.css";
-import logo from "./assets/img/anchor.svg";
+import "../assets/css/Header.css";
+import logo from "../assets/img/anchor.svg";
 ```
 
-Render it to the DOM via App while passing it a prop:
+Import it and render it to the DOM via App while passing it a prop:
 
 ```js
+import React from "react";
+import Header from "./components/Header";
+
 function App() {
   return (
     <div>
@@ -230,6 +308,12 @@ function App() {
     </div>
   );
 }
+
+function Pirate({ tagline }) {
+  return <p>{tagline}</p>;
+}
+
+export default App;
 ```
 
 Use the title prop:
