@@ -12,10 +12,10 @@ Add date and description fields to the form. -->
 
 ## Reading
 
-[React Components and Props](https://reactjs.org/docs/components-and-props.html)
-[React State](https://reactjs.org/docs/state-and-lifecycle.html)
-[React List and Keys](https://reactjs.org/docs/lists-and-keys.html)
-[React Forms](https://reactjs.org/docs/forms.html)
+- [React Components and Props](https://reactjs.org/docs/components-and-props.html)
+- [React State](https://reactjs.org/docs/state-and-lifecycle.html)
+- [React List and Keys](https://reactjs.org/docs/lists-and-keys.html)
+- [React Forms](https://reactjs.org/docs/forms.html)
 
 ## Create React App
 
