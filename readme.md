@@ -696,7 +696,7 @@ class Pirate extends React.Component {
         </summary>
         <article>
           <h2>{tagline}</h2>
-          <p>{desc}</p>
+          <p>{description}</p>
         </article>
       </section>
     );
@@ -709,7 +709,7 @@ Destructure the variables from props:
 ```js
 class Pirate extends React.Component {
   render() {
-    const { name, year, weapon, vessel, desc } = this.props.pirate;
+    const { name, year, weapon, vessel, description } = this.props.pirate;
     const { tagline } = this.props;
     return (
       <section>
@@ -724,7 +724,7 @@ class Pirate extends React.Component {
         </summary>
         <article>
           <h2>{tagline}</h2>
-          <p>{desc}</p>
+          <p>{description}</p>
         </article>
       </section>
     );
@@ -1145,7 +1145,7 @@ Be sure to destructure the prop:
 ```js
 class Pirate extends React.Component {
   render() {
-    const { name, year, weapon, vessel, desc } = this.props.pirate;
+    const { name, year, weapon, vessel, description } = this.props.pirate;
 
     const { tagline, removePirate } = this.props;
 
@@ -1162,7 +1162,7 @@ class Pirate extends React.Component {
         </summary>
         <article>
           <h2>{tagline}</h2>
-          <p>{desc}</p>
+          <p>{description}</p>
           <button onClick={removePirate}>Remove Pirate</button>
         </article>
       </section>
@@ -1190,7 +1190,7 @@ const removePirate = (pirateName) => {
 function Pirate({
   tagline,
   removePirate,
-  pirate: { name, year, weapon, vessel, desc },
+  pirate: { name, year, weapon, vessel, description },
 }) {
   return (
     <section>
@@ -1205,7 +1205,7 @@ function Pirate({
       </summary>
       <article>
         <h2>{tagline}</h2>
-        <p>{desc}</p>
+        <p>{description}</p>
         <button onClick={() => removePirate(name)}>Remove Pirate</button>
       </article>
     </section>
@@ -1213,19 +1213,7 @@ function Pirate({
 }
 ```
 
-## Build a Site
-
-Add an entry to `package.json`:
-
-```js
-"homepage": ".",
-```
-
-Then in the terminal run:
-
-```sh
-npm run build
-```
+---
 
 ## Adding Form Fields
 
@@ -1242,6 +1230,8 @@ In AddPirateForm.js:
     name: pirateName,
     vessel: vessel,
     weapon: weapon,
+    death: death,
+    description: description
   };
   addPirate(pirate);
   setPirateName("");
@@ -1254,7 +1244,7 @@ In AddPirateForm.js:
   <label htmlFor="died">Died</label>
   <input
     id="died"
-    type="date"
+    type="text"
     placeholder="Date of death"
     value={death}
     onChange={(event) => setDeath(event.target.value)}
@@ -1262,7 +1252,6 @@ In AddPirateForm.js:
   <label htmlFor="description">Description</label>
   <textarea
     id="description"
-    type=""
     placeholder="Pirate description"
     value={description}
     onChange={(event) => setDescription(event.target.value)}
@@ -1376,3 +1365,29 @@ Create a button below the header in App.js:
 And test.
 
 ## Notes
+
+## Build a Site
+
+1. Install node-fetch, netlify-cli
+
+1. Heroku account - create and logout
+1. Hasura cloud account > Create free project > save api info > HASURA_API_URL, ADMIN_ADMIN_SECRET
+1. Launch console > Data > create free database > pirates and recreate a pirate data schema
+1. Insert Row > add a pirate in the database
+1. Explore GraphQL
+
+<!-- https://pirates-test.hasura.app/v1/graphql -->
+<!-- VZnBFyR7zCjZWzNk5Q2PCqYsMmbI1fJXYsddmeRCG1qqa2U5Ub70ucd0bc1DBhy3 -->
+
+```js
+const pirates = require("../src/data/pirates.json");
+
+exports.handler = async () => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify(pirates),
+  };
+};
+```
+
+---
