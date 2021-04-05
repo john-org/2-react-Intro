@@ -4,7 +4,7 @@ Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld
 
 ## Homework
 
-Add date and description fields to the form.
+Add a Button.js component that takes different text and functions as props and/or children). The button should be reusable. Substitute all the buttons in our UI for your component.
 
 ## Suggested Reading
 
@@ -484,7 +484,13 @@ function App() {
 export default App;
 ```
 
-So far we have only used React functional components. There is another component type called a class component. We will focus on functional components but you should be familiar with both.
+## A Class Component
+
+So far we have only used React functional components. There is another component type called a class component. We will focus on functional components, but you should be familiar with both.
+
+A [simple class component](https://reactjs.org/docs/components-and-props.html).
+
+A [complex class component](https://reactjs.org/docs/state-and-lifecycle.html).
 
 Comment out the current function and create a class component:
 
@@ -633,6 +639,8 @@ In an ideal world your data, or state, is the single source of truth and your UI
 When you update your state, your framework renders a new copy of the UI based on the new data. You never have to think about which element in the DOM to target or how it needs to change.
 
 Under the hood React uses a virtual DOM to invisibly render components. Then it compares the actual DOM to the virtual DOM and performs a "diff" - an analyses of the differences between the two. Afterwards it surgically updates only those portions of the actual DOM that need to be updated. The entire page is never refereshed.
+
+[Sample](https://reactjs.org/redirect-to-codepen/rendering-elements/update-rendered-element)
 
 The key difference between props and [state](https://facebook.github.io/react-native/docs/state.html):
 
