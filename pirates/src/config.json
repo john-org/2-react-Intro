@@ -1,0 +1,6 @@
+{
+  "ENV": "development",
+  "API_KEY": "AIzaSyC1yCzyIdwEDTha8YPLDqyTMxKPzIy0lrE",
+  "DATABASE_URL": "https://pirates-31599-default-rtdb.firebaseio.com",
+  "PROJECT_ID": "pirates-31599"
+}

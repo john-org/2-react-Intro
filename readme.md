@@ -1,6 +1,6 @@
 # React Intro
 
-Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld/intermediate/pirates-build/)
+Today we will build this [minimal React site](http://react-pirates.netlify.app)
 
 ## Homework
 
@@ -11,6 +11,8 @@ Add a Button.js component that takes different text and functions as props and/o
 - [The Main Concepts of React](https://reactjs.org/docs/hello-world.html)
 
 ## Create React App
+
+Spring 2021 NOTE: THESE STEPS - AND MORE - HAVE ALREADY BEEN DONE.
 
 Creating a React project requires a lot of tooling and setup. Fortunately Facebook has created a bootstrapping system called [Create React App](https://facebook.github.io/create-react-app/)
 
@@ -72,9 +74,7 @@ function App() {
 }
 ```
 
-You cannot have HTML in JavaScript as shown above. The portion that looks like HTML is in fact [JSX](https://reactjs.org/docs/introducing-jsx.html).
-
-It is transformed in regular JavaScript under the hood:
+You cannot have HTML in JavaScript as shown above. The portion that looks like HTML is in fact [JSX](https://reactjs.org/docs/introducing-jsx.html) and is transformed in regular JavaScript under the hood:
 
 ```js
 import React from "react";
@@ -90,7 +90,7 @@ function App() {
 }
 ```
 
-The library responsible for this is called [Babel](https://babeljs.io/).
+The library responsible for this is called [Babel](https://babeljs.io/). It was installed by Create React App. An alternative to Babel is TypeScript.
 
 JSX requirements and features:
 
@@ -171,11 +171,8 @@ Use the [React Developer Tool](https://chrome.google.com/webstore/search/react) 
 - https://www.codecademy.com/
 - https://www.nytimes.com/
 
-Note the key property on repeated or 'mapped' UI elements.
-
-Examine the current application's component structure (nesting).
-
-Take a brief tour of the options in the React Developer tool.
+- Note the key property on repeated or 'mapped' UI elements.
+- Examine the current application's component structure (nesting).
 
 ---
 
@@ -204,6 +201,8 @@ function Pirate({ tagline }) {
   return <p>{tagline}</p>;
 }
 ```
+
+See `destructuring` in the reference directory of this repo.
 
 The fact that you can pass props to a reusable component makes them very powerful.
 
@@ -238,7 +237,7 @@ function App() {
 }
 ```
 
-Here we are not using `<Pirate />` as a self closing tag:
+Note how below we are _not_ using `<Pirate />` as a self-closing tag:
 
 ```js
 import React from "react";
@@ -274,13 +273,13 @@ function Pirate({ children, tagline }) {
 export default App;
 ```
 
-A term you will hear a lot is "composition" or "compose." A key feature of React is the composition of components.
+A term you will hear a lot is "composition" or "compose." A key feature of React is the composition of reusable components.
 
 ---
 
 Create a `components` folder in `src` to hold our components.
 
-Create a second component `Header.js` in the new components directory:
+Create a new component `Header.js` in the components directory:
 
 ```js
 import React from "react";
@@ -299,14 +298,14 @@ export default Header;
 
 Note the errors.
 
-Import the logo and some css for it:
+Import the logo and some css for it at the top:
 
 ```js
 import "../assets/css/Header.css";
 import logo from "../assets/img/anchor.svg";
 ```
 
-Import it and render it to the DOM via App while passing it a prop:
+Import Header and render it to the DOM via App.js while passing it a title prop:
 
 ```js
 import React from "react";
@@ -372,7 +371,9 @@ function randomize() {
 }
 ```
 
-And then call the function:
+Since these are plain JavaScript and do not require React we can create them _outside_ the App component.
+
+Call the `randomize` function and pass the results to the Header as a `title` prop:
 
 ```js
 function App() {
@@ -385,7 +386,7 @@ function App() {
 }
 ```
 
-Note: it would be more common to see an arrow function being employed.
+Note: it might be more common to see an arrow function being employed.
 
 Change the randomize function:
 
@@ -434,10 +435,26 @@ var arrayTotal = arr.reduce(function (total, amount) {
 console.log(arrayTotal);
 ```
 
+The above refactored:
+
+```js
+var arr = [1, 2, 3];
+
+var multiplyByTwo = arr.map((num) => (num *= 2));
+var filterLessThanThree = arr.filter((num) => num < 3);
+var arrayTotal = arr.reduce((total, amount) => total + amount);
+
+console.log(multiplyByTwo);
+console.log(filterLessThanThree);
+console.log(arrayTotal);
+```
+
+---
+
 ## Convert the Pirate component to a standalone component
 
-- Cut the Pirate component from `App.js`.
-- Create `Pirate.js` in the new `components` folder.
+- Delete the Pirate component from `App.js`
+- Create `Pirate.js` in the new `components` folder
 
 In `src/components/Pirate.js`:
 
@@ -486,7 +503,7 @@ export default App;
 
 ## A Class Component
 
-So far we have only used React functional components. There is another component type called a class component. We will focus on functional components, but you should be familiar with both.
+So far we have only used React functional components. There is an older component type called a class component. We will focus on functional components, but you should be familiar with both.
 
 A [simple class component](https://reactjs.org/docs/components-and-props.html).
 
@@ -519,11 +536,11 @@ class Pirate extends React.Component {
 export default Pirate;
 ```
 
-Note the render method and `this` in the paragraph. The JavaScript `this` keyword refers to the object it belongs to. Confusion around 'this' and the class-flavored syntax is a major reason the React team moved away from class components.
+Note the render method and `this` in the paragraph. The JavaScript `this` keyword refers to the object it belongs to. Confusion around 'this' and the class-flavored syntax is a major reason the React team moved away from class to function components.
 
 A functional component is just a plain JavaScript function which accepts props as an argument and returns a React element. A class component requires you to extend from `React.Component` and create a render function which returns a React element.
 
-You should be familiar with class components becasue they have been the primary method of working in React for many years. Many older posts, articles, and even the current React documentation use the class syntax.
+You should be familiar with class components - they have been the primary method of working in React for many years. Many older posts, articles, and even the current React documentation use the class syntax.
 
 ## Rendering Multiple Components
 
@@ -540,9 +557,11 @@ function App() {
   return (
     <div>
       <Header title={randomize()} />
-      {piratesFile.map((pirate) => (
-        <Pirate tagline={randomize()} />
-      ))}
+      <div className="pirate">
+        {piratesFile.map((pirate) => (
+          <Pirate tagline={randomize()} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -1192,15 +1211,15 @@ import "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC1yCzyIdwEDTha8YPLDqyTMxKPzIy0lrE",
-  authDomain: "pirates-31599.firebaseapp.com",
   databaseURL: "https://pirates-31599-default-rtdb.firebaseio.com",
   projectId: "pirates-31599",
-  storageBucket: "pirates-31599.appspot.com",
-  messagingSenderId: "79434369957",
-  appId: "1:79434369957:web:79f3f3b74964f5eb87f64c",
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app();
+}
 
 export default firebase;
 ```
