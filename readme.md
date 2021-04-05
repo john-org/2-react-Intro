@@ -4,13 +4,9 @@ Today we will build this [minimal React site](http://oit2.scps.nyu.edu/~devereld
 
 ## Homework
 
-Continue working on the session one exercises.
+Add date and description fields to the form.
 
-<!-- Review the notes below, step through them again to recreate the Pirates project on your own. If you need a completed version for reference see the branch `summer2019-done`.
-
-Add date and description fields to the form. -->
-
-## Reading
+## Suggested Reading
 
 - [The Main Concepts of React](https://reactjs.org/docs/hello-world.html)
 
@@ -645,6 +641,8 @@ The key difference between props and [state](https://facebook.github.io/react-na
 
 ```js
 const [pirates, setPirates] = React.useState(piratesFile);
+...
+{pirates.map((pirate) => (
 ```
 
 ### STATE DEMO on codesandbox.io
@@ -754,17 +752,18 @@ const AddPirate = () => {
 export default AddPirate;
 ```
 
-Import PirateForm and add it to `App.js`:
+Import AddPirate and compose it in `App.js`:
 
 ```js
 import AddPirate from "./components/AddPirate";
 ...
 function App() {
+   const [pirates, setPirates] = React.useState(piratesFile);
   return (
     <div>
       <Header title={randomize()} />
       <div className="pirate">
-        <PirateForm />
+        <AddPirate />
         {pirates.map((pirate) => (
           <Pirate key={pirate.name} tagline={randomize()} pirate={pirate} />
         ))}
@@ -816,114 +815,11 @@ const [pirateName, setPirateName] = React.useState("");
 
 ```
 
-<!-- Demo: the same component using the [ES6 class fields](https://blog.g2i.co/react-class-components-with-es6-and-class-fields-927b2b59f94e) proposal:
-
-```js
-import React from "react";
-import "../assets/css/AddPirateForm.css";
-
-class AddPirateForm extends React.Component {
-  state = { value: "" };
-
-  handleChange = (event) => {
-    console.log(event.target.value);
-    this.setState({ value: event.target.value });
-  };
-
-  handleSubmit = (event) => {
-    alert("A name was submitted: " + this.state.value);
-    event.preventDefault();
-  };
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Pirate name"
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Add Pirate</button>
-        <p>{this.state.value}</p>
-      </form>
-    );
-  }
-}
-
-export default AddPirateForm;
-``` -->
-
-<!-- ## React Form: Uncontrolled
-
-In a class component a function is actually a method on the extended class so and is placed within the class. In a functional component they are typically included outside the function.
-
-In order to capture the values in the form fields we will create [refs](https://reactjs.org/docs/uncontrolled-components.html) in an uncontrolled component.
-
-For ease of understanding, `Refs` in React can be thought of as being roughly equivalent to `document.querySelector()`.
-
-Add [refs](https://facebook.github.io/react/docs/refs-and-the-dom.html) to the form to store references to the input.
-
-In `AddPirateForm.js`:
-
-```js
-import React from "react";
-import "../assets/css/AddPirateForm.css";
-
-class AddPirateForm extends React.Component {
-  nameRef = React.createRef();
-  vesselRef = React.createRef();
-  weaponRef = React.createRef();
-
-  createPirate = (event) => {
-    event.preventDefault();
-    console.log("making a pirate");
-  };
-
-  render() {
-    return (
-      <form onSubmit={this.createPirate}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Pirate name"
-          ref={this.nameRef}
-        />
-        <input
-          type="text"
-          name="vessel"
-          placeholder="Pirate vessel"
-          ref={this.vesselRef}
-        />
-        <input
-          type="text"
-          name="weapon"
-          placeholder="Pirate weapon"
-          ref={this.weaponRef}
-        />
-        <button type="submit">Add Pirate</button>
-      </form>
-    );
-  }
-}
-
-export default AddPirateForm;
-``` -->
-
 Create a pirate object in `AddPirate`'s `createPirate` function.
 
 `AddPirate.js`:
 
 ```js
-// createPirate = (event) => {
-//   event.preventDefault();
-//   const pirate = {
-//     name: this.nameRef.current.value,
-//     vessel: this.vesselRef.current.value,
-//     weapon: this.weaponRef.current.value,
-//   };
-//   console.log(pirate);
-// };
 const createPirate = (event) => {
   event.preventDefault();
   console.log("making a pirate");
@@ -991,10 +887,10 @@ const createPirate = (event) => {
 Pirates state lives in `App.js`:
 
 ```js
-const [pirates, setPirates] = React.useState([]);
+const [pirates, setPirates] = React.useState(piratesFile);
 ```
 
-And add a method to `App.js` that will accept the new pirate created by the form:
+And add a method to `App.js` that will eventually accept the new pirate created by the form:
 
 ```js
 const addPirate = (pirate) => {
@@ -1063,6 +959,14 @@ const addPirate = (pirate) => {
 };
 ```
 
+or even:
+
+```js
+const addPirate = (pirate) => {
+  setPirates((prev) => [...prev, pirate]);
+};
+```
+
 The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `...` creates a new array using an existing array. (See the spreads examples in the reference folder.)
 
 We should now be able to create a pirate using the form and see it in the browser.
@@ -1070,25 +974,6 @@ We should now be able to create a pirate using the form and see it in the browse
 ## Resetting the Form
 
 When we click "Add Pirate" the form still holds the data so we need to reset it.
-
-```js
-createPirate = (event) => {
-  event.preventDefault();
-  const pirate = {
-    name: this.nameRef.current.value,
-    vessel: this.vesselRef.current.value,
-    weapon: this.weaponRef.current.value,
-  };
-  this.props.addPirate(pirate);
-  event.currentTarget.reset();
-};
-```
-
-The form should now empty on submit and the `addPirate` function is called to store our pirate in state.
-
-## Removing a Pirate
-
-Add a new method to `createPirate` in AddPirate:
 
 ```js
 const createPirate = (event) => {
@@ -1099,12 +984,16 @@ const createPirate = (event) => {
     vessel: vessel,
     weapon: weapon,
   };
+
   addPirate(pirate);
+
   setPirateName("");
   setVessel("");
   setWeapon("");
 };
 ```
+
+The form should now empty on submit.
 
 ## Removing Pirates
 
@@ -1186,6 +1075,8 @@ const removePirate = (pirateName) => {
 
 ## Refactor the Class Component
 
+As an exercise, comment out the class components and create an identical functional component.
+
 ```js
 function Pirate({
   tagline,
@@ -1258,7 +1149,7 @@ In AddPirateForm.js:
   />
 ```
 
-Edit CSS:
+Edit AddPirate.css:
 
 ```css
 form {
@@ -1279,71 +1170,118 @@ input {
 
 ## Persisting the data
 
-Components have life cycles - they are created, updated and removed.
+We will connect to a backend service called [Firebase](https://firebase.google.com)
 
-React offers a number of so-called special [lifecycle methods](https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class) that can be used.
+Create an account and add a new project.
 
-Add this to App.js:
+`$ npm install firebase`
 
-```js
-componentDidMount() {
-  console.log('mounted');
-}
-```
-
-We will use this to connect to a backend service called [Firebase](https://firebase.google.com)
-
-`npm install --save re-base firebase`
-
-Create `base.js` in `src`:
+Create `firebase.js` in `src`:
 
 ```js
-import Rebase from "re-base"; // mirrors state to FB
 import firebase from "firebase/app";
 import "firebase/database";
 
-const config = {
-  apiKey: "AIzaSyAHnKw63CUBAqSuCREgils_waYJ0qwpGiU",
-  authDomain: "daniel-deverell-pirates.firebaseapp.com",
-  databaseURL: "https://daniel-deverell-pirates.firebaseio.com",
+const firebaseConfig = {
+  apiKey: "AIzaSyC1yCzyIdwEDTha8YPLDqyTMxKPzIy0lrE",
+  authDomain: "pirates-31599.firebaseapp.com",
+  databaseURL: "https://pirates-31599-default-rtdb.firebaseio.com",
+  projectId: "pirates-31599",
+  storageBucket: "pirates-31599.appspot.com",
+  messagingSenderId: "79434369957",
+  appId: "1:79434369957:web:79f3f3b74964f5eb87f64c",
 };
 
-const app = firebase.initializeApp(config);
-const base = Rebase.createClass(app.database());
+firebase.initializeApp(firebaseConfig);
 
-export { base };
+export default firebase;
 ```
 
 Import it into App.js:
 
 ```js
-import { base } from "./base";
+// import piratesFile from "./data/sample-pirates-array";
+import firebase from "./firebase";
 ```
 
 And reset the pirates state to an empty array:
 
 ```js
-state = {
-  pirates: [],
-};
+const [pirates, setPirates] = React.useState([]);
 ```
 
-Use the lifecycle methods to sync to the database in App.js:
+In App.js:
 
 ```js
+import React from "react";
+import Header from "./components/Header";
+import Pirate from "./components/Pirate";
+import AddPirate from "./components/AddPirate";
 
-  componentWillMount() {
-    this.ref = base.syncState(`pirates`, {
-      context: this,
-      state: 'pirates',
-      asArray: true,
+import firebase from "./firebase";
+
+const pirateCalls = [
+  "Aaarg, belay that!",
+  "Avast me hearties!",
+  "Shiver me timbers!",
+];
+
+const randomize = () =>
+  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
+
+function App() {
+  const [pirates, setPirates] = React.useState([]);
+
+  React.useEffect(() => {
+    getPirates();
+  }, []);
+
+  const getPirates = () => {
+    const pirateRef = firebase.database().ref("pirates");
+    pirateRef.on("value", (snapshot) => {
+      const pirates = snapshot.val();
+      const pirateList = [];
+      for (let id in pirates) {
+        pirateList.push({ id, ...pirates[id] });
+      }
+      setPirates(pirateList);
     });
-  }
+  };
 
-  componentWillUnmount() {
-    base.removeBinding(this.ref);
-  }
+  const addPirate = (pirate) => {
+    const pirateRef = firebase.database().ref("pirates");
+    pirateRef.push(pirate);
+  };
 
+  const removePirate = (pirate) => {
+    const pirateRef = firebase.database().ref("pirates").child(pirate);
+    pirateRef.remove();
+  };
+
+  return (
+    <div>
+      <Header title={randomize()} />
+      <div className="pirate">
+        <AddPirate addPirate={addPirate} />
+
+        {pirates.length === 0 ? (
+          <p>Add some pirates.</p>
+        ) : (
+          pirates.map((pirate) => (
+            <Pirate
+              key={pirate.name}
+              tagline={randomize()}
+              pirate={pirate}
+              removePirate={removePirate}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
 ```
 
 Create a pirate to test.
@@ -1351,22 +1289,24 @@ Create a pirate to test.
 Create a method in App.js:
 
 ```js
-loadSamples = () => {
-  this.setState({ pirates: piratesFile });
+import piratesFile from "./data/sample-pirates-array";
+...
+const loadSamples = () => {
+  piratesFile.forEach((pirate) => addPirate(pirate));
 };
 ```
 
 Create a button below the header in App.js:
 
 ```js
-<button onClick={this.loadSamples}>Load Samples</button>
+<button onClick={loadSamples}>Load Samples</button>
 ```
 
 And test.
 
-## Notes
+## Instructor Notes
 
-## Build a Site
+## Serverless Functions
 
 1. Install node-fetch, netlify-cli
 
@@ -1389,5 +1329,13 @@ exports.handler = async () => {
   };
 };
 ```
+
+## Firebase
+
+https://dev.to/chensokheng/crud-operation-react-firebase-realtime-database-1bkn
+
+https://dev.to/bnevilleoneill/react-hooks-with-firebase-firestore-3onk
+
+https://console.firebase.google.com/u/0/project/pirates-31599/database/pirates-31599-default-rtdb/data/~2F
 
 ---
