@@ -1179,15 +1179,29 @@ In AddPirateForm.js:
 
 As a finishing touch, we will connect to a backend service called [Firebase](https://firebase.google.com) to store the data.
 
-Create an account on firebase and add a new project.
+Create an account on firebase and add a new project - call it pirates. (Turn off Google Analytics for the project since we will not be using it.)
 
-Add a real time database to the project and copy the initialization data.
+Add the project:
+
+![add project](reference/images/1.png)
+
+Copy the initialization information:
+
+![add project](reference/images/2.png)
+
+Select Realtime Database from the left hand menu and add a real time database to the project.
+
+![add project](reference/images/a.png)
+
+When asked about security rules, select Start in test mode.
+
+![add project](reference/images/b.png)
 
 In order to access firebase we need to install their library:
 
 `$ npm install firebase`
 
-Create `firebase.js` in `src`:
+Create a new file `firebase.js` in `src`:
 
 ```js
 import firebase from "firebase/app";
@@ -1208,7 +1222,7 @@ if (!firebase.apps.length) {
 export default firebase;
 ```
 
-Import it into App.js:
+Import firebase into App.js:
 
 ```js
 import firebase from "./firebase";
@@ -1228,6 +1242,7 @@ import Header from "./components/Header";
 import Pirate from "./components/Pirate";
 import AddPirate from "./components/AddPirate";
 
+// imported
 import firebase from "./firebase";
 
 const pirateCalls = [
@@ -1242,13 +1257,17 @@ const randomize = () =>
 function App() {
   const [pirates, setPirates] = React.useState([]);
 
+  // note this, it will be important later
   React.useEffect(() => {
     getPirates();
   }, []);
 
   const getPirates = () => {
+    // https://firebase.google.com/docs/reference/js/firebase.database.Reference
     const pirateRef = firebase.database().ref("pirates");
+    // https://firebase.google.com/docs/reference/js/firebase.database.Reference#on
     pirateRef.on("value", (snapshot) => {
+      // https://firebase.google.com/docs/database/admin/retrieve-data#node.js
       const pirates = snapshot.val();
       const pirateList = [];
       for (let id in pirates) {
@@ -1295,6 +1314,8 @@ export default App;
 ```
 
 Create a pirate to test.
+
+Note the `useEffect` hook. We will cover this in a future class.
 
 ---
 
@@ -1345,8 +1366,6 @@ exports.handler = async () => {
 ## Firebase
 
 https://dev.to/chensokheng/crud-operation-react-firebase-realtime-database-1bkn
-
-https://dev.to/bnevilleoneill/react-hooks-with-firebase-firestore-3onk
 
 https://console.firebase.google.com/u/0/project/pirates-31599/database/pirates-31599-default-rtdb/data/~2F
 
