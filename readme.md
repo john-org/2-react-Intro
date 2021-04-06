@@ -4,7 +4,7 @@ Today we will build this [minimal React site](http://react-pirates.netlify.app) 
 
 ## Homework
 
-Add a Button.js component that takes different text and functions as props and/or children). The button should be reusable. Substitute all the buttons in our UI for your component.
+Add a Button.js component that takes different text and functions as props and/or children). The button should be reusable in any project (not just this one). Substitute all the buttons in our UI for your component.
 
 ## Suggested Reading
 
@@ -60,6 +60,8 @@ import React from "react";
 
 `import` and `export` are part of the ES6 Module system that allows us to break down code into smaller pieces. ES6 modules are not natively supported in all browsers so a "bundler" is required. [Webpack](https://webpack.js.org/) has been installed by Create React App and is working under the hood in our project.
 
+Webpack includes the development server that allows us to work with our site while developing. It also allows us to build or compile our site for production.
+
 The main body of the component is a function that returns JSX (_not_ HTML).
 
 ### JSX
@@ -70,8 +72,14 @@ Note this code:
 import React from "react";
 
 function App() {
-  return <h1 id="wrapper">Hello World</h1>;
+  return (
+    <div className="App">
+      <h1>Ahoy!</h1>
+    </div>
+  );
 }
+
+export default App;
 ```
 
 You cannot have HTML in JavaScript as shown above. The portion that looks like HTML is in fact [JSX](https://reactjs.org/docs/introducing-jsx.html) and is transformed in regular JavaScript under the hood:
@@ -81,11 +89,11 @@ import React from "react";
 
 function App() {
   return React.createElement(
-    "h1",
+    "div",
     {
-      id: "wrapper",
+      className: "App",
     },
-    "Hello World"
+    React.createElement("h1", null, "Ahoy!")
   );
 }
 ```
@@ -94,16 +102,27 @@ The library responsible for this is called [Babel](https://babeljs.io/). It was 
 
 JSX requirements and features:
 
-1. `src={logo}` - JSX curly braces allow the use of JS expressions
-2. `className="App-header"` - `class` is a reserved word in JavaScript
-3. `<img ... />` xhtml style closing tags - every element in JSX needs to be closed
-4. everything returned must be nested in a single tag
+1. `src={logo}` - JSX curly braces allow the use of JavaScript expressions
+2. `className="App-header"` - `class` is a reserved word in JavaScript so we use the JS alternative className
+3. `<Component />` xhtml style closing tags - every element in JSX needs to be closed
+4. everything in a component must be nested in a single tag. This is not allowed:
 
-Commenting code in JSX looks a little different from regular JavaScript comments and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
+```js
+function App() {
+  return (
+  <h1>Ahoy!</h1>
+  <p>Hello there</p>
+  )
+}
+```
 
-`{/* <img src={logo} className="logo" alt="logo" /> */}`
+Commenting code in JSX is different than JavaScript comments and is supported in VS Code. Try commenting the following line using the `cmd-/` shortcut:
+
+`{/* <h1>Ahoy!</h1> */}`
 
 Save and note the hot reloading.
+
+Note: React 17 and above does not require you to import React so `import React from "react";` is unnecessary, however we will be doing so in this class.
 
 ### Project Prep
 
@@ -163,16 +182,13 @@ export default App;
 
 ## The React Developer Tool
 
-Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) for Chrome or Firefox and inspect the components.
+Install the [React Developer Tool](https://chrome.google.com/webstore/search/react) for Chrome or Firefox and inspect the component to make sure it is working.
 
 Use the [React Developer Tool](https://chrome.google.com/webstore/search/react) to inspect:
 
-- https://www.netflix.com/
-- https://www.codecademy.com/
-- https://www.nytimes.com/
-
-- Note the key property on repeated or 'mapped' UI elements.
-- Examine the current application's component structure (nesting).
+- https://www.netflix.com/ - inspect a button
+- https://www.codecademy.com/ - inspect a form field, - note the key property on repeated or 'mapped' UI elements.
+- https://www.nytimes.com/ - inspect an image
 
 ---
 
@@ -202,9 +218,11 @@ function Pirate({ tagline }) {
 }
 ```
 
-See `destructuring` in the reference directory of this repo.
+See `destructuring` and `rest-spread` in the reference directory of this repo.
 
 The fact that you can pass props to a reusable component makes them very powerful.
+
+DEMO:
 
 ```js
 function App() {
@@ -237,35 +255,41 @@ function App() {
 }
 ```
 
+DEMO:
+
 Note how below we are _not_ using `<Pirate />` as a self-closing tag:
 
 ```js
 import React from "react";
 
 function App() {
-  return <Pirate>Avast</Pirate>;
+  return <Pirate name="John">Avast</Pirate>;
 }
 
 function Pirate(props) {
-  return <p>{props.children}</p>;
+  return (
+    <p>
+      {props.children} {props.name}
+    </p>
+  );
 }
 
 export default App;
 ```
 
-If we add another property and use destructuring our components would look like this:
+If we use destructuring our components would look a little better:
 
 ```js
 import React from "react";
 
 function App() {
-  return <Pirate tagline="mateys!!">Avast</Pirate>;
+  return <Pirate name="John">Avast</Pirate>;
 }
 
-function Pirate({ children, tagline }) {
+function Pirate({ name, children }) {
   return (
     <p>
-      {children} {tagline}
+      {children} {name}
     </p>
   );
 }
@@ -277,9 +301,9 @@ A term you will hear a lot is "composition" or "compose." A key feature of React
 
 ---
 
-Create a `components` folder in `src` to hold our components.
-
-Create a new component `Header.js` in the components directory:
+1. Create a `components` folder in `src` to hold our components
+1. Move the App component into the new directory and correct the import error
+1. Create a new component `Header.js` in the components directory:
 
 ```js
 import React from "react";
@@ -309,7 +333,7 @@ Import Header and render it to the DOM via App.js while passing it a title prop:
 
 ```js
 import React from "react";
-import Header from "./components/Header";
+import Header from "./Header";
 
 function App() {
   return (
@@ -394,6 +418,8 @@ Change the randomize function:
 const randomize = () =>
   pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 ```
+
+Aside: by declaring the function as a variable we are creating a [function expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#function_declaration_hoisting).
 
 ## Importing and Exporting Components
 
@@ -503,11 +529,11 @@ export default App;
 
 ## A Class Component
 
-So far we have only used React functional components. There is an older component type called a class component. We will focus on functional components, but you should be familiar with both.
+So far we have only used React functional components. There is an older component type called a class component. We will focus on functional components in this class, but you should be familiar with both.
 
-A [simple class component](https://reactjs.org/docs/components-and-props.html).
+A [comparison](https://reactjs.org/docs/components-and-props.html).
 
-A [complex class component](https://reactjs.org/docs/state-and-lifecycle.html).
+A [complex class component](https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class).
 
 Comment out the current function and create a class component:
 
@@ -544,10 +570,10 @@ You should be familiar with class components - they have been the primary method
 
 ## Rendering Multiple Components
 
-Import an array of sample pirates into `App.js`:
+Import an array of sample pirates into `App.js` and open the file in the editor to examine it:
 
 ```js
-import piratesFile from "./data/sample-pirates-array";
+import piratesFile from "../data/sample-pirates-array";
 ```
 
 In `App.js` create multiple pirates using `.map()`:
@@ -601,9 +627,9 @@ class Pirate extends React.Component {
 
 Note the browser console warning: "Each child in a list should have a unique "key" prop."
 
-Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html) documentation.
+Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html#keys) documentation.
 
-Use the pirates name as a unique id:
+Use the pirates name as a unique id in `App.js`:
 
 ```js
 <Pirate key={pirate.name} tagline={randomize()} name={pirate.name} />
@@ -626,6 +652,8 @@ function App() {
 }
 ```
 
+Note that the name disappears but we do not get an error.
+
 ---
 
 ## State
@@ -634,24 +662,21 @@ State is data at a particular moment in time. It’s the current “state” of 
 
 JavaScript frameworks, including React, Angular and Vue, use state _and_ components to make managing UI easier.
 
-In an ideal world your data, or state, is the single source of truth and your UI as an expression of that state.
+In an ideal world your data, or state, is the single source of truth for your application and your UI is an expression of that state.
 
-When you update your state, your framework renders a new copy of the UI based on the new data. You never have to think about which element in the DOM to target or how it needs to change.
+When you update your data/state, your framework renders a new copy of the UI based on the new data. You never have to think about which element in the DOM to target or how it needs to change.
 
 Under the hood React uses a virtual DOM to invisibly render components. Then it compares the actual DOM to the virtual DOM and performs a "diff" - an analyses of the differences between the two. Afterwards it surgically updates only those portions of the actual DOM that need to be updated. The entire page is never refereshed.
 
 [Sample](https://reactjs.org/redirect-to-codepen/rendering-elements/update-rendered-element)
 
-The key difference between props and [state](https://facebook.github.io/react-native/docs/state.html):
-
 - state is internal and controlled by the component itself
-- props are external and controlled by whatever component renders the component. - [ref](http://buildwithreact.com/tutorial/state).
+- props are external and controlled by whatever component renders the component
+- props always flow down the document tree, never up
 
-```js
-const [pirates, setPirates] = React.useState(piratesFile);
-...
-{pirates.map((pirate) => (
-```
+We will be using React hooks to manage state in our app.
+
+`ussState` returns an array with two elements which we destructure into two variables. The first being the data and the second a function to update the data:
 
 ---
 
@@ -664,6 +689,7 @@ import "./styles.css";
 export default function App() {
   const [steps, setSteps] = React.useState(0);
 
+  // unlike our randomize function this needs to be part of the component
   function increment() {
     setSteps((steps) => steps + 1);
   }
@@ -678,9 +704,27 @@ export default function App() {
 }
 ```
 
-<!-- END STATE DEMO >>> -->
+<!-- END STATE DEMO -->
 
 ---
+
+```js
+function App() {
+  // we initialize our state with the piratesFile
+  const [pirates, setPirates] = React.useState(piratesFile);
+  return (
+    <div>
+      <Header title={randomize()} />
+      <div className="pirate">
+        {/* we map over the pirates state, not the piratesFile */}
+        {pirates.map((pirate) => (
+          <Pirate key={pirate.name} tagline={randomize()} pirate={pirate} />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
 
 Import an avatar in Pirate.js:
 
@@ -712,7 +756,7 @@ class Pirate extends React.Component {
 }
 ```
 
-Destructure the variables from props:
+Destructure the variables from this.props:
 
 ```js
 class Pirate extends React.Component {
@@ -765,7 +809,7 @@ export default AddPirate;
 Import AddPirate and compose it in `App.js`:
 
 ```js
-import AddPirate from "./components/AddPirate";
+import AddPirate from "./AddPirate";
 ...
 function App() {
    const [pirates, setPirates] = React.useState(piratesFile);
@@ -783,6 +827,8 @@ function App() {
 }
 ```
 
+Click on the Add Pirate button. The entire page reloads.
+
 Add an onSubmit to the AddPirate component:
 
 ```js
@@ -798,7 +844,7 @@ const AddPirate = () => {
 };
 ```
 
-And create a function in `AddPirate`:
+And create a function in `AddPirate` (this will need to go inside AddPirate function):
 
 ```js
 function createPirate(event) {
@@ -807,13 +853,19 @@ function createPirate(event) {
 }
 ```
 
+Click on the Add Pirate button.
+
 ---
 
 ## React Forms
 
-Take the first input field as an exemplar.
+Using the first input field as an exemplar.
 
-Ptate and onChange:
+- add state to store the pirate name,
+- a label with `htmlFor`,
+- an input id that matches the value of htmlFor,
+- a value attribute that displays the pirate name
+- an onChange property that runs a function when the user enters information
 
 ```js
 const [pirateName, setPirateName] = React.useState("");
@@ -827,8 +879,6 @@ const [pirateName, setPirateName] = React.useState("");
   onChange={(event) => setPirateName(event.target.value)}
 />
 ```
-
-Note `htmlFor`, `value` and `onChange`.
 
 Create a pirate object in `AddPirate`'s `createPirate` function.
 
@@ -897,11 +947,13 @@ const createPirate = (event) => {
 };
 ```
 
+Examine the AddPirate component in the React dev tools.
+
 ---
 
 ## Pirates State
 
-Currently pirates state is created in `App.js`:
+Currently the pirates data/state is created in `App.js`:
 
 ```js
 const [pirates, setPirates] = React.useState(piratesFile);
@@ -911,7 +963,7 @@ And add a method to `App.js` that will eventually accept the new pirate created 
 
 ```js
 const addPirate = (pirate) => {
-  console.log(pirate);
+  console.log(" from the App component ::: ", pirate);
 };
 ```
 
@@ -948,7 +1000,9 @@ const createPirate = (event) => {
 };
 ```
 
-In App.js, expand on the addPirate function.
+Note the console.
+
+In `App.js`, expand on the addPirate function.
 
 We have two variables:
 
@@ -965,9 +1019,13 @@ const addPirate = (pirate) => {
 };
 ```
 
+And test by adding a new pirate or two.
+
+The `Array.unshift()` method adds an element to the beginning of an array.
+
 Whenever you change state it triggers a re-rendering of the content without refreshing the entire page - just those elements that need to change.
 
-Another way of accomplishing the same state change might use a spread operator:
+Use another way of accomplishing the same state change:
 
 ```js
 const addPirate = (pirate) => {
@@ -976,11 +1034,20 @@ const addPirate = (pirate) => {
 };
 ```
 
-An even more concise function uses a variable `prev` - the setter function destructured from useState has access to previous state.
+if we want our new pirate to appear first:
 
 ```js
 const addPirate = (pirate) => {
-  setPirates((prev) => [...prev, pirate]);
+  const newPirates = [pirate, ...pirates];
+  setPirates(newPirates);
+};
+```
+
+An even more concise function uses a variable `prev` - setPirates has access to previous state.
+
+```js
+const addPirate = (pirate) => {
+  setPirates((prev) => [pirate, ...prev]);
 };
 ```
 
@@ -993,6 +1060,8 @@ Test it.
 ## Resetting the Form
 
 When we click "Add Pirate" the form still holds the data so we need to reset it.
+
+In `AddPirate`:
 
 ```js
 const createPirate = (event) => {
@@ -1018,7 +1087,7 @@ The form fields should now be empty after submitting.
 
 We want the remove pirate control to be associated with each Pirate entry but our pirates state is located in the top level App component.
 
-Add a stub function to App:
+Add a stub function to `App`:
 
 ```js
 const removePirate = () => {
@@ -1042,19 +1111,13 @@ And pass the function down to the Pirate component:
 </div>
 ```
 
-Add a button to the `Pirate` component:
-
-```js
-<button onClick={removePirate}>Remove Pirate</button>
-```
-
-Be sure to destructure the prop:
+Add a button to the `Pirate` component after the description and destructure the new prop:
 
 ```js
 class Pirate extends React.Component {
   render() {
     const { name, year, weapon, vessel, description } = this.props.pirate;
-
+    // here
     const { tagline, removePirate } = this.props;
 
     return (
@@ -1079,13 +1142,21 @@ class Pirate extends React.Component {
 }
 ```
 
+Test the button to ensure everything is wired correctly. (Hint: its not!)
+
+```js
+const removePirate = (pirateName) => {
+  console.log(pirateName);
+};
+```
+
 In `Pirate.js`:
 
 ```js
 <button onClick={() => removePirate(name)}>Remove Pirate</button>
 ```
 
-Add filtering to the function in App.js:
+Add a filter to the function in App.js:
 
 ```js
 const removePirate = (pirateName) => {
@@ -1096,7 +1167,7 @@ const removePirate = (pirateName) => {
 
 ## Refactor the Class Component
 
-As an exercise, comment out the class component in Pirate.js and create an equivalent functional component.
+Before adding the remaining form elements we'll comment out the class component in Pirate.js and create an equivalent functional component.
 
 ```js
 function Pirate({
@@ -1201,7 +1272,9 @@ When asked about security rules, select "Start in test mode."
 
 In order to use firebase we need to install their library:
 
-`$ npm install firebase`
+```sh
+$ npm install firebase
+```
 
 Create a new file `firebase.js` in `src`. Add the following information substituting your own values for firebaseConfig. The dataBaseURL is available from the Project Settings panel.
 
@@ -1240,12 +1313,12 @@ In App.js:
 
 ```js
 import React from "react";
-import Header from "./components/Header";
-import Pirate from "./components/Pirate";
-import AddPirate from "./components/AddPirate";
+import Header from "./Header";
+import Pirate from "./Pirate";
+import AddPirate from "./AddPirate";
 
 // imported
-import firebase from "./firebase";
+import firebase from "../firebase";
 
 const pirateCalls = [
   "Aaarg, belay that!",
@@ -1281,7 +1354,7 @@ function App() {
 
   const addPirate = (pirate) => {
     const pirateRef = firebase.database().ref("pirates");
-    pirateRef.push(pirate);
+    pirateRef.unshift(pirate);
   };
 
   const removePirate = (pirate) => {
@@ -1340,11 +1413,59 @@ Note:
 
 Create a pirate to test.
 
+Deleting a pirate now requires the use of an id. Change the delete button in Pirates.js to:
+
+```js
+<button onClick={() => removePirate(id)}>Remove Pirate</button>
+```
+
+and destructure the id:
+
+```js
+import React from "react";
+import "../assets/css/Pirate.css";
+
+import avatar from "../assets/img/avatar.png";
+
+function Pirate({
+  tagline,
+  removePirate,
+  pirate: { id, name, year, weapon, vessel, description },
+}) {
+  return (
+    <section>
+      <summary>
+        <img src={avatar} alt="pirate" />
+        <h3>{name}</h3>
+        <ul>
+          <li>Died: {year}</li>
+          <li>Weapon: {weapon}</li>
+          <li>Vessel: {vessel}</li>
+        </ul>
+      </summary>
+      <article>
+        <h2>{tagline}</h2>
+        <p>{description}</p>
+        <button onClick={() => removePirate(id)}>Remove Pirate</button>
+      </article>
+    </section>
+  );
+}
+
+export default Pirate;
+```
+
 ---
 
 ## Loading Pirates
 
-Ensure that you have imported the piratesFile document and create a function in App.js:
+Ensure that you have imported the piratesFile document:
+
+```js
+import piratesFile from "../data/sample-pirates-array";
+```
+
+and create a function in App.js:
 
 ```js
 const loadSamples = () => {
