@@ -1181,6 +1181,8 @@ As a finishing touch, we will connect to a backend service called [Firebase](htt
 
 Create an account on firebase and add a new project - call it pirates. (Turn off Google Analytics for the project since we will not be using it.)
 
+![add project](reference/images/c.png)
+
 Add the project:
 
 ![add project](reference/images/1.png)
@@ -1193,15 +1195,15 @@ Select Realtime Database from the left hand menu and add a real time database to
 
 ![add project](reference/images/a.png)
 
-When asked about security rules, select Start in test mode.
+When asked about security rules, select "Start in test mode."
 
 ![add project](reference/images/b.png)
 
-In order to access firebase we need to install their library:
+In order to use firebase we need to install their library:
 
 `$ npm install firebase`
 
-Create a new file `firebase.js` in `src`:
+Create a new file `firebase.js` in `src`. Add the following information substituting your own values for firebaseConfig. The dataBaseURL is available from the Project Settings panel.
 
 ```js
 import firebase from "firebase/app";
@@ -1294,7 +1296,7 @@ function App() {
         <AddPirate addPirate={addPirate} />
 
         {pirates.length === 0 ? (
-          <p>Add some pirates.</p>
+          <h2>Add some pirates.</h2>
         ) : (
           pirates.map((pirate) => (
             <Pirate
@@ -1313,15 +1315,36 @@ function App() {
 export default App;
 ```
 
-Create a pirate to test.
+Note:
 
-Note the `useEffect` hook. We will cover this in a future class.
+- the use of a ternary:
+
+```js
+{
+  pirates.length === 0 ? (
+    <h2>Add some pirates.</h2>
+  ) : (
+    pirates.map((pirate) => (
+      <Pirate
+        key={pirate.name}
+        tagline={randomize()}
+        pirate={pirate}
+        removePirate={removePirate}
+      />
+    ))
+  );
+}
+```
+
+- the `useEffect` hook. (We will cover this in a future class.)
+
+Create a pirate to test.
 
 ---
 
 ## Loading Pirates
 
-Create a function in App.js:
+Ensure that you have imported the piratesFile document and create a function in App.js:
 
 ```js
 const loadSamples = () => {
@@ -1336,6 +1359,20 @@ Create a button below the header in App.js:
 ```
 
 And test.
+
+## Deploying
+
+There are many good options for deploying this project. At its simplest we can use any web server.
+
+Add the following to `package.json`:
+
+```js
+"homepage": ".",
+```
+
+Run `$ npm run build` on the command line.
+
+And upload it to the server of your choice.
 
 ## Instructor Notes
 
