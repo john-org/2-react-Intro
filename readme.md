@@ -574,9 +574,11 @@ function App() {
   return (
     <div>
       <Header title={randomize()} />
-      {piratesFile.map((pirate) => (
-        <Pirate tagline={randomize()} name={pirate.name} />
-      ))}
+      <div className="pirate">
+        {piratesFile.map((pirate) => (
+          <Pirate tagline={randomize()} name={pirate.name} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -599,34 +601,13 @@ class Pirate extends React.Component {
 
 Note the browser console warning: "Each child in a list should have a unique "key" prop."
 
-Add a key using the index of the item in the array (`.map` can take the index of the array as an argument):
-
-```js
-function App() {
-  return (
-    <div>
-      <Header title={randomize()} />
-      {piratesFile.map((pirate, index) => (
-        <Pirate key={index} tagline={randomize()} name={pirate.name} />
-      ))}
-    </div>
-  );
-}
-```
-
 Review keys in the [React](https://reactjs.org/docs/lists-and-keys.html) documentation.
-
-The numbers list needs a key:
-
-`const listItems = numbers.map(number => <li key={number}>{number}</li>);`
-
-Don’t use indexes for keys if the order or number of items may change. This will negatively impact performance and will cause issues.
-
-<!-- end DEMO -->
 
 Use the pirates name as a unique id:
 
-`<Pirate key={pirate.name} tagline={randomize()} name={pirate.name} />`
+```js
+<Pirate key={pirate.name} tagline={randomize()} name={pirate.name} />
+```
 
 In App.js, instead of passing just the name (`name={pirate.name}`) we will pass the entire pirate object (`pirate={pirate}`):
 
@@ -635,11 +616,11 @@ function App() {
   return (
     <div>
       <Header title={randomize()} />
-      <section>
+      <div className="pirate">
         {piratesFile.map((pirate) => (
           <Pirate key={pirate.name} tagline={randomize()} pirate={pirate} />
         ))}
-      </section>
+      </div>
     </div>
   );
 }
@@ -671,6 +652,8 @@ const [pirates, setPirates] = React.useState(piratesFile);
 ...
 {pirates.map((pirate) => (
 ```
+
+---
 
 ### STATE DEMO on codesandbox.io
 
@@ -824,9 +807,13 @@ function createPirate(event) {
 }
 ```
 
+---
+
 ## React Forms
 
-State and onChange:
+Take the first input field as an exemplar.
+
+Ptate and onChange:
 
 ```js
 const [pirateName, setPirateName] = React.useState("");
@@ -839,8 +826,9 @@ const [pirateName, setPirateName] = React.useState("");
   value={pirateName}
   onChange={(event) => setPirateName(event.target.value)}
 />
-
 ```
+
+Note `htmlFor`, `value` and `onChange`.
 
 Create a pirate object in `AddPirate`'s `createPirate` function.
 
@@ -859,7 +847,7 @@ const createPirate = (event) => {
 
 Test by entering a pirate name in the form and examining the browser console.
 
-Build out the form
+Add vessel and weapon to the form
 
 ```js
   const [vessel, setVessel] = React.useState("");
@@ -894,7 +882,7 @@ Build out the form
 </form>
 ```
 
-Build out the createPirate function:
+Add them to the createPirate function:
 
 ```js
 const createPirate = (event) => {
@@ -909,9 +897,11 @@ const createPirate = (event) => {
 };
 ```
 
-### The Pirate Object in State
+---
 
-Pirates state lives in `App.js`:
+## Pirates State
+
+Currently pirates state is created in `App.js`:
 
 ```js
 const [pirates, setPirates] = React.useState(piratesFile);
@@ -933,9 +923,9 @@ We need to make the `addPirate` function available to `AddPirate` by passing it 
 <AddPirate addPirate={addPirate} />
 ```
 
-Examine the props in React tool. We have passed the function in App.js down to the component just as we might pass any property.
+Examine the props in React tool. We have passed the function in App.js down to the component as a property.
 
-We will use `createPirate` to develop a pirate instance and then pass the result to addPirate to store the instance in state.
+We will use `createPirate` to develop a pirate object and then pass the object to addPirate.
 
 In `AddPirate` - destructure the prop:
 
@@ -975,9 +965,9 @@ const addPirate = (pirate) => {
 };
 ```
 
-Note: whenever you change state it triggers a re-rendering of the content without refreshing the entire page - just those elements that need to change.
+Whenever you change state it triggers a re-rendering of the content without refreshing the entire page - just those elements that need to change.
 
-Another way of accomplishing the same state change might be:
+Another way of accomplishing the same state change might use a spread operator:
 
 ```js
 const addPirate = (pirate) => {
@@ -986,7 +976,7 @@ const addPirate = (pirate) => {
 };
 ```
 
-or even:
+An even more concise function uses a variable `prev` - the setter function destructured from useState has access to previous state.
 
 ```js
 const addPirate = (pirate) => {
@@ -997,6 +987,8 @@ const addPirate = (pirate) => {
 The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `...` creates a new array using an existing array. (See the spreads examples in the reference folder.)
 
 We should now be able to create a pirate using the form and see it in the browser.
+
+Test it.
 
 ## Resetting the Form
 
@@ -1020,7 +1012,7 @@ const createPirate = (event) => {
 };
 ```
 
-The form should now empty on submit.
+The form fields should now be empty after submitting.
 
 ## Removing Pirates
 
@@ -1093,6 +1085,8 @@ In `Pirate.js`:
 <button onClick={() => removePirate(name)}>Remove Pirate</button>
 ```
 
+Add filtering to the function in App.js:
+
 ```js
 const removePirate = (pirateName) => {
   const newPirates = pirates.filter((pirate) => pirate.name !== pirateName);
@@ -1102,7 +1096,7 @@ const removePirate = (pirateName) => {
 
 ## Refactor the Class Component
 
-As an exercise, comment out the class components and create an identical functional component.
+As an exercise, comment out the class component in Pirate.js and create an equivalent functional component.
 
 ```js
 function Pirate({
@@ -1133,14 +1127,18 @@ function Pirate({
 
 ---
 
-## Adding Form Fields
+## Additional Form Fields
+
+Our form is still missing fields for the year of death and description.
 
 In AddPirateForm.js:
 
 ```js
+// add two pieces of state
   const [death, setDeath] = React.useState("");
   const [description, setDescription] = React.useState("");
   ...
+// add the new state to the create pirate function
   const createPirate = (event) => {
   event.preventDefault();
 
@@ -1159,6 +1157,7 @@ In AddPirateForm.js:
   setDescription("");
 };
 ...
+// add two labels and input fields for the data
   <label htmlFor="died">Died</label>
   <input
     id="died"
@@ -1176,30 +1175,15 @@ In AddPirateForm.js:
   />
 ```
 
-Edit AddPirate.css:
-
-```css
-form {
-  display: flex;
-  flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-textarea,
-input {
-  font-size: 1rem;
-  padding: 0.5rem;
-  margin: 0.5rem;
-  font: inherit;
-}
-```
-
 ## Persisting the data
 
-We will connect to a backend service called [Firebase](https://firebase.google.com)
+As a finishing touch, we will connect to a backend service called [Firebase](https://firebase.google.com) to store the data.
 
-Create an account and add a new project.
+Create an account on firebase and add a new project.
+
+Add a real time database to the project and copy the initialization data.
+
+In order to access firebase we need to install their library:
 
 `$ npm install firebase`
 
@@ -1227,11 +1211,10 @@ export default firebase;
 Import it into App.js:
 
 ```js
-// import piratesFile from "./data/sample-pirates-array";
 import firebase from "./firebase";
 ```
 
-And reset the pirates state to an empty array:
+And initialize the pirates state to an empty array:
 
 ```js
 const [pirates, setPirates] = React.useState([]);
@@ -1313,11 +1296,13 @@ export default App;
 
 Create a pirate to test.
 
-Create a method in App.js:
+---
+
+## Loading Pirates
+
+Create a function in App.js:
 
 ```js
-import piratesFile from "./data/sample-pirates-array";
-...
 const loadSamples = () => {
   piratesFile.forEach((pirate) => addPirate(pirate));
 };
