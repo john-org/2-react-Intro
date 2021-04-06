@@ -1,6 +1,6 @@
 # React Intro
 
-Today we will build this [minimal React site](http://react-pirates.netlify.app)
+Today we will build this [minimal React site](http://react-pirates.netlify.app) with realtime database storage from Google's Firebase.
 
 ## Homework
 
@@ -1362,7 +1362,7 @@ And test.
 
 ## Deploying
 
-There are many good options for deploying this project. At its simplest we can use any web server.
+There are many good options for deploying this project. At its simplest, we can use any web server.
 
 Add the following to `package.json`:
 
@@ -1370,9 +1370,9 @@ Add the following to `package.json`:
 "homepage": ".",
 ```
 
-Run `$ npm run build` on the command line.
+Run `$ npm run build` on the command line and upload the build folder to the server of your choice.
 
-And upload it to the server of your choice.
+[Sample](http://oit2.scps.nyu.edu/~devereld/intermediate/build/)
 
 ## Instructor Notes
 
@@ -1401,8 +1401,6 @@ exports.handler = async () => {
 ```
 
 ## Firebase
-
-https://dev.to/chensokheng/crud-operation-react-firebase-realtime-database-1bkn
 
 https://console.firebase.google.com/u/0/project/pirates-31599/database/pirates-31599-default-rtdb/data/~2F
 
