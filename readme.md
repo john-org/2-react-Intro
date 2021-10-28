@@ -1,6 +1,8 @@
 # React Intro
 
-Today we will build this [minimal React site](http://react-pirates.netlify.app) with realtime database storage from Google's Firebase.
+Today we will build this [minimal React site](http://react-pirates.netlify.app).
+
+<!-- with realtime database storage from Google's Firebase. -->
 
 ## Homework
 
@@ -12,11 +14,11 @@ Add a Button.js component that takes different text and functions as props and/o
 
 ## Create React App
 
-Spring 2021 NOTE: THESE STEPS - AND MORE - HAVE ALREADY BEEN DONE.
-
 Creating a React project requires a lot of tooling and setup. Fortunately Facebook has created a bootstrapping system called [Create React App](https://facebook.github.io/create-react-app/)
 
 To create a new project, ensure that you are cd'ed in today's project folder and run:
+
+<!-- --use-npm -->
 
 ```sh
 $ npx create-react-app pirates
@@ -105,7 +107,7 @@ JSX requirements and features:
 1. `src={logo}` - JSX curly braces allow the use of JavaScript expressions
 2. `className="App-header"` - `class` is a reserved word in JavaScript so we use the JS alternative className
 3. `<Component />` xhtml style closing tags - every element in JSX needs to be closed
-4. everything in a component must be nested in a single tag. This is not allowed:
+4. everything in a component must be nested in a single tag - i.e. this is not allowed:
 
 ```js
 function App() {
@@ -126,7 +128,7 @@ Note: React 17 and above does not require you to import React so `import React f
 
 ### Project Prep
 
-IMPORTANT - Move the `data` and `assets` folders from `reference` to the `src` directory in `pirates`.
+IMPORTANT - Copy the `data` and `assets` folders from `reference` to the `src` directory in `pirates`.
 
 Import our fonts and clean up the default html template.
 
@@ -240,7 +242,7 @@ function App() {
 
 ## DEMO Children
 
-React includes children as a property.
+React includes children as a property. I.e:
 
 ```js
 // Note: this structure is simplified
@@ -419,7 +421,7 @@ const randomize = () =>
   pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 ```
 
-Aside: by declaring the function as a variable we are creating a [function expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#function_declaration_hoisting).
+Note: by declaring the function as a variable we are creating a [function expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#function_declaration_hoisting).
 
 ## Importing and Exporting Components
 
@@ -541,23 +543,23 @@ Comment out the current function and create a class component:
 import React from "react";
 import "../assets/css/Pirate.css";
 
-// function Pirate(props) {
-//   return (
-//     <section>
-//        <p>Favorite saying: {props.tagline}</p>
-//     </section>
-//   );
-// }
-
-class Pirate extends React.Component {
-  render() {
-    return (
-      <section>
-        <p>Favorite saying: {this.props.tagline}</p>
-      </section>
-    );
-  }
+function Pirate(props) {
+  return (
+    <section>
+      <p>Favorite saying: {props.tagline}</p>
+    </section>
+  );
 }
+
+// class Pirate extends React.Component {
+//   render() {
+//     return (
+//       <section>
+//         <p>Favorite saying: {this.props.tagline}</p>
+//       </section>
+//     );
+//   }
+// }
 
 export default Pirate;
 ```
@@ -613,15 +615,13 @@ function App() {
 In `Pirate.js` we access the data via props:
 
 ```js
-class Pirate extends React.Component {
-  render() {
-    return (
-      <section>
-        <h2>{this.props.name}</h2>
-        <p>Favorite saying: {this.props.tagline}</p>
-      </section>
-    );
-  }
+function Pirate(props) {
+  return (
+    <section>
+      <h2>{props.pirate.name}</h2>
+      <p>Favorite saying: {props.tagline}</p>
+    </section>
+  );
 }
 ```
 
@@ -733,54 +733,71 @@ Import an avatar in Pirate.js:
 and use the new pirate prop:
 
 ```js
-class Pirate extends React.Component {
-  render() {
-    return (
-      <section>
-        <summary>
-          <img src={avatar} alt="pirate" />
-          <h3>{name}</h3>
-          <ul>
-            <li>Died: {year}</li>
-            <li>Weapon: {weapon}</li>
-            <li>Vessel: {vessel}</li>
-          </ul>
-        </summary>
-        <article>
-          <h2>{tagline}</h2>
-          <p>{description}</p>
-        </article>
-      </section>
-    );
-  }
+function Pirate(props) {
+  return (
+    <section>
+      <summary>
+        <img src={avatar} alt="pirate" />
+        <h3>{props.pirate.name}</h3>
+        <ul>
+          <li>Died: {props.pirate.year}</li>
+          <li>Weapon: {props.pirate.weapon}</li>
+          <li>Vessel: {props.pirate.vessel}</li>
+        </ul>
+      </summary>
+      <article>
+        <h2>{props.tagline}</h2>
+        <p>{props.pirate.description}</p>
+      </article>
+    </section>
+  );
 }
 ```
 
 Destructure the variables from this.props:
 
 ```js
-class Pirate extends React.Component {
-  render() {
-    const { name, year, weapon, vessel, description } = this.props.pirate;
-    const { tagline } = this.props;
-    return (
-      <section>
-        <summary>
-          <img src={avatar} alt="pirate" />
-          <h3>{name}</h3>
-          <ul>
-            <li>Died: {year}</li>
-            <li>Weapon: {weapon}</li>
-            <li>Vessel: {vessel}</li>
-          </ul>
-        </summary>
-        <article>
-          <h2>{tagline}</h2>
-          <p>{description}</p>
-        </article>
-      </section>
-    );
-  }
+function Pirate(props) {
+  const { name, year, weapon, vessel, description } = props.pirate;
+  const { tagline } = props;
+
+  return (
+    <section>
+      <summary>
+        <img src={avatar} alt="pirate" />
+        <h3>{name}</h3>
+        <ul>
+          <li>Died: {year}</li>
+          <li>Weapon: {weapon}</li>
+          <li>Vessel: {vessel}</li>
+        </ul>
+      </summary>
+      <article>
+        <h2>{tagline}</h2>
+        <p>{description}</p>
+      </article>
+    </section>
+  );
+}
+```
+
+Refine the destructuring:
+
+```js
+function Pirate({ pirate, tagline }) {
+  const { name, year, weapon, vessel, description } = pirate;
+  ...
+}
+```
+
+Another possible refinement:
+
+```js
+function Pirate({
+  pirate: { name, year, weapon, vessel, description },
+  tagline,
+}) {
+...
 }
 ```
 
@@ -809,7 +826,7 @@ export default AddPirate;
 Import AddPirate and compose it in `App.js`:
 
 ```js
-import AddPirate from "./AddPirate";
+import AddPirate from "./components/AddPirate";
 ...
 function App() {
    const [pirates, setPirates] = React.useState(piratesFile);
@@ -859,9 +876,9 @@ Click on the Add Pirate button.
 
 ## React Forms
 
-Using the first input field as an exemplar.
+Using the first input field as an exemplar, Add:
 
-- add state to store the pirate name,
+- state to store the pirate name,
 - a label with `htmlFor`,
 - an input id that matches the value of htmlFor,
 - a value attribute that displays the pirate name
@@ -953,7 +970,7 @@ Examine the AddPirate component in the React dev tools.
 
 ## Pirates State
 
-Currently the pirates data/state is created in `App.js`:
+Currently the pirates data/state is located in `App.js`:
 
 ```js
 const [pirates, setPirates] = React.useState(piratesFile);
@@ -1019,13 +1036,13 @@ const addPirate = (pirate) => {
 };
 ```
 
-And test by adding a new pirate or two.
+And test by adding a new pirate.
 
 The `Array.unshift()` method adds an element to the beginning of an array.
 
 Whenever you change state it triggers a re-rendering of the content without refreshing the entire page - just those elements that need to change.
 
-Use another way of accomplishing the same state change:
+Use a better way of accomplishing the same state change:
 
 ```js
 const addPirate = (pirate) => {
@@ -1114,35 +1131,33 @@ And pass the function down to the Pirate component:
 Add a button to the `Pirate` component after the description and destructure the new prop:
 
 ```js
-class Pirate extends React.Component {
-  render() {
-    const { name, year, weapon, vessel, description } = this.props.pirate;
-    // here
-    const { tagline, removePirate } = this.props;
-
-    return (
-      <section>
-        <summary>
-          <img src={avatar} alt="pirate" />
-          <h3>{name}</h3>
-          <ul>
-            <li>Died: {year}</li>
-            <li>Weapon: {weapon}</li>
-            <li>Vessel: {vessel}</li>
-          </ul>
-        </summary>
-        <article>
-          <h2>{tagline}</h2>
-          <p>{description}</p>
-          <button onClick={removePirate}>Remove Pirate</button>
-        </article>
-      </section>
-    );
-  }
+function Pirate({
+  pirate: { name, year, weapon, vessel, description },
+  tagline,
+  removePirate,
+}) {
+  return (
+    <section>
+      <summary>
+        <img src={avatar} alt="pirate" />
+        <h3>{name}</h3>
+        <ul>
+          <li>Died: {year}</li>
+          <li>Weapon: {weapon}</li>
+          <li>Vessel: {vessel}</li>
+        </ul>
+      </summary>
+      <article>
+        <h2>{tagline}</h2>
+        <p>{description}</p>
+        <button onClick={removePirate}>Remove Pirate</button>
+      </article>
+    </section>
+  );
 }
 ```
 
-Test the button to ensure everything is wired correctly. (Hint: its not!)
+Test the button to ensure everything is wired correctly.
 
 ```js
 const removePirate = (pirateName) => {
@@ -1163,37 +1178,6 @@ const removePirate = (pirateName) => {
   const newPirates = pirates.filter((pirate) => pirate.name !== pirateName);
   setPirates(newPirates);
 };
-```
-
-## Refactor the Class Component
-
-Before adding the remaining form elements we'll comment out the class component in Pirate.js and create an equivalent functional component.
-
-```js
-function Pirate({
-  tagline,
-  removePirate,
-  pirate: { name, year, weapon, vessel, description },
-}) {
-  return (
-    <section>
-      <summary>
-        <img src={avatar} alt="pirate" />
-        <h3>{name}</h3>
-        <ul>
-          <li>Died: {year}</li>
-          <li>Weapon: {weapon}</li>
-          <li>Vessel: {vessel}</li>
-        </ul>
-      </summary>
-      <article>
-        <h2>{tagline}</h2>
-        <p>{description}</p>
-        <button onClick={() => removePirate(name)}>Remove Pirate</button>
-      </article>
-    </section>
-  );
-}
 ```
 
 ---
@@ -1245,6 +1229,10 @@ In AddPirateForm.js:
     onChange={(event) => setDescription(event.target.value)}
   />
 ```
+
+## END
+
+## NOTES
 
 ## Persisting the data
 
