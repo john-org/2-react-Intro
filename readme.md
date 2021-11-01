@@ -652,7 +652,20 @@ function App() {
 }
 ```
 
-Note that the name disappears but we do not get an error.
+Note that the name disappears in the UI but we do not get an error.
+
+Correct it with:
+
+```js
+function Pirate(props) {
+  return (
+    <section>
+      <h3>{props.pirate.name}</h3>
+      <p>Favorite saying: {props.tagline}</p>
+    </section>
+  );
+}
+```
 
 ---
 
@@ -668,7 +681,7 @@ When you update your data/state, your framework renders a new copy of the UI bas
 
 Under the hood React uses a virtual DOM to invisibly render components. Then it compares the actual DOM to the virtual DOM and performs a "diff" - an analyses of the differences between the two. Afterwards it surgically updates only those portions of the actual DOM that need to be updated. The entire page is never refereshed.
 
-[Sample](https://reactjs.org/redirect-to-codepen/rendering-elements/update-rendered-element)
+[Sample](https://codepen.io/pen?&editors=0010)
 
 - state is internal and controlled by the component itself
 - props are external and controlled by whatever component renders the component
@@ -725,6 +738,8 @@ function App() {
   );
 }
 ```
+
+Note: `{pirates.map((pirate) => (` - we are initializing the pirates state with piratesFile
 
 Import an avatar in Pirate.js:
 
@@ -801,6 +816,39 @@ function Pirate({
 }
 ```
 
+Note: `avatar.png` is included in the sample-pirates-array data: 
+
+```js
+const pirates = [
+  {
+    name: "John Rackham",
+    image: "avatar.png", // HERE
+    description:
+      "Rackham deposed Charles Vane from his position as captain of the sloop Ranger, then cruised the Leeward Islands, Jamaica Channel and Windward Passage. He accepted a pardon in 1719 and moved to New Providence, where he met Anne Bonny. He returned to piracy in 1720 by stealing a British sloop and Anne joined him.",
+    year: 1720,
+    weapon: "Sword",
+    vessel: "Bounty",
+  },
+```
+
+We can destructure it in the Pirate component and use it in the JSx:
+
+```js
+function Pirate({
+  pirate: { name, year, weapon, vessel, description, image },
+  tagline,
+}) {
+  return (
+    <section>
+      <summary>
+        <img src={`../assets/img/${image}`} alt="pirate" />
+        <h3>{name}</h3>
+```
+
+But we will need to copy the assets folder into public in order for the link to function.
+
+
+
 ## React Forms
 
 Create a new component `AddPirate.js` in the components folder:
@@ -826,7 +874,7 @@ export default AddPirate;
 Import AddPirate and compose it in `App.js`:
 
 ```js
-import AddPirate from "./components/AddPirate";
+import AddPirate from "./AddPirate";
 ...
 function App() {
    const [pirates, setPirates] = React.useState(piratesFile);
@@ -844,9 +892,11 @@ function App() {
 }
 ```
 
-Click on the Add Pirate button. The entire page reloads.
+Click on the Add Pirate submit button. The entire page reloads.
 
-Add an onSubmit to the AddPirate component:
+Try: `<form onSubmit={(event) => event.preventDefault()}>`
+
+Add an onSubmit handler to the AddPirate component:
 
 ```js
 const AddPirate = () => {
@@ -870,7 +920,7 @@ function createPirate(event) {
 }
 ```
 
-Click on the Add Pirate button.
+Click on the Add Pirate button to test.
 
 ---
 
@@ -896,6 +946,8 @@ const [pirateName, setPirateName] = React.useState("");
   onChange={(event) => setPirateName(event.target.value)}
 />
 ```
+
+Try entering a pirate name while examining the state in React devtools.
 
 Create a pirate object in `AddPirate`'s `createPirate` function.
 
@@ -976,7 +1028,7 @@ Currently the pirates data/state is located in `App.js`:
 const [pirates, setPirates] = React.useState(piratesFile);
 ```
 
-And add a method to `App.js` that will eventually accept the new pirate created by the form:
+Add a method to `App.js` that will eventually accept the new pirate created by the form:
 
 ```js
 const addPirate = (pirate) => {
@@ -1060,10 +1112,11 @@ const addPirate = (pirate) => {
 };
 ```
 
-An even more concise function uses a variable `prev` - setPirates has access to previous state.
+Another, even more concise function, uses a variable `prev` - setPirates has access to previous state.
 
 ```js
 const addPirate = (pirate) => {
+  pirate.image = "avatar.png";
   setPirates((prev) => [pirate, ...prev]);
 };
 ```
@@ -1112,7 +1165,7 @@ const removePirate = () => {
 };
 ```
 
-And pass the function down to the Pirate component:
+Since we are going to create a delete button in each Pirate instance, we'll pass the function down to the Pirate component:
 
 ```js
 <div className="pirate">
@@ -1230,8 +1283,6 @@ In AddPirateForm.js:
   />
 ```
 
-## END
-
 ## NOTES
 
 ## Persisting the data
@@ -1261,7 +1312,7 @@ When asked about security rules, select "Start in test mode."
 In order to use firebase we need to install their library:
 
 ```sh
-$ npm install firebase
+$ npm install firebase@8.3.2
 ```
 
 Create a new file `firebase.js` in `src`. Add the following information substituting your own values for firebaseConfig. The dataBaseURL is available from the Project Settings panel.
@@ -1271,24 +1322,25 @@ import firebase from "firebase/app";
 import "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC1yCzyIdwEDTha8YPLDqyTMxKPzIy0lrE",
-  databaseURL: "https://pirates-31599-default-rtdb.firebaseio.com",
-  projectId: "pirates-31599",
+  apiKey: "AIzaSyDoJ3LktAYg1_SKKgfQBzgRZDzmGOzlYz4",
+  authDomain: "testing-pirates.firebaseapp.com",
+  databaseURL: "https://testing-pirates-default-rtdb.firebaseio.com",
+  projectId: "testing-pirates",
+  storageBucket: "testing-pirates.appspot.com",
+  messagingSenderId: "792598258815",
+  appId: "1:792598258815:web:8efaaeef93a62c2c9a8b4a",
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
+firebase.initializeApp(firebaseConfig);
 
 export default firebase;
+
 ```
 
 Import firebase into App.js:
 
 ```js
-import firebase from "./firebase";
+import firebase from "../firebase";
 ```
 
 And initialize the pirates state to an empty array:
@@ -1320,17 +1372,14 @@ const randomize = () =>
 function App() {
   const [pirates, setPirates] = React.useState([]);
 
-  // note this, it will be important later
-  React.useEffect(() => {
+    React.useEffect(() => {
     getPirates();
   }, []);
 
   const getPirates = () => {
-    // https://firebase.google.com/docs/reference/js/firebase.database.Reference
+    // https://firebase.google.com/docs/database/web/read-and-write#web-version-8_5
     const pirateRef = firebase.database().ref("pirates");
-    // https://firebase.google.com/docs/reference/js/firebase.database.Reference#on
     pirateRef.on("value", (snapshot) => {
-      // https://firebase.google.com/docs/database/admin/retrieve-data#node.js
       const pirates = snapshot.val();
       const pirateList = [];
       for (let id in pirates) {
