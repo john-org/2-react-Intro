@@ -13,12 +13,14 @@ const randomize = () =>
   pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 
 function App() {
+  const [pirates, setPirates] = React.useState(piratesFile);
+
   return (
     <div>
       <Header title={randomize()} />
       <div className="pirate">
         {piratesFile.map((pirate) => (
-          <Pirate tagline={randomize()} />
+          <Pirate key={pirate.name} tagline={randomize()} pirate={pirate} />
         ))}
       </div>
     </div>
