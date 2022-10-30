@@ -1296,7 +1296,65 @@ In AddPirateForm.js:
 
 As a finishing touch, we will connect to a backend service called [Firebase](https://firebase.google.com) to store the data.
 
-Create an account on firebase and add a new project - call it pirates. (Turn off Google Analytics for the project since we will not be using it.)
+<!-- https://dev.to/asayerio_techblog/build-a-crud-app-with-react-and-firebase-1651 -->
+
+The below steps can be difficult to follow and assume the creation of a todo's app. I recommend following this [video tutorial](https://youtu.be/13eja_RYimU) instead.
+
+Go to the Firebase console:
+
+![add project](reference/images/image02.png)
+
+Click Add Project:
+
+![add project](reference/images/image03.png)
+
+Give your project a name and click continue (call it pirates, not todo-app):
+
+![add project](reference/images/image04.png)
+
+You can choose to use Google Analytics or not; I choose not to. Your project will be generated, which will take some time. Then click continue.
+
+![add project](reference/images/image05.png)
+
+The dashboard below pops up once project creation is done:
+
+![add project](reference/images/image06.png)
+
+Click on the web app icon:
+
+![add project](reference/images/image07.png)
+
+After naming the web application (call it pirates), click the register app button below to access Firebase:
+
+![add project](reference/images/image08.png)
+
+Afterwards, click continue to console.:
+
+![add project](reference/images/image09.png)
+
+The dashboard pops up. Go to the project settings
+
+![add project](reference/images/image10.png)
+
+In the General tab, click on config and copy the Firebase config; it will be used to communicate to Firebase. Go to the Firestore database section, click Create Database, then this pop-up will show up:
+
+![add project](reference/images/image11.png)
+
+Click Next, choose the database location, and click enable:
+
+![add project](reference/images/image12.png)
+
+Once created, you should see this type of dashboard:
+
+![add project](reference/images/image13.png)
+
+Go to the rules and change false to true, then publish:
+
+![add project](reference/images/image14.png)
+
+---
+
+<!-- Create an account on firebase and add a new project - call it pirates. (Turn off Google Analytics for the project since we will not be using it.)
 
 ![add project](reference/images/c.png)
 
@@ -1310,171 +1368,152 @@ Copy the initialization information:
 
 Select Realtime Database from the left hand menu (Build > Realtime Database) and add a real time database to the project.
 
+Select Firestore Database from the left hand menu and add a Firestore database to the project.
+
 ![add project](reference/images/a.png)
 
 When asked about security rules, select "Start in test mode."
 
-![add project](reference/images/b.png)
+![add project](reference/images/b.png) -->
+
+Remove the data scaffold:
+
+`// import piratesFile from "../data/sample-pirates-array";`
 
 In order to use firebase we need to install their library:
 
 ```sh
-$ npm install firebase@8.3.2
+$ npm install firebase
 ```
 
-Create a new file `firebase.js` in `src`. Add the following information substituting your own values for firebaseConfig. The dataBaseURL is available from the Project Settings panel.
+Add a piece of state to App.js:
+
+`const [pirates, setPirates] = React.useState([]);`
+
+Create `src/firebase.js` with:
 
 ```js
-import firebase from "firebase/app";
-import "firebase/database";
+// src/firebase.js
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDoJ3LktAYg1_SKKgfQBzgRZDzmGOzlYz4",
-  authDomain: "testing-pirates.firebaseapp.com",
-  databaseURL: "https://testing-pirates-default-rtdb.firebaseio.com",
-  projectId: "testing-pirates",
-  storageBucket: "testing-pirates.appspot.com",
-  messagingSenderId: "792598258815",
-  appId: "1:792598258815:web:8efaaeef93a62c2c9a8b4a",
+  apiKey: "AIzaSyCIhoYmqVW1F12RSevwdL9KFnTMIte4w6c",
+  authDomain: "pirates-94dd4.firebaseapp.com",
+  databaseURL: "https://pirates-94dd4-default-rtdb.firebaseio.com",
+  projectId: "pirates-94dd4",
+  storageBucket: "pirates-94dd4.appspot.com",
+  messagingSenderId: "272025254320",
+  appId: "1:272025254320:web:acc27be6a7b4147f6c7e75",
 };
 
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase and cloud storage
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-export default firebase;
+export { db };
 ```
 
-Import firebase into App.js:
+In `App.js`:
 
 ```js
-import firebase from "../firebase";
+import { db } from "./firebase";
+import { collection, addDoc } from "firebase/firestore";
+// ...
+const addPirate = async (pirate) => {
+  await addDoc(collection(db, "pirates"), {
+    name: pirate.name,
+    vessel: pirate.vessel,
+    weapon: pirate.weapon,
+    death: pirate.death,
+    description: pirate.description,
+    image: "avatar.png",
+  });
+};
 ```
 
-And initialize the pirates state to an empty array:
+Create a new Pirate and look for it in Firebase.
+
+`<p>{JSON.stringify(pirates)}</p>`
+
+Fetching the pirate on initialization.
+
+Add additional imports from Firestore:
 
 ```js
-const [pirates, setPirates] = React.useState([]);
+import { db } from "./firebase";
+import {
+  collection,
+  query,
+  onSnapshot,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 ```
+
+```js
+React.useEffect(() => {
+  const q = query(collection(db, "pirates"));
+  // const unsub =
+  onSnapshot(q, (querySnapshot) => {
+    let piratesArray = [];
+    querySnapshot.forEach((doc) => {
+      piratesArray.push({ ...doc.data(), id: doc.id });
+    });
+    setPirates(piratesArray);
+  });
+  // return () => unsub();
+}, []);
+```
+
+<!-- Import pirates functionality:
+
+```js
+// ...
+const loadSamples = () => {
+  piratesFile.forEach((pirate) => addPirate(pirate));
+};
+// ...
+<Header title={randomize()} />
+<button onClick={loadSamples}>Load Samples</button>
+``` -->
+
+Deleting pirates from Firebase.
 
 In App.js:
 
 ```js
-import React from "react";
-import Header from "./Header";
-import Pirate from "./Pirate";
-import AddPirate from "./AddPirate";
-
-// imported
-import firebase from "../firebase";
-
-const pirateCalls = [
-  "Aaarg, belay that!",
-  "Avast me hearties!",
-  "Shiver me timbers!",
-];
-
-const randomize = () =>
-  pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
-
-function App() {
-  // HERE
-  const [pirates, setPirates] = React.useState([]);
-
-  React.useEffect(() => {
-    getPirates();
-  }, []);
-
-  const getPirates = () => {
-    // https://firebase.google.com/docs/database/web/read-and-write#web-version-8_5
-    const pirateRef = firebase.database().ref("pirates");
-    pirateRef.on("value", (snapshot) => {
-      const pirates = snapshot.val();
-      const pirateList = [];
-      for (let id in pirates) {
-        pirateList.push({ id, ...pirates[id] });
-      }
-      setPirates(pirateList);
-    });
-  };
-
-  const addPirate = (pirate) => {
-    const pirateRef = firebase.database().ref("pirates");
-    pirateRef.unshift(pirate);
-  };
-
-  const removePirate = (pirate) => {
-    const pirateRef = firebase.database().ref("pirates").child(pirate);
-    pirateRef.remove();
-  };
-
-  return (
-    <div>
-      <Header title={randomize()} />
-      <div className="pirate">
-        <AddPirate addPirate={addPirate} />
-
-        {pirates.length === 0 ? (
-          <h2>Add some pirates.</h2>
-        ) : (
-          pirates.map((pirate) => (
-            <Pirate
-              key={pirate.name}
-              tagline={randomize()}
-              pirate={pirate}
-              removePirate={removePirate}
-            />
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default App;
+const removePirate = async (id) => {
+  await deleteDoc(doc(db, "pirates", id));
+};
 ```
 
-Note:
-
-- the use of a ternary:
+Pass the id to pirate:
 
 ```js
 {
-  pirates.length === 0 ? (
-    <h2>Add some pirates.</h2>
-  ) : (
-    pirates.map((pirate) => (
-      <Pirate
-        key={pirate.name}
-        tagline={randomize()}
-        pirate={pirate}
-        removePirate={removePirate}
-      />
-    ))
-  );
+  pirates.map((pirate) => (
+    <Pirate
+      // NEW
+      key={pirate.id}
+      tagline={randomize()}
+      pirate={pirate}
+      removePirate={removePirate}
+    />
+  ));
 }
 ```
 
-- the `useEffect` hook. (We will cover this in a future class.)
-
-Create a pirate to test.
-
-Deleting a pirate now requires the use of an id. Change the delete button in Pirates.js to:
+Destructure the id and pass it to the removePirate function in App.js:
 
 ```js
-<button onClick={() => removePirate(id)}>Remove Pirate</button>
-```
-
-and destructure the id:
-
-```js
-import React from "react";
-import "../assets/css/Pirate.css";
-
-import avatar from "../assets/img/avatar.png";
-
 function Pirate({
+  // DESTRUCTURE
+  pirate: { id, name, year, weapon, vessel, description },
   tagline,
   removePirate,
-  pirate: { id, name, year, weapon, vessel, description },
 }) {
   return (
     <section>
@@ -1490,37 +1529,12 @@ function Pirate({
       <article>
         <h2>{tagline}</h2>
         <p>{description}</p>
+        {/* PASS IT */}
         <button onClick={() => removePirate(id)}>Remove Pirate</button>
       </article>
     </section>
   );
 }
-
-export default Pirate;
-```
-
----
-
-## Loading Pirates
-
-Ensure that you have imported the piratesFile document:
-
-```js
-import piratesFile from "../data/sample-pirates-array";
-```
-
-and create a function in App.js:
-
-```js
-const loadSamples = () => {
-  piratesFile.forEach((pirate) => addPirate(pirate));
-};
-```
-
-Create a button below the header in App.js:
-
-```js
-<button onClick={loadSamples}>Load Samples</button>
 ```
 
 And test.
