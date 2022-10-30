@@ -128,6 +128,14 @@ Note: React 17 and above does not require you to import React so `import React f
 
 ### Project Prep
 
+Note: Emmet [becomes confused](https://stackoverflow.com/questions/51617570/emmet-autocomplete-is-not-functioning-in-jsx) when not using `.jsx`. Add this to your VS Code preferences:
+
+```js
+"emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+}
+```
+
 IMPORTANT - Copy the `data` and `assets` folders from `reference` to the `src` directory in `pirates`.
 
 Import our fonts and clean up the default html template.
@@ -816,7 +824,7 @@ function Pirate({
 }
 ```
 
-Note: `avatar.png` is included in the sample-pirates-array data: 
+Note: Images can be problematic for new React devs. `avatar.png` is included in the sample-pirates-array data:
 
 ```js
 const pirates = [
@@ -831,7 +839,7 @@ const pirates = [
   },
 ```
 
-We can destructure it in the Pirate component and use it in the JSx:
+We can try to destructure it in the Pirate component and use it in the JSX:
 
 ```js
 function Pirate({
@@ -845,9 +853,7 @@ function Pirate({
         <h3>{name}</h3>
 ```
 
-But we will need to copy the assets folder into public in order for the link to function.
-
-
+But we would need to copy the asset into public in order for the link to function as the path is relative to index.html.
 
 ## React Forms
 
@@ -1123,9 +1129,7 @@ const addPirate = (pirate) => {
 
 The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) `...` creates a new array using an existing array. (See the spreads examples in the reference folder.)
 
-We should now be able to create a pirate using the form and see it in the browser.
-
-Test it.
+Test it. We should now be able to create a pirate using the form and see it in the browser.
 
 ## Resetting the Form
 
@@ -1152,6 +1156,8 @@ const createPirate = (event) => {
 ```
 
 The form fields should now be empty after submitting.
+
+Note: there will be a warning related to `keys` at this point if you submit a priate with the same name.
 
 ## Removing Pirates
 
@@ -1230,6 +1236,7 @@ Add a filter to the function in App.js:
 const removePirate = (pirateName) => {
   const newPirates = pirates.filter((pirate) => pirate.name !== pirateName);
   setPirates(newPirates);
+  // setPirates([...newPirates]);
 };
 ```
 
@@ -1301,7 +1308,7 @@ Copy the initialization information:
 
 ![add project](reference/images/2.png)
 
-Select Realtime Database from the left hand menu and add a real time database to the project.
+Select Realtime Database from the left hand menu (Build > Realtime Database) and add a real time database to the project.
 
 ![add project](reference/images/a.png)
 
@@ -1334,7 +1341,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export default firebase;
-
 ```
 
 Import firebase into App.js:
@@ -1370,9 +1376,10 @@ const randomize = () =>
   pirateCalls[Math.floor(Math.random() * pirateCalls.length)];
 
 function App() {
+  // HERE
   const [pirates, setPirates] = React.useState([]);
 
-    React.useEffect(() => {
+  React.useEffect(() => {
     getPirates();
   }, []);
 

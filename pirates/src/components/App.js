@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Pirate from "./Pirate";
+import AddPirate from "./AddPirate";
 import piratesFile from "../data/sample-pirates-array";
 
 const pirateCalls = [
@@ -15,12 +16,28 @@ const randomize = () =>
 function App() {
   const [pirates, setPirates] = React.useState(piratesFile);
 
+  const addPirate = (pirate) => {
+    pirate.image = "avatar.png";
+    setPirates((prev) => [pirate, ...prev]);
+  };
+
+  const removePirate = (pirateName) => {
+    const newPirates = pirates.filter((pirate) => pirate.name !== pirateName);
+    setPirates(newPirates);
+  };
+
   return (
     <div>
       <Header title={randomize()} />
       <div className="pirate">
-        {piratesFile.map((pirate) => (
-          <Pirate key={pirate.name} tagline={randomize()} pirate={pirate} />
+        <AddPirate addPirate={addPirate} />
+        {pirates.map((pirate) => (
+          <Pirate
+            key={pirate.name}
+            tagline={randomize()}
+            pirate={pirate}
+            removePirate={removePirate}
+          />
         ))}
       </div>
     </div>
