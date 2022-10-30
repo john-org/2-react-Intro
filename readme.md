@@ -1354,28 +1354,6 @@ Go to the rules and change false to true, then publish:
 
 ---
 
-<!-- Create an account on firebase and add a new project - call it pirates. (Turn off Google Analytics for the project since we will not be using it.)
-
-![add project](reference/images/c.png)
-
-Add the project:
-
-![add project](reference/images/1.png)
-
-Copy the initialization information:
-
-![add project](reference/images/2.png)
-
-Select Realtime Database from the left hand menu (Build > Realtime Database) and add a real time database to the project.
-
-Select Firestore Database from the left hand menu and add a Firestore database to the project.
-
-![add project](reference/images/a.png)
-
-When asked about security rules, select "Start in test mode."
-
-![add project](reference/images/b.png) -->
-
 Remove the data scaffold:
 
 `// import piratesFile from "../data/sample-pirates-array";`
@@ -1551,11 +1529,9 @@ Add the following to `package.json`:
 
 Run `$ npm run build` on the command line and upload the build folder to the server of your choice.
 
-[Sample](http://oit2.scps.nyu.edu/~devereld/intermediate/build/)
-
 ## Instructor Notes
 
-## Serverless Functions
+### Serverless Functions
 
 1. Install node-fetch, netlify-cli
 
@@ -1578,9 +1554,5 @@ exports.handler = async () => {
   };
 };
 ```
-
-## Firebase
-
-https://console.firebase.google.com/u/0/project/pirates-31599/database/pirates-31599-default-rtdb/data/~2F
 
 ---
