@@ -1,5 +1,4 @@
 import React from "react"
-import "../assets/css/AddPirateForm.css"
 
 export default function Test() {
   // HERE

@@ -1,18 +1,4 @@
 .pirate {
-  font-family: "Trade Winds", cursive;
-}
-
-.pirate ul {
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-}
-
-.pirate ul li {
-  flex: 1;
-}
-
-.pirate {
   max-width: 80vw;
   margin: 2rem auto;
 }

@@ -1,20 +1,55 @@
 import React from "react"
 import "../assets/css/AddPirateForm.css"
 
-const AddPirate = () => {
+const AddPirate = ({ addPirate }) => {
   const [pirateName, setPirateName] = React.useState("")
   const [vessel, setVessel] = React.useState("")
   const [weapon, setWeapon] = React.useState("")
 
+  const [death, setDeath] = React.useState("")
+  const [desc, setDesc] = React.useState("")
+
+  //   const createPirate = (event) => {
+  //     event.preventDefault()
+  //     const pirate = {
+  //       name: pirateName,
+  //       vessel: vessel,
+  //       weapon: weapon
+  //     }
+  //     addPirate(pirate)
+  //     console.log(pirate)
+  //   }
   const createPirate = (event) => {
+    const createPirate = (event) => {
+      event.preventDefault()
+
+      const pirate = {
+        name: pirateName,
+        vessel: vessel,
+        weapon: weapon,
+        death: death,
+        desc: desc
+      }
+      addPirate(pirate)
+      setPirateName("")
+      setVessel("")
+      setWeapon("")
+      setDeath("")
+      setDesc("")
+    }
     event.preventDefault()
-    console.log("making a pirate")
+
     const pirate = {
       name: pirateName,
       vessel: vessel,
       weapon: weapon
     }
-    console.log(pirate)
+
+    addPirate(pirate)
+
+    setPirateName("")
+    setVessel("")
+    setWeapon("")
   }
 
   return (
@@ -42,6 +77,21 @@ const AddPirate = () => {
         placeholder="Pirate weapon"
         value={weapon}
         onChange={(event) => setWeapon(event.target.value)}
+      />
+      <label htmlFor="died">Died</label>
+      <input
+        id="died"
+        type="text"
+        placeholder="Date of death"
+        value={death}
+        onChange={(event) => setDeath(event.target.value)}
+      />
+      <label htmlFor="desc">Description</label>
+      <textarea
+        id="desc"
+        placeholder="Pirate description"
+        value={desc}
+        onChange={(event) => setDesc(event.target.value)}
       />
       <button type="submit">Add Pirate</button>
     </form>
