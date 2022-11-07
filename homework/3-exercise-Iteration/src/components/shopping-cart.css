@@ -1,0 +1,25 @@
+.cart h2 {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.cart .shopping-cart {
+  --image-width: 150px;
+  margin-bottom: 2rem;
+}
+
+.cart .cart-row td {
+  padding: 8px 0px;
+}
+.cart .cart-row td:first-of-type {
+  width: var(--image-width);
+}
+
+.cart .product-thumb {
+  width: var(--image-width);
+}
+
+.cart .actions {
+  display: flex;
+  justify-content: flex-end;
+}
