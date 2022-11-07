@@ -5,51 +5,25 @@ const AddPirate = ({ addPirate }) => {
   const [pirateName, setPirateName] = React.useState("")
   const [vessel, setVessel] = React.useState("")
   const [weapon, setWeapon] = React.useState("")
-
   const [death, setDeath] = React.useState("")
   const [desc, setDesc] = React.useState("")
 
-  //   const createPirate = (event) => {
-  //     event.preventDefault()
-  //     const pirate = {
-  //       name: pirateName,
-  //       vessel: vessel,
-  //       weapon: weapon
-  //     }
-  //     addPirate(pirate)
-  //     console.log(pirate)
-  //   }
   const createPirate = (event) => {
-    const createPirate = (event) => {
-      event.preventDefault()
-
-      const pirate = {
-        name: pirateName,
-        vessel: vessel,
-        weapon: weapon,
-        death: death,
-        desc: desc
-      }
-      addPirate(pirate)
-      setPirateName("")
-      setVessel("")
-      setWeapon("")
-      setDeath("")
-      setDesc("")
-    }
     event.preventDefault()
 
     const pirate = {
       name: pirateName,
       vessel: vessel,
-      weapon: weapon
+      weapon: weapon,
+      death: death,
+      desc: desc
     }
-
     addPirate(pirate)
-
     setPirateName("")
     setVessel("")
     setWeapon("")
+    setDeath("")
+    setDesc("")
   }
 
   return (
@@ -78,6 +52,7 @@ const AddPirate = ({ addPirate }) => {
         value={weapon}
         onChange={(event) => setWeapon(event.target.value)}
       />
+
       <label htmlFor="died">Died</label>
       <input
         id="died"
@@ -93,6 +68,7 @@ const AddPirate = ({ addPirate }) => {
         value={desc}
         onChange={(event) => setDesc(event.target.value)}
       />
+
       <button type="submit">Add Pirate</button>
     </form>
   )
